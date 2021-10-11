@@ -1,0 +1,143 @@
+version: '3'
+services:
+    duplicati:
+        image: ghcr.io/linuxserver/duplicati:latest
+        container_name: duplicati
+        environment:
+          - PUID=1000
+          - PGID=1000
+          - TZ=Europe/Amsterdam
+        volumes:
+          - /home/capzulu/mediabox/duplicati:/config
+          - /home/capzulu/mediabox/duplicati/backups:/backups
+          - /home/capzulu/mediabox:/source
+        ports:
+          - 8200:8200
+        restart: unless-stopped
+
+    sabnzbd:
+        image: ghcr.io/linuxserver/sabnzbd:latest
+        container_name: sabnzbd
+        environment:
+          - PUID=1000
+          - PGID=1000
+          - TZ=Europe/Amsterdam
+        volumes:
+          - /home/capzulu/mediabox/sabnzbd:/config
+          - /home/capzulu/downloads:/downloads
+          - /home/capzulu/incomplete-downloads:/incomplete-downloads
+        ports:
+          - 8080:8080
+          - 9090:9090
+        restart: unless-stopped
+
+    nzbhydra2:
+        image: ghcr.io/linuxserver/nzbhydra2:latest
+        container_name: nzbhydra2
+        restart: unless-stopped
+        environment:
+            - PUID=1000
+            - PGID=1000
+            - TZ=Europe/Amsterdam
+        ports:
+            - 5076:5076
+        volumes:
+            - /home/capzulu/mediabox/nzbhydra2:/config
+            - /home/capzulu/downloads:/downloads'
+
+    sonarr:
+        image: ghcr.io/linuxserver/sonarr:latest
+        container_name: sonarr
+        environment:
+            - PUID=1000
+            - PGID=1000
+            - TZ=Europe/Amsterdam
+        volumes:
+            - /home/capzulu/mediabox/sonarr:/config
+            - /mnt/d/Media/TV Shows:/tv
+            - /home/capzulu/downloads:/downloads
+        ports:
+            - 8989:8989
+        restart: unless-stopped
+
+    radarr:
+        image: ghcr.io/linuxserver/radarr:latest
+        container_name: radarr
+        environment:
+            - PUID=1000
+            - PGID=1000
+            - TZ=Europe/Amsterdam
+        volumes:
+            - /home/capzulu/mediabox/radarr:/config
+            - /mnt/d/Media/Movies:/movies
+            - /home/capzulu/downloads:/downloads
+        ports:
+            - 7878:7878
+        restart: unless-stopped
+
+    bazarr:
+        image: ghcr.io/linuxserver/bazarr:latest
+        container_name: bazarr
+        environment:
+            - PUID=1000
+            - PGID=1000
+            - TZ=Europe/Amsterdam
+        volumes:
+            - /home/capzulu/mediabox/bazarr:/config
+            - /mnt/d/Media/Movies:/movies
+            - /mnt/d/Media/TV Shows:/tv
+        ports:
+            - 6767:6767
+        restart: unless-stopped
+
+    plex:
+        image: ghcr.io/linuxserver/plex:latest
+        container_name: plex
+        environment:
+            - PUID=1000
+            - PGID=1000
+            - VERSION=docker
+        volumes:
+            - /home/capzulu/mediabox/plex:/config
+            - /mnt/d/Media/TV Shows:/tv
+            - /mnt/d/Media/Movies:/movies
+        ports:
+            - 32400:32400
+            - 1900:1900/udp
+            - 3005:3005
+            - 5353:5353/udp
+            - 8324:8324
+            - 32410:32410/udp
+            - 32412:32412/udp
+            - 32413:32413/udp
+            - 32414:32414/udp
+            - 32469:32469
+        restart: unless-stopped
+
+    jackett:
+        image: ghcr.io/linuxserver/jackett:latest
+        container_name: jackett
+        environment: 
+            - PUID=1000
+            - PGID=1000
+            - TZ=Europe/Amsterdam
+            - AUTO_UPDATE=true
+        volumes: 
+            - /home/capzulu/mediabox/jackett:/config
+            - /home/capzulu/downloads:/downloads
+        ports:
+            - 9117:9117
+        restart: unless-stopped
+
+    overseerr:
+        image: ghcr.io/linuxserver/overseerr:latest
+        container_name: overseerr
+        environment:
+            - PUID=1000
+            - PGID=1000
+            - TZ=Europe/Amsterdam
+        volumes:
+            - /home/capzulu/mediabox/overseerr:/config
+        ports:
+            - 5055:5055
+        restart: unless-stopped
