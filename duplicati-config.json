@@ -1,0 +1,125 @@
+{
+  "CreatedByVersion": "2.0.6.3",
+  "Schedule": {
+    "ID": 1,
+    "Tags": [
+      "ID=1"
+    ],
+    "Time": "2021-11-23T12:00:00Z",
+    "Repeat": "1D",
+    "LastRun": "0001-01-01T00:00:00Z",
+    "Rule": "AllowedWeekDays=Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday",
+    "AllowedDays": [
+      "mon",
+      "tue",
+      "wed",
+      "thu",
+      "fri",
+      "sat",
+      "sun"
+    ]
+  },
+  "Backup": {
+    "ID": "1",
+    "Name": "mediabox",
+    "Description": "",
+    "Tags": [],
+    "TargetURL": "googledrive://mediabox",
+    "DBPath": "/config/XFMMICUADH.sqlite",
+    "Sources": [
+      "/source/sonarr/Backups/",
+      "/source/jackett/Jackett/ServerConfig.json",
+      "/source/jackett/Jackett/Indexers/",
+      "/source/bazarr/config/",
+      "/source/bazarr/db/",
+      "/source/nzbhydra2/backup/",
+      "/source/nzbhydra2/database/",
+      "/source/nzbhydra2/nzbhydra.yml",
+      "/source/overseerr/db/",
+      "/source/overseerr/settings.json",
+      "/source/plex/Library/",
+      "/source/radarr/Backups/",
+      "/source/radarr/config.xml",
+      "/source/radarr/radarr.db",
+      "/source/radarr/radarr.db-shm",
+      "/source/radarr/radarr.db-wal",
+      "/source/sabnzbd/sabnzbd.ini",
+      "/source/sonarr/config.xml",
+      "/source/sonarr/sonarr.db",
+      "/source/sonarr/sonarr.db-shm",
+      "/source/sonarr/sonarr.db-wal"
+    ],
+    "Settings": [
+      {
+        "Filter": "",
+        "Name": "encryption-module",
+        "Value": "aes",
+        "Argument": null
+      },
+      {
+        "Filter": "",
+        "Name": "compression-module",
+        "Value": "zip",
+        "Argument": null
+      },
+      {
+        "Filter": "",
+        "Name": "dblock-size",
+        "Value": "50mb",
+        "Argument": null
+      },
+      {
+        "Filter": "",
+        "Name": "retention-policy",
+        "Value": "1W:1D,4W:1W,12M:1M",
+        "Argument": null
+      }
+    ],
+    "Filters": [],
+    "Metadata": {
+      "LastBackupDate": "20211123T102547Z",
+      "BackupListCount": "1",
+      "TotalQuotaSpace": "16106127360",
+      "FreeQuotaSpace": "15406079228",
+      "AssignedQuotaSpace": "-1",
+      "TargetFilesSize": "684193497",
+      "TargetFilesCount": "29",
+      "TargetSizeString": "652.50 MB",
+      "SourceFilesSize": "938249766",
+      "SourceFilesCount": "2160",
+      "SourceSizeString": "894.78 MB",
+      "LastBackupStarted": "20211123T102547Z",
+      "LastBackupFinished": "20211123T102721Z",
+      "LastBackupDuration": "00:01:34.8451920",
+      "LastErrorDate": "20211123T102506Z",
+      "LastErrorMessage": "The database was attempted repaired, but the repair did not complete. This database may be incomplete and the backup process cannot continue. You may delete the local database and attempt to repair it again.",
+      "LastCompactDuration": "00:00:00.0294270",
+      "LastCompactStarted": "20211123T102710Z",
+      "LastCompactFinished": "20211123T102710Z"
+    },
+    "IsTemporary": false
+  },
+  "DisplayNames": {
+    "/source/sonarr/Backups/": "Backups",
+    "/source/jackett/Jackett/ServerConfig.json": "ServerConfig.json",
+    "/source/jackett/Jackett/Indexers/": "Indexers",
+    "/source/bazarr/config/": "config",
+    "/source/bazarr/db/": "db",
+    "/source/nzbhydra2/backup/": "backup",
+    "/source/nzbhydra2/database/": "database",
+    "/source/nzbhydra2/nzbhydra.yml": "nzbhydra.yml",
+    "/source/overseerr/db/": "db",
+    "/source/overseerr/settings.json": "settings.json",
+    "/source/plex/Library/": "Library",
+    "/source/radarr/Backups/": "Backups",
+    "/source/radarr/config.xml": "config.xml",
+    "/source/radarr/radarr.db": "radarr.db",
+    "/source/radarr/radarr.db-shm": "radarr.db-shm",
+    "/source/radarr/radarr.db-wal": "radarr.db-wal",
+    "/source/sabnzbd/sabnzbd.ini": "sabnzbd.ini",
+    "/source/sonarr/config.xml": "config.xml",
+    "/source/sonarr/sonarr.db": "sonarr.db",
+    "/source/sonarr/sonarr.db-shm": "sonarr.db-shm",
+    "/source/sonarr/sonarr.db-wal": "sonarr.db-wal"
+  }
+}
