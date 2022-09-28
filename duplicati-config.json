@@ -5,9 +5,9 @@
     "Tags": [
       "ID=1"
     ],
-    "Time": "2022-07-22T12:00:00Z",
+    "Time": "2022-09-28T12:00:00Z",
     "Repeat": "1D",
-    "LastRun": "2022-07-21T12:00:00Z",
+    "LastRun": "2022-09-27T12:00:00Z",
     "Rule": "AllowedWeekDays=Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday",
     "AllowedDays": [
       "mon",
@@ -71,29 +71,32 @@
       },
       {
         "Filter": "",
-        "Name": "retention-policy",
-        "Value": "1W:1D,4W:1W,12M:1M",
+        "Name": "keep-time",
+        "Value": "1W",
         "Argument": null
       }
     ],
     "Filters": [],
     "Metadata": {
-      "LastErrorDate": "20220721T120027Z",
-      "LastErrorMessage": "Found 102 remote files that are not recorded in local storage, please run repair",
-      "LastBackupDate": "20220722T082316Z",
-      "BackupListCount": "3",
+      "LastErrorDate": "20220927T120027Z",
+      "LastErrorMessage": "Found 1 remote files that are not recorded in local storage, please run repair",
+      "LastBackupDate": "20220925T004922Z",
+      "BackupListCount": "15",
       "TotalQuotaSpace": "16106127360",
-      "FreeQuotaSpace": "13133577313",
+      "FreeQuotaSpace": "2816204110",
       "AssignedQuotaSpace": "-1",
-      "TargetFilesSize": "2634140419",
-      "TargetFilesCount": "111",
-      "TargetSizeString": "2.45 GB",
-      "SourceFilesSize": "292559715",
-      "SourceFilesCount": "45",
-      "SourceSizeString": "279.01 MB",
-      "LastBackupStarted": "20220722T082316Z",
-      "LastBackupFinished": "20220722T082500Z",
-      "LastBackupDuration": "00:01:44.8886740"
+      "TargetFilesSize": "12973749532",
+      "TargetFilesCount": "524",
+      "TargetSizeString": "12.08 GB",
+      "SourceFilesSize": "10632085471",
+      "SourceFilesCount": "105",
+      "SourceSizeString": "9.90 GB",
+      "LastBackupStarted": "20220925T004921Z",
+      "LastBackupFinished": "20220925T005220Z",
+      "LastBackupDuration": "00:02:59.7319320",
+      "LastCompactDuration": "00:00:00.7133090",
+      "LastCompactStarted": "20220928T092215Z",
+      "LastCompactFinished": "20220928T092216Z"
     },
     "IsTemporary": false
   },
