@@ -15,7 +15,7 @@ services:
             - 8200:8200
         restart: unless-stopped
         networks:
-            - my_server_network
+            - mediabox_network
 
     sabnzbd:
         image: ghcr.io/linuxserver/sabnzbd:latest
@@ -32,7 +32,7 @@ services:
             - 8081:8080
         restart: unless-stopped
         networks:
-            - my_server_network
+            - mediabox_network
 
     sonarr:
         image: ghcr.io/linuxserver/sonarr:latest
@@ -49,7 +49,7 @@ services:
             - 8989:8989
         restart: unless-stopped
         networks:
-            - my_server_network
+            - mediabox_network
 
     radarr:
         image: ghcr.io/linuxserver/radarr:latest
@@ -66,7 +66,7 @@ services:
             - 7878:7878
         restart: unless-stopped
         networks:
-            - my_server_network
+            - mediabox_network
 
     bazarr:
         image: ghcr.io/linuxserver/bazarr:latest
@@ -83,7 +83,7 @@ services:
             - 6767:6767
         restart: unless-stopped
         networks:
-            - my_server_network
+            - mediabox_network
 
     overseerr:
         image: ghcr.io/linuxserver/overseerr:latest
@@ -98,7 +98,7 @@ services:
             - 5055:5055
         restart: unless-stopped
         networks:
-            - my_server_network
+            - mediabox_network
 
     plex:
         image: ghcr.io/linuxserver/plex:1.25.4
@@ -144,7 +144,7 @@ services:
             - /var/run/docker.sock:/var/run/docker.sock:ro
             - /etc/localtime:/etc/localtime:ro
         networks:
-            - my_server_network
+            - mediabox_network
 
     muximux:
         image: lscr.io/linuxserver/muximux
@@ -159,7 +159,7 @@ services:
             - /home/capzulu/mediabox/muximux:/config
             - /etc/localtime:/etc/localtime:ro
         networks:
-            - my_server_network
+            - mediabox_network
 
     duckdns:
         image: lscr.io/linuxserver/duckdns:latest
@@ -175,7 +175,7 @@ services:
             - /etc/localtime:/etc/localtime:ro
         restart: unless-stopped
         networks:
-            - my_server_network
+            - mediabox_network
 
     swag:
         image: lscr.io/linuxserver/swag
@@ -195,7 +195,7 @@ services:
         ports:
             - 443:443
         networks:
-            - my_server_network
+            - mediabox_network
         restart: unless-stopped
 
     deluge:
@@ -214,7 +214,7 @@ services:
             - 6881:6881/udp
         restart: unless-stopped
         networks:
-            - my_server_network
+            - mediabox_network
 
     prowlarr:
         image: lscr.io/linuxserver/prowlarr:develop
@@ -229,7 +229,7 @@ services:
             - 9696:9696
         restart: unless-stopped
         networks:
-            - my_server_network
+            - mediabox_network
 
     flaresolverr:
         image: ghcr.io/flaresolverr/flaresolverr:latest
@@ -240,16 +240,18 @@ services:
             - /etc/localtime:/etc/localtime:ro
         restart: unless-stopped
         networks:
-            - my_server_network
+            - mediabox_network
 
     watchtower:
         image: containrrr/watchtower
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
-
+        restart: unless-stopped
+        networks:
+            - mediabox_network
 
 networks:
-  my_server_network:
+  mediabox_network:
     driver: bridge
     driver_opts:
         com.docker.network.enable_ipv6: "false"
