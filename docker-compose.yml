@@ -7,9 +7,9 @@ services:
             - PUID=1000
             - PGID=1000
         volumes:
-            - /home/capzulu/mediabox/duplicati:/config
-            - /home/capzulu/mediabox/duplicati/backups:/backups
-            - /home/capzulu/mediabox:/source
+            - ${MEDIABOX_PATH}/duplicati:/config
+            - ${MEDIABOX_PATH}/duplicati/backups:/backups
+            - ${MEDIABOX_PATH}:/source
             - /etc/localtime:/etc/localtime:ro
         ports:
             - 8200:8200
@@ -24,7 +24,7 @@ services:
             - PUID=1000
             - PGID=1000
         volumes:
-            - /home/capzulu/mediabox/sabnzbd:/config
+            - ${MEDIABOX_PATH}/sabnzbd:/config
             - /media/HDD/downloads:/downloads
             - /media/HDD/incomplete-downloads:/incomplete-downloads
             - /etc/localtime:/etc/localtime:ro
@@ -41,7 +41,7 @@ services:
             - PUID=1000
             - PGID=1000
         volumes:
-            - /home/capzulu/mediabox/sonarr:/config
+            - ${MEDIABOX_PATH}/sonarr:/config
             - /media/HDD/Media/tv_shows:/tv
             - /media/HDD/downloads:/downloads
             - /etc/localtime:/etc/localtime:ro
@@ -58,7 +58,7 @@ services:
             - PUID=1000
             - PGID=1000
         volumes:
-            - /home/capzulu/mediabox/radarr:/config
+            - ${MEDIABOX_PATH}/radarr:/config
             - /media/HDD/Media/movies:/movies
             - /media/HDD/downloads:/downloads
             - /etc/localtime:/etc/localtime:ro
@@ -75,7 +75,7 @@ services:
             - PUID=1000
             - PGID=1000
         volumes:
-            - /home/capzulu/mediabox/bazarr:/config
+            - ${MEDIABOX_PATH}/bazarr:/config
             - /media/HDD/Media/movies:/movies
             - /media/HDD/Media/tv_shows:/tv
             - /etc/localtime:/etc/localtime:ro
@@ -92,7 +92,7 @@ services:
             - PUID=1000
             - PGID=1000
         volumes:
-            - /home/capzulu/mediabox/overseerr:/config
+            - ${MEDIABOX_PATH}/overseerr:/config
             - /etc/localtime:/etc/localtime:ro
         ports:
             - 5055:5055
@@ -110,7 +110,7 @@ services:
             - VERSION=docker
             - PLEX_CLAIM=claim-W5WTiks9n28nFUrXmiFx
         volumes:
-            - /home/capzulu/mediabox/plex:/config
+            - ${MEDIABOX_PATH}/plex:/config
             - /media/HDD/Media/tv_shows:/tv
             - /media/HDD/Media/movies:/movies
             - /etc/localtime:/etc/localtime:ro
@@ -122,7 +122,7 @@ services:
         container_name: homeassistant
         image: "ghcr.io/home-assistant/home-assistant:stable"
         volumes:
-            - /home/capzulu/mediabox/homeassistant:/config
+            - ${MEDIABOX_PATH}/homeassistant:/config
             - /etc/localtime:/etc/localtime:ro
         restart: unless-stopped
         privileged: true
@@ -140,7 +140,7 @@ services:
             - PGID=1000
             - GLANCES_OPT=-w
         volumes:
-            - /home/capzulu/mediabox/glances:/config
+            - ${MEDIABOX_PATH}/glances:/config
             - /var/run/docker.sock:/var/run/docker.sock:ro
             - /etc/localtime:/etc/localtime:ro
         networks:
@@ -156,7 +156,7 @@ services:
             - PUID=1000
             - PGID=1000
         volumes:
-            - /home/capzulu/mediabox/muximux:/config
+            - ${MEDIABOX_PATH}/muximux:/config
             - /etc/localtime:/etc/localtime:ro
         networks:
             - mediabox_network
@@ -171,7 +171,7 @@ services:
             - TOKEN=e87b360a-cabc-41c9-84b4-bc87f96cc850
             - LOG_FILE=false
         volumes:
-            - /home/capzulu/mediabox/duckdns/config:/config
+            - ${MEDIABOX_PATH}/duckdns/config:/config
             - /etc/localtime:/etc/localtime:ro
         restart: unless-stopped
         networks:
@@ -190,7 +190,7 @@ services:
             - SUBDOMAINS=wildcard
             - DUCKDNSTOKEN=e87b360a-cabc-41c9-84b4-bc87f96cc850
         volumes:
-            - /home/capzulu/mediabox/swag:/config
+            - ${MEDIABOX_PATH}/swag:/config
             - /etc/localtime:/etc/localtime:ro
         ports:
             - 443:443
@@ -205,7 +205,7 @@ services:
             - PUID=1000
             - PGID=1000
         volumes:
-            - /home/capzulu/mediabox/deluge:/config
+            - ${MEDIABOX_PATH}/deluge:/config
             - /media/HDD/downloads:/downloads
             - /etc/localtime:/etc/localtime:ro
         ports:
@@ -223,7 +223,7 @@ services:
             - PUID=1000
             - PGID=1000
         volumes:
-            - /home/capzulu/mediabox/prowlarr:/config
+            - ${MEDIABOX_PATH}/prowlarr:/config
             - /etc/localtime:/etc/localtime:ro
         ports:
             - 9696:9696
