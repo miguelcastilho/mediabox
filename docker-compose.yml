@@ -4,46 +4,35 @@ services:
         image: ghcr.io/linuxserver/duplicati:latest
         container_name: duplicati
         environment:
-          - PUID=1000
-          - PGID=1000
-          - TZ=Europe/Amsterdam
+            - PUID=1000
+            - PGID=1000
         volumes:
-          - /home/capzulu/mediabox/duplicati:/config
-          - /home/capzulu/mediabox/duplicati/backups:/backups
-          - /home/capzulu/mediabox:/source
+            - /home/capzulu/mediabox/duplicati:/config
+            - /home/capzulu/mediabox/duplicati/backups:/backups
+            - /home/capzulu/mediabox:/source
+            - /etc/localtime:/etc/localtime:ro
         ports:
-          - 8200:8200
+            - 8200:8200
         restart: unless-stopped
+        networks:
+            - my_server_network
 
     sabnzbd:
         image: ghcr.io/linuxserver/sabnzbd:latest
         container_name: sabnzbd
         environment:
-          - PUID=1000
-          - PGID=1000
-          - TZ=Europe/Amsterdam
-        volumes:
-          - /home/capzulu/mediabox/sabnzbd:/config
-          - /home/capzulu/downloads:/downloads
-          - /home/capzulu/incomplete-downloads:/incomplete-downloads
-        ports:
-          - 8080:8080
-          - 9090:9090
-        restart: unless-stopped
-
-    nzbhydra2:
-        image: ghcr.io/linuxserver/nzbhydra2:latest
-        container_name: nzbhydra2
-        restart: unless-stopped
-        environment:
             - PUID=1000
             - PGID=1000
-            - TZ=Europe/Amsterdam
-        ports:
-            - 5076:5076
         volumes:
-            - /home/capzulu/mediabox/nzbhydra2:/config
-            - /home/capzulu/downloads:/downloads'
+            - /home/capzulu/mediabox/sabnzbd:/config
+            - /media/HDD/downloads:/downloads
+            - /media/HDD/incomplete-downloads:/incomplete-downloads
+            - /etc/localtime:/etc/localtime:ro
+        ports:
+            - 8081:8080
+        restart: unless-stopped
+        networks:
+            - my_server_network
 
     sonarr:
         image: ghcr.io/linuxserver/sonarr:latest
@@ -51,14 +40,16 @@ services:
         environment:
             - PUID=1000
             - PGID=1000
-            - TZ=Europe/Amsterdam
         volumes:
             - /home/capzulu/mediabox/sonarr:/config
-            - /mnt/d/Media/TV Shows:/tv
-            - /home/capzulu/downloads:/downloads
+            - /media/HDD/Media/tv_shows:/tv
+            - /media/HDD/downloads:/downloads
+            - /etc/localtime:/etc/localtime:ro
         ports:
             - 8989:8989
         restart: unless-stopped
+        networks:
+            - my_server_network
 
     radarr:
         image: ghcr.io/linuxserver/radarr:latest
@@ -66,14 +57,16 @@ services:
         environment:
             - PUID=1000
             - PGID=1000
-            - TZ=Europe/Amsterdam
         volumes:
             - /home/capzulu/mediabox/radarr:/config
-            - /mnt/d/Media/Movies:/movies
-            - /home/capzulu/downloads:/downloads
+            - /media/HDD/Media/movies:/movies
+            - /media/HDD/downloads:/downloads
+            - /etc/localtime:/etc/localtime:ro
         ports:
             - 7878:7878
         restart: unless-stopped
+        networks:
+            - my_server_network
 
     bazarr:
         image: ghcr.io/linuxserver/bazarr:latest
@@ -81,29 +74,16 @@ services:
         environment:
             - PUID=1000
             - PGID=1000
-            - TZ=Europe/Amsterdam
         volumes:
             - /home/capzulu/mediabox/bazarr:/config
-            - /mnt/d/Media/Movies:/movies
-            - /mnt/d/Media/TV Shows:/tv
+            - /media/HDD/Media/movies:/movies
+            - /media/HDD/Media/tv_shows:/tv
+            - /etc/localtime:/etc/localtime:ro
         ports:
             - 6767:6767
         restart: unless-stopped
-
-    jackett:
-        image: ghcr.io/linuxserver/jackett:latest
-        container_name: jackett
-        environment: 
-            - PUID=1000
-            - PGID=1000
-            - TZ=Europe/Amsterdam
-            - AUTO_UPDATE=true
-        volumes: 
-            - /home/capzulu/mediabox/jackett:/config
-            - /home/capzulu/downloads:/downloads
-        ports:
-            - 9117:9117
-        restart: unless-stopped
+        networks:
+            - my_server_network
 
     overseerr:
         image: ghcr.io/linuxserver/overseerr:latest
@@ -111,9 +91,169 @@ services:
         environment:
             - PUID=1000
             - PGID=1000
-            - TZ=Europe/Amsterdam
         volumes:
             - /home/capzulu/mediabox/overseerr:/config
+            - /etc/localtime:/etc/localtime:ro
         ports:
             - 5055:5055
         restart: unless-stopped
+        networks:
+            - my_server_network
+
+    plex:
+        image: ghcr.io/linuxserver/plex:1.25.4
+        container_name: plex
+        network_mode: host
+        environment:
+            - PUID=1000
+            - PGID=1000
+            - VERSION=docker
+            - PLEX_CLAIM=claim-W5WTiks9n28nFUrXmiFx
+        volumes:
+            - /home/capzulu/mediabox/plex:/config
+            - /media/HDD/Media/tv_shows:/tv
+            - /media/HDD/Media/movies:/movies
+            - /etc/localtime:/etc/localtime:ro
+        ports:
+            - 5055:5055
+        restart: unless-stopped
+
+    homeassistant:
+        container_name: homeassistant
+        image: "ghcr.io/home-assistant/home-assistant:stable"
+        volumes:
+            - /home/capzulu/mediabox/homeassistant:/config
+            - /etc/localtime:/etc/localtime:ro
+        restart: unless-stopped
+        privileged: true
+        network_mode: host
+
+    glances:
+        image: nicolargo/glances:latest-alpine
+        container_name: glances
+        restart: unless-stopped
+        pid: host
+        ports:
+            - '61208:61208'
+        environment:
+            - PUID=1000
+            - PGID=1000
+            - GLANCES_OPT=-w
+        volumes:
+            - /home/capzulu/mediabox/glances:/config
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+            - /etc/localtime:/etc/localtime:ro
+        networks:
+            - my_server_network
+
+    muximux:
+        image: lscr.io/linuxserver/muximux
+        container_name: muximux
+        restart: unless-stopped
+        ports:
+            - '8080:80'
+        environment:
+            - PUID=1000
+            - PGID=1000
+        volumes:
+            - /home/capzulu/mediabox/muximux:/config
+            - /etc/localtime:/etc/localtime:ro
+        networks:
+            - my_server_network
+
+    duckdns:
+        image: lscr.io/linuxserver/duckdns:latest
+        container_name: duckdns
+        environment:
+            - PUID=1000
+            - PGID=1000
+            - SUBDOMAINS=capzulu
+            - TOKEN=e87b360a-cabc-41c9-84b4-bc87f96cc850
+            - LOG_FILE=false
+        volumes:
+            - /home/capzulu/mediabox/duckdns/config:/config
+            - /etc/localtime:/etc/localtime:ro
+        restart: unless-stopped
+        networks:
+            - my_server_network
+
+    swag:
+        image: lscr.io/linuxserver/swag
+        container_name: swag
+        cap_add:
+            - NET_ADMIN
+        environment:
+            - PUID=1000
+            - PGID=1000
+            - URL=capzulu.duckdns.org
+            - VALIDATION=duckdns
+            - SUBDOMAINS=wildcard
+            - DUCKDNSTOKEN=e87b360a-cabc-41c9-84b4-bc87f96cc850
+        volumes:
+            - /home/capzulu/mediabox/swag:/config
+            - /etc/localtime:/etc/localtime:ro
+        ports:
+            - 443:443
+        networks:
+            - my_server_network
+        restart: unless-stopped
+
+    deluge:
+        image: lscr.io/linuxserver/deluge:latest
+        container_name: deluge
+        environment:
+            - PUID=1000
+            - PGID=1000
+        volumes:
+            - /home/capzulu/mediabox/deluge:/config
+            - /media/HDD/downloads:/downloads
+            - /etc/localtime:/etc/localtime:ro
+        ports:
+            - 8112:8112
+            - 6881:6881
+            - 6881:6881/udp
+        restart: unless-stopped
+        networks:
+            - my_server_network
+
+    prowlarr:
+        image: lscr.io/linuxserver/prowlarr:develop
+        container_name: prowlarr
+        environment:
+            - PUID=1000
+            - PGID=1000
+        volumes:
+            - /home/capzulu/mediabox/prowlarr:/config
+            - /etc/localtime:/etc/localtime:ro
+        ports:
+            - 9696:9696
+        restart: unless-stopped
+        networks:
+            - my_server_network
+
+    flaresolverr:
+        image: ghcr.io/flaresolverr/flaresolverr:latest
+        container_name: flaresolverr
+        ports:
+            - "8191:8191"
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+        restart: unless-stopped
+        networks:
+            - my_server_network
+
+    watchtower:
+        image: containrrr/watchtower
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+
+
+networks:
+  my_server_network:
+    driver: bridge
+    driver_opts:
+        com.docker.network.enable_ipv6: "false"
+    ipam:
+     config:
+       - subnet: 172.23.0.0/16
+         gateway: 172.23.0.1
