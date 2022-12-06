@@ -101,7 +101,7 @@ services:
             - mediabox
 
     plex:
-        image: ghcr.io/linuxserver/plex:1.25.4
+        image: ghcr.io/linuxserver/plex:latest
         container_name: plex
         network_mode: host
         environment:
