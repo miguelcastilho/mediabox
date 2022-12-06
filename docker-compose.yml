@@ -147,7 +147,7 @@ services:
             - mediabox
 
     muximux:
-        image: lscr.io/linuxserver/muximux
+        image: lscr.io/linuxserver/muximux:latest
         container_name: muximux
         restart: unless-stopped
         ports:
@@ -178,7 +178,7 @@ services:
             - mediabox
 
     swag:
-        image: lscr.io/linuxserver/swag
+        image: lscr.io/linuxserver/swag:latest
         container_name: swag
         cap_add:
             - NET_ADMIN
@@ -243,7 +243,7 @@ services:
             - mediabox
 
     watchtower:
-        image: containrrr/watchtower
+        image: containrrr/watchtower:latest
         container_name: watchtower
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
