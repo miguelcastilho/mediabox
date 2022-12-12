@@ -4,7 +4,7 @@ services:
         image: eclipse-mosquitto:latest
         container_name: mqtt
         restart: unless-stopped
-        volume:
+        volumes:
             - ${MEDIABOX_PATH}/mosquitto:/mosquitto
         ports:
             - 1883:1883
