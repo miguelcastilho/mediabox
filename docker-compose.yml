@@ -15,19 +15,19 @@ services:
         networks:
             - mediabox
 
-    zigbee2mqtt:
-        image: koenkk/zigbee2mqtt:latest
-        container_name: zigbee2mqtt
-        restart: unless-stopped
-        volumes:
-            - ${MEDIABOX_PATH}/zigbee2mqtt:/app/data
-            - /run/udev:/run/udev:ro
-        ports:
-            - 8080:8080
-        environment:
-            - TZ=${TIMEZONE}
-        networks:
-            - mediabox
+    #zigbee2mqtt:
+    #    image: koenkk/zigbee2mqtt:latest
+    #    container_name: zigbee2mqtt
+    #    restart: unless-stopped
+    #    volumes:
+    #        - ${MEDIABOX_PATH}/zigbee2mqtt:/app/data
+    #        - /run/udev:/run/udev:ro
+    #    ports:
+    #        - 8080:8080
+    #    environment:
+    #        - TZ=${TIMEZONE}
+    #    networks:
+    #        - mediabox
 
     duplicati:
         image: ghcr.io/linuxserver/duplicati:latest
