@@ -5,7 +5,7 @@ services:
         container_name: mqtt
         restart: unless-stopped
         volumes:
-            - ${MEDIABOX_PATH}/mosquitto:/mosquitto
+            - ${MEDIABOX_PATH}/mqtt:/mosquitto
         ports:
             - 1883:1883
             - 9001:9001
