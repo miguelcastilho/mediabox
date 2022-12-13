@@ -1,36 +1,52 @@
 version: '3'
 services:
-    mqtt:
-        image: eclipse-mosquitto:latest
-        container_name: mqtt
+    organizr:
+        image: organizr/organizr:latest
+        container_name: organizr
         restart: unless-stopped
         volumes:
-            - ${MEDIABOX_PATH}/mqtt:/mosquitto
+            - ${MEDIABOX_PATH}/organizr:/config
         ports:
-            - 1883:1883
-            - 9001:9001
-        command: "mosquitto -c /mosquitto-no-auth.conf"
+            - 8080:80
         environment:
+            - PUID=1000
+            - PGID=1000
+            - fpm=true
             - TZ=${TIMEZONE}
         networks:
             - mediabox
 
-    zigbee2mqtt:
-        container_name: zigbee2mqtt
-        depends_on:
-            - mqtt
-        privileged: true
-        restart: unless-stopped
-        image: koenkk/zigbee2mqtt:latest
-        volumes:
-            - ${MEDIABOX_PATH}/zigbee2mqtt:/app/data
-            - /run/udev:/run/udev:ro
-        ports:
-            - 8082:8080
-        environment:
-            - TZ=${TIMEZONE}
-        networks:
-           - mediabox
+    #mqtt:
+    #    image: eclipse-mosquitto:latest
+    #    container_name: mqtt
+    #    restart: unless-stopped
+    #    volumes:
+    #        - ${MEDIABOX_PATH}/mqtt:/mosquitto
+    #    ports:
+    #        - 1883:1883
+    #        - 9001:9001
+    #    command: "mosquitto -c /mosquitto-no-auth.conf"
+    #    environment:
+    #        - TZ=${TIMEZONE}
+    #    networks:
+    #        - mediabox
+
+    #zigbee2mqtt:
+    #    container_name: zigbee2mqtt
+    #    depends_on:
+    #        - mqtt
+    #    privileged: true
+    #    restart: unless-stopped
+    #    image: koenkk/zigbee2mqtt:latest
+    #    volumes:
+    #        - ${MEDIABOX_PATH}/zigbee2mqtt:/app/data
+    #        - /run/udev:/run/udev:ro
+    #    ports:
+    #        - 8082:8080
+    #    environment:
+    #        - TZ=${TIMEZONE}
+    #    networks:
+    #       - mediabox
 
     duplicati:
         image: ghcr.io/linuxserver/duplicati:latest
@@ -60,7 +76,6 @@ services:
             - ${MEDIABOX_PATH}/sabnzbd:/config
             - /media/HDD/downloads:/downloads
             - /media/HDD/incomplete-downloads:/incomplete-downloads
-            - ${MEDIABOX_PATH}/swag/etc:/swag-ssl
         ports:
             - 8081:8080
         restart: unless-stopped
@@ -179,20 +194,20 @@ services:
         networks:
             - mediabox
 
-    muximux:
-        image: lscr.io/linuxserver/muximux:latest
-        container_name: muximux
-        restart: unless-stopped
-        ports:
-            - '8080:80'
-        environment:
-            - PUID=1000
-            - PGID=1000
-            - TZ=${TIMEZONE}
-        volumes:
-            - ${MEDIABOX_PATH}/muximux:/config
-        networks:
-            - mediabox
+    #muximux:
+    #    image: lscr.io/linuxserver/muximux:latest
+    #    container_name: muximux
+    #    restart: unless-stopped
+    #    ports:
+    #        - '8080:80'
+    #    environment:
+    #        - PUID=1000
+    #        - PGID=1000
+    #        - TZ=${TIMEZONE}
+    #    volumes:
+    #        - ${MEDIABOX_PATH}/muximux:/config
+    #    networks:
+    #        - mediabox
 
     duckdns:
         image: lscr.io/linuxserver/duckdns:latest
