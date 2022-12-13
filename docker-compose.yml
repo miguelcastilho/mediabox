@@ -60,6 +60,7 @@ services:
             - ${MEDIABOX_PATH}/sabnzbd:/config
             - /media/HDD/downloads:/downloads
             - /media/HDD/incomplete-downloads:/incomplete-downloads
+            - ${MEDIABOX_PATH}/swag/etc:/swag-ssl
         ports:
             - 8081:8080
         restart: unless-stopped
