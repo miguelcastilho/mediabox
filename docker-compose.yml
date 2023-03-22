@@ -269,8 +269,6 @@ networks:
   mediabox_network:
     name: mediabox
     driver: bridge
-    driver_opts:
-        com.docker.network.enable_ipv6: "false"
     ipam:
      config:
        - subnet: 172.23.0.0/16
