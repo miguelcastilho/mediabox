@@ -168,7 +168,7 @@ services:
             - PUID=1000
             - PGID=1000
             - SUBDOMAINS=capzulu
-            - TOKEN=e87b360a-cabc-41c9-84b4-bc87f96cc850
+            - TOKEN=${DUCKDNS_TOKEN}
             - LOG_FILE=false
         volumes:
             - ${MEDIABOX_PATH}/duckdns/config:/config
@@ -176,27 +176,6 @@ services:
         restart: unless-stopped
         networks:
             - mediabox_network
-
-    swag:
-        image: lscr.io/linuxserver/swag
-        container_name: swag
-        cap_add:
-            - NET_ADMIN
-        environment:
-            - PUID=1000
-            - PGID=1000
-            - URL=capzulu.duckdns.org
-            - VALIDATION=duckdns
-            - SUBDOMAINS=wildcard
-            - DUCKDNSTOKEN=e87b360a-cabc-41c9-84b4-bc87f96cc850
-        volumes:
-            - ${MEDIABOX_PATH}/swag:/config
-            - /etc/localtime:/etc/localtime:ro
-        ports:
-            - 443:443
-        networks:
-            - mediabox_network
-        restart: unless-stopped
 
     deluge:
         image: lscr.io/linuxserver/deluge:latest
