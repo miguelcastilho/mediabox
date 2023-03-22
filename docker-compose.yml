@@ -252,6 +252,7 @@ services:
             - mediabox_network
 
     nginx-proxy-manager:
+        container_name: nginx-proxy-manager
         image: jlesage/nginx-proxy-manager:latest
         ports:
             - "8181:8181"
