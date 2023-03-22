@@ -79,8 +79,6 @@ services:
             - /media/HDD/Media/movies:/movies
             - /media/HDD/Media/tv_shows:/tv
             - /etc/localtime:/etc/localtime:ro
-        ports:
-            - 6767:6767
         restart: unless-stopped
         networks:
             - mediabox_network
