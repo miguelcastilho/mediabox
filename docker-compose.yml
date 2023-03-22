@@ -101,7 +101,7 @@ services:
             - mediabox_network
 
     plex:
-        image: ghcr.io/linuxserver/plex:1.25.4
+        image: ghcr.io/linuxserver/plex:latest
         container_name: plex
         network_mode: host
         environment:
@@ -147,7 +147,7 @@ services:
             - mediabox_network
 
     muximux:
-        image: lscr.io/linuxserver/muximux
+        image: lscr.io/linuxserver/muximux:latest
         container_name: muximux
         restart: unless-stopped
         ports:
