@@ -251,15 +251,14 @@ services:
         networks:
             - mediabox_network
 
-    traefik:
-        image: traefik:latest
-        container_name: traefik
-        command: --api.insecure=true --providers.docker
+    nginx-proxy-manager:
+        image: jlesage/nginx-proxy-manager:latest
         ports:
-            - "80:80"
+            - "8181:8181"
             - "8080:8080"
+            - "4443:4443"
         volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
+            - "/docker/appdata/nginx-proxy-manager:/config:rw"
         restart: unless-stopped
         networks:
             - mediabox_network
