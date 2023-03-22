@@ -151,7 +151,7 @@ services:
         container_name: muximux
         restart: unless-stopped
         ports:
-            - '8080:80'
+            - '8087:80'
         environment:
             - PUID=1000
             - PGID=1000
@@ -256,7 +256,7 @@ services:
         container_name: nginx-proxy-manager
         ports:
             - "8181:8181"
-            - "8082:8080"
+            - "8080:8080"
             - "4443:4443"
         environment:
             - PUID=1000
