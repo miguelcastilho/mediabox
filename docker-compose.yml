@@ -1,64 +1,16 @@
 version: '3'
 services:
-    organizr:
-        image: organizr/organizr:latest
-        container_name: organizr
-        restart: unless-stopped
-        volumes:
-            - ${MEDIABOX_PATH}/organizr:/config
-        ports:
-            - 8080:80
-        environment:
-            - PUID=1000
-            - PGID=1000
-            - fpm=true
-            - TZ=${TIMEZONE}
-        networks:
-            - mediabox
-
-    mqtt:
-        image: eclipse-mosquitto:latest
-        container_name: mqtt
-        restart: unless-stopped
-        volumes:
-            - ${MEDIABOX_PATH}/mqtt:/mosquitto
-        ports:
-            - 1883:1883
-            - 9001:9001
-        command: "mosquitto -c /mosquitto-no-auth.conf"
-        environment:
-            - TZ=${TIMEZONE}
-        networks:
-            - mediabox
-
-    zigbee2mqtt:
-        container_name: zigbee2mqtt
-        depends_on:
-            - mqtt
-        privileged: true
-        restart: unless-stopped
-        image: koenkk/zigbee2mqtt:latest
-        volumes:
-            - ${MEDIABOX_PATH}/zigbee2mqtt:/app/data
-            - /run/udev:/run/udev:ro
-        ports:
-            - 8082:8080
-        environment:
-            - TZ=${TIMEZONE}
-        networks:
-           - mediabox
-
     duplicati:
         image: ghcr.io/linuxserver/duplicati:latest
         container_name: duplicati
         environment:
             - PUID=1000
             - PGID=1000
-            - TZ=${TIMEZONE}
         volumes:
             - ${MEDIABOX_PATH}/duplicati:/config
             - ${MEDIABOX_PATH}/duplicati/backups:/backups
             - ${MEDIABOX_PATH}:/source
+            - /etc/localtime:/etc/localtime:ro
         ports:
             - 8200:8200
         restart: unless-stopped
@@ -71,11 +23,11 @@ services:
         environment:
             - PUID=1000
             - PGID=1000
-            - TZ=${TIMEZONE}
         volumes:
             - ${MEDIABOX_PATH}/sabnzbd:/config
             - /media/HDD/downloads:/downloads
             - /media/HDD/incomplete-downloads:/incomplete-downloads
+            - /etc/localtime:/etc/localtime:ro
         ports:
             - 8081:8080
         restart: unless-stopped
@@ -88,11 +40,11 @@ services:
         environment:
             - PUID=1000
             - PGID=1000
-            - TZ=${TIMEZONE}
         volumes:
             - ${MEDIABOX_PATH}/sonarr:/config
             - /media/HDD/Media/tv_shows:/tv
             - /media/HDD/downloads:/downloads
+            - /etc/localtime:/etc/localtime:ro
         ports:
             - 8989:8989
         restart: unless-stopped
@@ -105,11 +57,11 @@ services:
         environment:
             - PUID=1000
             - PGID=1000
-            - TZ=${TIMEZONE}
         volumes:
             - ${MEDIABOX_PATH}/radarr:/config
             - /media/HDD/Media/movies:/movies
             - /media/HDD/downloads:/downloads
+            - /etc/localtime:/etc/localtime:ro
         ports:
             - 7878:7878
         restart: unless-stopped
@@ -122,11 +74,11 @@ services:
         environment:
             - PUID=1000
             - PGID=1000
-            - TZ=${TIMEZONE}
         volumes:
             - ${MEDIABOX_PATH}/bazarr:/config
             - /media/HDD/Media/movies:/movies
             - /media/HDD/Media/tv_shows:/tv
+            - /etc/localtime:/etc/localtime:ro
         ports:
             - 6767:6767
         restart: unless-stopped
@@ -139,9 +91,9 @@ services:
         environment:
             - PUID=1000
             - PGID=1000
-            - TZ=${TIMEZONE}
         volumes:
             - ${MEDIABOX_PATH}/overseerr:/config
+            - /etc/localtime:/etc/localtime:ro
         ports:
             - 5055:5055
         restart: unless-stopped
@@ -149,7 +101,7 @@ services:
             - mediabox
 
     plex:
-        image: ghcr.io/linuxserver/plex:latest
+        image: ghcr.io/linuxserver/plex:1.25.4
         container_name: plex
         network_mode: host
         environment:
@@ -157,11 +109,11 @@ services:
             - PGID=1000
             - VERSION=docker
             - PLEX_CLAIM=claim-W5WTiks9n28nFUrXmiFx
-            - TZ=${TIMEZONE}
         volumes:
             - ${MEDIABOX_PATH}/plex:/config
             - /media/HDD/Media/tv_shows:/tv
             - /media/HDD/Media/movies:/movies
+            - /etc/localtime:/etc/localtime:ro
         ports:
             - 5055:5055
         restart: unless-stopped
@@ -187,27 +139,27 @@ services:
             - PUID=1000
             - PGID=1000
             - GLANCES_OPT=-w
-            - TZ=${TIMEZONE}
         volumes:
             - ${MEDIABOX_PATH}/glances:/config
             - /var/run/docker.sock:/var/run/docker.sock:ro
+            - /etc/localtime:/etc/localtime:ro
         networks:
             - mediabox
 
-    #muximux:
-    #    image: lscr.io/linuxserver/muximux:latest
-    #    container_name: muximux
-    #    restart: unless-stopped
-    #    ports:
-    #        - '8080:80'
-    #    environment:
-    #        - PUID=1000
-    #        - PGID=1000
-    #        - TZ=${TIMEZONE}
-    #    volumes:
-    #        - ${MEDIABOX_PATH}/muximux:/config
-    #    networks:
-    #        - mediabox
+    muximux:
+        image: lscr.io/linuxserver/muximux
+        container_name: muximux
+        restart: unless-stopped
+        ports:
+            - '8080:80'
+        environment:
+            - PUID=1000
+            - PGID=1000
+        volumes:
+            - ${MEDIABOX_PATH}/muximux:/config
+            - /etc/localtime:/etc/localtime:ro
+        networks:
+            - mediabox
 
     duckdns:
         image: lscr.io/linuxserver/duckdns:latest
@@ -218,15 +170,15 @@ services:
             - SUBDOMAINS=capzulu
             - TOKEN=e87b360a-cabc-41c9-84b4-bc87f96cc850
             - LOG_FILE=false
-            - TZ=${TIMEZONE}
         volumes:
             - ${MEDIABOX_PATH}/duckdns/config:/config
+            - /etc/localtime:/etc/localtime:ro
         restart: unless-stopped
         networks:
             - mediabox
 
     swag:
-        image: lscr.io/linuxserver/swag:latest
+        image: lscr.io/linuxserver/swag
         container_name: swag
         cap_add:
             - NET_ADMIN
@@ -237,9 +189,9 @@ services:
             - VALIDATION=duckdns
             - SUBDOMAINS=wildcard
             - DUCKDNSTOKEN=e87b360a-cabc-41c9-84b4-bc87f96cc850
-            - TZ=${TIMEZONE}
         volumes:
             - ${MEDIABOX_PATH}/swag:/config
+            - /etc/localtime:/etc/localtime:ro
         ports:
             - 443:443
         networks:
@@ -252,10 +204,10 @@ services:
         environment:
             - PUID=1000
             - PGID=1000
-            - TZ=${TIMEZONE}
         volumes:
             - ${MEDIABOX_PATH}/deluge:/config
             - /media/HDD/downloads:/downloads
+            - /etc/localtime:/etc/localtime:ro
         ports:
             - 8112:8112
             - 6881:6881
@@ -270,9 +222,9 @@ services:
         environment:
             - PUID=1000
             - PGID=1000
-            - TZ=${TIMEZONE}
         volumes:
             - ${MEDIABOX_PATH}/prowlarr:/config
+            - /etc/localtime:/etc/localtime:ro
         ports:
             - 9696:9696
         restart: unless-stopped
@@ -284,25 +236,38 @@ services:
         container_name: flaresolverr
         ports:
             - "8191:8191"
-        environment:
-            - TZ=${TIMEZONE}
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
         restart: unless-stopped
         networks:
             - mediabox
 
     watchtower:
-        image: containrrr/watchtower:latest
+        image: containrrr/watchtower
         container_name: watchtower
-        environment:
-            - TZ=${TIMEZONE}
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
         restart: unless-stopped
         networks:
             - mediabox
 
+    nginx-proxy-manager:
+        image: jlesage/nginx-proxy-manager:latest
+        ports:
+            - "8181:8181"
+            - "8080:8080"
+            - "4443:4443"
+        environment:
+            - PUID=1000
+            - PGID=1000
+        volumes:
+            - ${MEDIABOX_PATH}/nginx-proxy-manager:/config:rw"
+        restart: unless-stopped
+        networks:
+            - mediabox
+
 networks:
-  mediabox:
+  mediabox_network:
     name: mediabox
     driver: bridge
     driver_opts:
