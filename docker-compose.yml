@@ -74,6 +74,8 @@ services:
         environment:
             - PUID=1000
             - PGID=1000
+        ports:
+            - 6767:6767
         volumes:
             - ${MEDIABOX_PATH}/bazarr:/config
             - /media/HDD/Media/movies:/movies
