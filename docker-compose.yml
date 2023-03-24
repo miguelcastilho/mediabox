@@ -242,6 +242,38 @@ services:
         restart: unless-stopped
         networks:
             - mediabox_network
+            
+    mqtt:
+        image: eclipse-mosquitto:latest
+        container_name: mqtt
+        restart: unless-stopped
+        volumes:
+            - ${MEDIABOX_PATH}/mqtt:/mosquitto
+        ports:
+            - 1883:1883
+            - 9001:9001
+        command: "mosquitto -c /mosquitto-no-auth.conf"
+        environment:
+            - TZ=${TIMEZONE}
+        networks:
+            - mediabox_network
+
+    zigbee2mqtt:
+        container_name: zigbee2mqtt
+        depends_on:
+            - mqtt
+        privileged: true
+        restart: unless-stopped
+        image: koenkk/zigbee2mqtt:latest
+        volumes:
+            - ${MEDIABOX_PATH}/zigbee2mqtt:/app/data
+            - /run/udev:/run/udev:ro
+        ports:
+            - 8082:8080
+        environment:
+            - TZ=${TIMEZONE}
+        networks:
+           - mediabox_network
 
 networks:
   mediabox_network:
