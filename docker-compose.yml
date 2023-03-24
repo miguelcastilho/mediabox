@@ -262,7 +262,7 @@ services:
         volumes:
             - ${MEDIABOX_PATH}/homer:/www/assets
         ports:
-            - 8080:8080
+            - 8083:8080
         networks:
            - mediabox_network
         user: 1000:1000 # default
