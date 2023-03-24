@@ -140,7 +140,6 @@ services:
             - PGID=1000
             - GLANCES_OPT=-w
         volumes:
-            - ${MEDIABOX_PATH}/glances:/config
             - /var/run/docker.sock:/var/run/docker.sock:ro
             - /etc/localtime:/etc/localtime:ro
         networks:
@@ -171,7 +170,6 @@ services:
             - TOKEN=${DUCKDNS_TOKEN}
             - LOG_FILE=false
         volumes:
-            - ${MEDIABOX_PATH}/duckdns:/config
             - /etc/localtime:/etc/localtime:ro
         restart: unless-stopped
         networks:
