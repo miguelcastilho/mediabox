@@ -114,8 +114,6 @@ services:
             - /media/HDD/Media/tv_shows:/tv
             - /media/HDD/Media/movies:/movies
             - /etc/localtime:/etc/localtime:ro
-        ports:
-            - 5055:5055
         restart: unless-stopped
 
     homeassistant:
@@ -141,21 +139,6 @@ services:
             - GLANCES_OPT=-w
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock:ro
-            - /etc/localtime:/etc/localtime:ro
-        networks:
-            - mediabox_network
-
-    muximux:
-        image: lscr.io/linuxserver/muximux:latest
-        container_name: muximux
-        restart: unless-stopped
-        ports:
-            - '8087:80'
-        environment:
-            - PUID=1000
-            - PGID=1000
-        volumes:
-            - ${MEDIABOX_PATH}/muximux:/config
             - /etc/localtime:/etc/localtime:ro
         networks:
             - mediabox_network
@@ -270,6 +253,16 @@ services:
             - 8082:8080
         environment:
             - TZ=${TIMEZONE}
+        networks:
+           - mediabox_network
+           
+    homer:
+        image: b4bz/homer:latest
+        container_name: homer
+        volumes:
+            - ${MEDIABOX_PATH}/homer:/www/assets
+        ports:
+            - 8080:8080
         networks:
            - mediabox_network
 
