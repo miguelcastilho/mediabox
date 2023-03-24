@@ -259,6 +259,9 @@ services:
     homer:
         image: b4bz/homer:latest
         container_name: homer
+        environment:
+            - PUID=1000
+            - PGID=1000
         volumes:
             - ${MEDIABOX_PATH}/homer:/www/assets
         ports:
