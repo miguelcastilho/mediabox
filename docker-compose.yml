@@ -171,7 +171,7 @@ services:
             - TOKEN=${DUCKDNS_TOKEN}
             - LOG_FILE=false
         volumes:
-            - ${MEDIABOX_PATH}/duckdns/config:/config
+            - ${MEDIABOX_PATH}/duckdns:/config
             - /etc/localtime:/etc/localtime:ro
         restart: unless-stopped
         networks:
