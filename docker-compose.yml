@@ -256,6 +256,19 @@ services:
         networks:
            - mediabox_network
            
+    authelia:
+        container_name: authelia
+        image: authelia/authelia:latest
+        restart: unless-stopped
+        networks:
+            - mediabox_network
+        ports:
+            - 9091:9091
+        volumes:
+            - ${MEDIABOX_PATH}/authelia:/config
+        environment:
+            - TZ=${TIMEZONE}
+           
     homer:
         image: b4bz/homer:latest
         container_name: homer
