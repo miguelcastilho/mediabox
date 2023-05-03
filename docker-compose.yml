@@ -287,7 +287,7 @@ services:
         container_name: timemachine
         network_mode: host
         volumes:
-            - /path/on/host/to/backup/to/for/timemachine:/opt/timemachine
+            - /media/timemachine:/opt/timemachine
             - timemachine-var-lib-samba:/var/lib/samba
             - timemachine-var-cache-samba:/var/cache/samba
             - timemachine-run-samba:/run/samba
