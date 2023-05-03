@@ -260,6 +260,7 @@ services:
         image: mbentley/timemachine:latest
         container_name: timemachine
         network_mode: host
+        restart: unless-stopped
         volumes:
             - /media/timemachine:/opt/timemachine
             - timemachine-var-lib-samba:/var/lib/samba
