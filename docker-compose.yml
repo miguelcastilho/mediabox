@@ -263,9 +263,6 @@ services:
         restart: unless-stopped
         volumes:
             - /media/timemachine:/opt/timemachine
-            - timemachine-var-lib-samba:/var/lib/samba
-            - timemachine-var-cache-samba:/var/cache/samba
-            - timemachine-run-samba:/run/samba
 
 networks:
   mediabox_network:
