@@ -132,7 +132,7 @@ services:
         restart: unless-stopped
         pid: host
         ports:
-            - '61208:61208'
+            - 61208:61208
         environment:
             - PUID=1000
             - PGID=1000
@@ -195,7 +195,7 @@ services:
         image: ghcr.io/flaresolverr/flaresolverr:latest
         container_name: flaresolverr
         ports:
-            - "8191:8191"
+            - 8191:8191
         volumes:
             - /etc/localtime:/etc/localtime:ro
         restart: unless-stopped
@@ -215,9 +215,9 @@ services:
         container_name: nginx-proxy-manager
         image: jlesage/nginx-proxy-manager:latest
         ports:
-            - "8181:8181"
-            - "8080:8080"
-            - "4443:4443"
+            - 8181:8181
+            - 8080:8080
+            - 4443:4443
         volumes:
             - "/docker/appdata/nginx-proxy-manager:/config:rw"
         restart: unless-stopped
@@ -263,6 +263,24 @@ services:
         restart: unless-stopped
         volumes:
             - /media/timemachine:/opt/timemachine
+            
+    unifi-controller:
+        image: lscr.io/linuxserver/unifi-controller:latest
+        container_name: unifi-controller
+        restart: unless-stopped
+        networks:
+           - mediabox_network
+        volumes:
+            - /media/unifi-controller:/config
+        ports:
+            - 8083:8080
+            - 8443:8443
+            - 3478:3478/udp
+            - 10001:10001/udp
+        environment:
+            - TZ=${TIMEZONE}
+            - PUID=1000
+            - PGID=1000
 
 networks:
   mediabox_network:
