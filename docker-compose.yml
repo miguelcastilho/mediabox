@@ -202,15 +202,6 @@ services:
         networks:
             - mediabox_network
 
-    watchtower:
-        image: containrrr/watchtower
-        container_name: watchtower
-        volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
-        restart: unless-stopped
-        networks:
-            - mediabox_network
-
     nginx-proxy-manager:
         container_name: nginx-proxy-manager
         image: jlesage/nginx-proxy-manager:latest
