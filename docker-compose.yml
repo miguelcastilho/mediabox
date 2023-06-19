@@ -254,6 +254,8 @@ services:
         restart: unless-stopped
         volumes:
             - /media/timemachine:/opt/timemachine
+        environment:
+            - SET_PERMISSIONS=true
             
     unifi-controller:
         image: lscr.io/linuxserver/unifi-controller:latest
