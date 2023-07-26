@@ -268,6 +268,8 @@ services:
            - TZ=${TIMEZONE}
            - PUID=1000
            - PGID=1000
+           - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+        command: tunnel run
 
 networks:
   mediabox_network:
