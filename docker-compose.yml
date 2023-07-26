@@ -126,23 +126,6 @@ services:
         privileged: true
         network_mode: host
 
-    glances:
-        image: nicolargo/glances:latest-alpine
-        container_name: glances
-        restart: unless-stopped
-        pid: host
-        ports:
-            - 61208:61208
-        environment:
-            - PUID=1000
-            - PGID=1000
-            - GLANCES_OPT=-w
-        volumes:
-            - /var/run/docker.sock:/var/run/docker.sock:ro
-            - /etc/localtime:/etc/localtime:ro
-        networks:
-            - mediabox_network
-
     duckdns:
         image: lscr.io/linuxserver/duckdns:latest
         container_name: duckdns
