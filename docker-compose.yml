@@ -283,8 +283,7 @@ services:
            - /dev/net/tun:/dev/net/tun
         cap_add:
            - net_admin
-           - sys_module
-        command: tailscaled
+           - net_raw
 
 networks:
   mediabox_network:
