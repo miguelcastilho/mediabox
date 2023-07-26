@@ -258,6 +258,17 @@ services:
             - PUID=1000
             - PGID=1000
 
+    cloudflared:
+        image: cloudflare/cloudflared:latest
+        container_name: cloudflared
+        restart: unless-stopped
+        networks:
+           - mediabox_network
+        environment:
+           - TZ=${TIMEZONE}
+           - PUID=1000
+           - PGID=1000
+
 networks:
   mediabox_network:
     name: mediabox
