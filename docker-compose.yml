@@ -126,21 +126,6 @@ services:
         privileged: true
         network_mode: host
 
-    duckdns:
-        image: lscr.io/linuxserver/duckdns:latest
-        container_name: duckdns
-        environment:
-            - PUID=1000
-            - PGID=1000
-            - SUBDOMAINS=capzulu
-            - TOKEN=${DUCKDNS_TOKEN}
-            - LOG_FILE=false
-        volumes:
-            - /etc/localtime:/etc/localtime:ro
-        restart: unless-stopped
-        networks:
-            - mediabox_network
-
     deluge:
         image: lscr.io/linuxserver/deluge:latest
         container_name: deluge
@@ -181,19 +166,6 @@ services:
             - 8191:8191
         volumes:
             - /etc/localtime:/etc/localtime:ro
-        restart: unless-stopped
-        networks:
-            - mediabox_network
-
-    nginx-proxy-manager:
-        container_name: nginx-proxy-manager
-        image: jlesage/nginx-proxy-manager:latest
-        ports:
-            - 8181:8181
-            - 8080:8080
-            - 4443:4443
-        volumes:
-            - "/docker/appdata/nginx-proxy-manager:/config:rw"
         restart: unless-stopped
         networks:
             - mediabox_network
