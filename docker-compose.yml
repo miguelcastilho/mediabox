@@ -221,7 +221,7 @@ services:
         volumes:
             - /media/unifi-controller:/config
         ports:
-            - 8083:8080
+            - 8080:8080
             - 8443:8443
             - 3478:3478/udp
             - 10001:10001/udp
