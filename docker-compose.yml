@@ -267,20 +267,7 @@ services:
             - /var/run/docker.sock:/var/run/docker.sock
         restart: unless-stopped
         networks:
-           - mediabox_network
-
-    bind9:
-        image: ubuntu/bind9:latest
-        container_name: bind9
-        environment:
-            - BIND9_USER=root
-            - TZ=${TIMEZONE}
-        volumes:
-            - ${MEDIABOX_PATH}/bind9/named.conf:/etc/bind/named.conf
-            - ${MEDIABOX_PATH}/bind9/cache:/var/cache/bind
-            - ${MEDIABOX_PATH}/bind9/records:/var/lib/bind
-        network_mode: host
-            
+           - mediabox_network            
     
 
 networks:
