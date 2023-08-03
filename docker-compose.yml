@@ -273,7 +273,7 @@ services:
         image: ubuntu/bind9:latest
         container_name: bind9
         environment:
-            - BIND9_USER=bind
+            - BIND9_USER=root
             - TZ=${TIMEZONE}
         volumes:
             - ${MEDIABOX_PATH}/bind9/named.conf:/etc/bind/named.conf
