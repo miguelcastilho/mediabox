@@ -274,9 +274,9 @@ services:
         networks:
             - mediabox_network
         labels:
-            - 'traefik.enable': 'true'
-            - 'traefik.http.routers.uptimekuma.entrypoints': 'web'
-            - 'traefik.http.routers.uptimekuma.rule': 'http://192.168.2.158:3001'
+            - 'traefik.enable=true'
+            - 'traefik.http.routers.uptimekuma.entrypoints=web'
+            - 'traefik.http.routers.uptimekuma.rule=http://192.168.2.158:3001'
 
     traefik:
         image: traefik:v2.5
