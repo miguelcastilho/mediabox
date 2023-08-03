@@ -264,6 +264,7 @@ services:
             - 3001:3001
         volumes:
             - ${MEDIABOX_PATH}/uptimekuma:/var/lib
+            - /var/run/docker.sock:/var/run/docker.sock
         restart: unless-stopped
         networks:
            - mediabox_network
