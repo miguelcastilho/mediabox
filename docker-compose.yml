@@ -272,7 +272,9 @@ services:
             - /var/run/docker.sock:/var/run/docker.sock:ro
         restart: unless-stopped
         networks:
-           - mediabox_network       
+           - mediabox_network
+        labels:
+            traefik.enable: true
 
     traefik:
         image: traefik:v2.5
