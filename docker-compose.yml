@@ -272,8 +272,6 @@ services:
     bind9:
         image: ubuntu/bind9:latest
         container_name: bind9
-        ports:
-            - 53:53
         environment:
             - BIND9_USER=bind
             - TZ=${TIMEZONE}
@@ -281,8 +279,7 @@ services:
             - ${MEDIABOX_PATH}/bind9/named.conf:/etc/bind/named.conf
             - ${MEDIABOX_PATH}/bind9/cache:/var/cache/bind
             - ${MEDIABOX_PATH}/bind9/records:/var/lib/bind
-        networks:
-           - mediabox_network
+        network_mode: host
             
     
 
