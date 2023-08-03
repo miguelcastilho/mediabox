@@ -275,7 +275,7 @@ services:
         ports:
             - 53:53
         environment:
-            - BIND9_USER=root
+            - BIND9_USER=bind
             - TZ=${TIMEZONE}
         volumes:
             - ${MEDIABOX_PATH}/bind9/named.conf:/etc/bind/named.conf
