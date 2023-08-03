@@ -257,6 +257,19 @@ services:
            - net_admin
            - net_raw
 
+    uptimekuma:
+        image: louislam/uptime-kuma:latest
+        container_name: uptimekuma
+        ports:
+            - 3001:3001
+        volumes:
+            - ${MEDIABOX_PATH}/uptimekuma:/var/lib
+        restart: unless-stopped
+        networks:
+           - mediabox_network
+            
+    
+
 networks:
   mediabox_network:
     name: mediabox
