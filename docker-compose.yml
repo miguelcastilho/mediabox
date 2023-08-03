@@ -1,4 +1,9 @@
 version: '3'
+
+volumes:
+    traefik-ssl-certs:
+        driver: local
+
 services:
     duplicati:
         image: lscr.io/linuxserver/duplicati:latest
@@ -278,6 +283,7 @@ services:
             - 8083:8080
         volumes:
             - ${MEDIABOX_PATH}/traefik:/etc/traefik
+            - traefik-ssl-certs:/ssl-certs
             - /var/run/docker.sock:/var/run/docker.sock:ro
     
 
