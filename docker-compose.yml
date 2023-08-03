@@ -12,7 +12,7 @@ services:
             - ${MEDIABOX_PATH}:/source
             - /etc/localtime:/etc/localtime:ro
         ports:
-            - 8200:8200/tcp
+            - 8200:8200
         restart: unless-stopped
         networks:
             - mediabox_network
@@ -29,7 +29,7 @@ services:
             - /media/HDD/incomplete-downloads:/incomplete-downloads
             - /etc/localtime:/etc/localtime:ro
         ports:
-            - 8081:8080/tcp
+            - 8081:8080
         restart: unless-stopped
         networks:
             - mediabox_network
@@ -46,7 +46,7 @@ services:
             - /media/HDD/downloads:/downloads
             - /etc/localtime:/etc/localtime:ro
         ports:
-            - 8989:8989/tcp
+            - 8989:8989
         restart: unless-stopped
         networks:
             - mediabox_network
@@ -63,7 +63,7 @@ services:
             - /media/HDD/downloads:/downloads
             - /etc/localtime:/etc/localtime:ro
         ports:
-            - 7878:7878/tcp
+            - 7878:7878
         restart: unless-stopped
         networks:
             - mediabox_network
@@ -75,7 +75,7 @@ services:
             - PUID=1000
             - PGID=1000
         ports:
-            - 6767:6767/tcp
+            - 6767:6767
         volumes:
             - ${MEDIABOX_PATH}/bazarr:/config
             - /media/HDD/Media/movies:/movies
@@ -95,7 +95,7 @@ services:
             - ${MEDIABOX_PATH}/overseerr:/config
             - /etc/localtime:/etc/localtime:ro
         ports:
-            - 5055:5055/tcp
+            - 5055:5055
         restart: unless-stopped
         networks:
             - mediabox_network
@@ -137,8 +137,8 @@ services:
             - /media/HDD/downloads:/downloads
             - /etc/localtime:/etc/localtime:ro
         ports:
-            - 8112:8112/tcp
-            - 6881:6881/tcp
+            - 8112:8112
+            - 6881:6881
             - 6881:6881/udp
         restart: unless-stopped
         networks:
@@ -154,7 +154,7 @@ services:
             - ${MEDIABOX_PATH}/prowlarr:/config
             - /etc/localtime:/etc/localtime:ro
         ports:
-            - 9696:9696/tcp
+            - 9696:9696
         restart: unless-stopped
         networks:
             - mediabox_network
@@ -163,7 +163,7 @@ services:
         image: ghcr.io/flaresolverr/flaresolverr:latest
         container_name: flaresolverr
         ports:
-            - 8191:8191/tcp
+            - 8191:8191
         volumes:
             - /etc/localtime:/etc/localtime:ro
         restart: unless-stopped
@@ -177,7 +177,7 @@ services:
         volumes:
             - ${MEDIABOX_PATH}/mqtt:/mosquitto
         ports:
-            - 1883:1883/tcp
+            - 1883:1883
             #- 9001:9001
         command: "mosquitto -c /mosquitto-no-auth.conf"
         environment:
@@ -196,7 +196,7 @@ services:
             - ${MEDIABOX_PATH}/zigbee2mqtt:/app/data
             - /run/udev:/run/udev:ro
         ports:
-            - 8082:8080/tcp
+            - 8082:8080
         environment:
             - TZ=${TIMEZONE}
         networks:
@@ -221,8 +221,8 @@ services:
         volumes:
             - /media/unifi-controller:/config
         ports:
-            - 8080:8080/tcp
-            - 8443:8443/tcp
+            - 8080:8080
+            - 8443:8443
             - 3478:3478/udp
             - 10001:10001/udp
         environment:
@@ -261,28 +261,13 @@ services:
         image: louislam/uptime-kuma:latest
         container_name: uptimekuma
         ports:
-            - 3001:3001/tcp
+            - 3001:3001
         volumes:
             - ${MEDIABOX_PATH}/uptimekuma:/var/lib
             - /var/run/docker.sock:/var/run/docker.sock
         restart: unless-stopped
         networks:
            - mediabox_network
-
-    bind9:
-        image: ubuntu/bind9:latest
-        container_name: bind9
-        environment:
-            - TZ=${TIMEZONE}
-            - BIND9_USER=root
-        ports:
-            - 53:53/tcp
-            - 53:53/udp
-        volumes:
-            - ${MEDIABOX_PATH}/bind9/config:/etc/bind
-            - ${MEDIABOX_PATH}/bind9/cache:/var/cache/bind
-            - ${MEDIABOX_PATH}/bind9/records:/var/lib/bind
-        restart: unless-stopped
             
     
 
