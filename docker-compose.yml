@@ -273,7 +273,7 @@ services:
         image: ubuntu/bind9:latest
         container_name: bind9
         ports:
-            - 53:53
+            - 30053:53
         environment:
             - BIND9_USER=bind
             - TZ=${TIMEZONE}
