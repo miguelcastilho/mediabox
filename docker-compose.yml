@@ -285,6 +285,8 @@ services:
             - ${MEDIABOX_PATH}/traefik:/etc/traefik
             - traefik-ssl-certs:/ssl-certs
             - /var/run/docker.sock:/var/run/docker.sock:ro
+        networks:
+           - mediabox_network
     
 
 networks:
