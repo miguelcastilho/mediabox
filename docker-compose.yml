@@ -6,7 +6,7 @@ volumes:
 
 services:
     duplicati:
-        image: lscr.io/linuxserver/duplicati:latest
+        image: lscr.io/linuxserver/duplicati:2.0.7
         container_name: duplicati
         environment:
             - PUID=1000
@@ -23,7 +23,7 @@ services:
             - mediabox_network
 
     sabnzbd:
-        image: ghcr.io/linuxserver/sabnzbd:latest
+        image: ghcr.io/linuxserver/sabnzbd:4.0.3
         container_name: sabnzbd
         environment:
             - PUID=1000
@@ -74,7 +74,7 @@ services:
             - mediabox_network
 
     bazarr:
-        image: ghcr.io/linuxserver/bazarr:latest
+        image: ghcr.io/linuxserver/bazarr:1.2.4
         container_name: bazarr
         environment:
             - PUID=1000
@@ -106,7 +106,7 @@ services:
             - mediabox_network
 
     plex:
-        image: ghcr.io/linuxserver/plex:latest
+        image: ghcr.io/linuxserver/plex:1.32.5
         container_name: plex
         network_mode: host
         environment:
@@ -123,7 +123,7 @@ services:
 
     homeassistant:
         container_name: homeassistant
-        image: "ghcr.io/home-assistant/home-assistant:stable"
+        image: "ghcr.io/home-assistant/home-assistant:2023.8"
         volumes:
             - ${MEDIABOX_PATH}/homeassistant:/config
             - /etc/localtime:/etc/localtime:ro
@@ -132,7 +132,7 @@ services:
         network_mode: host
 
     deluge:
-        image: lscr.io/linuxserver/deluge:latest
+        image: lscr.io/linuxserver/deluge:2.1.1
         container_name: deluge
         environment:
             - PUID=1000
@@ -165,7 +165,7 @@ services:
             - mediabox_network
 
     flaresolverr:
-        image: ghcr.io/flaresolverr/flaresolverr:latest
+        image: ghcr.io/flaresolverr/flaresolverr:v3.3.2
         container_name: flaresolverr
         ports:
             - 8191:8191
@@ -176,7 +176,7 @@ services:
             - mediabox_network
             
     mqtt:
-        image: eclipse-mosquitto:latest
+        image: eclipse-mosquitto:2.0.15
         container_name: mqtt
         restart: unless-stopped
         volumes:
@@ -191,12 +191,12 @@ services:
             - mediabox_network
 
     zigbee2mqtt:
+        image: koenkk/zigbee2mqtt:1.32.2
         container_name: zigbee2mqtt
         depends_on:
             - mqtt
         privileged: true
         restart: unless-stopped
-        image: koenkk/zigbee2mqtt:latest
         volumes:
             - ${MEDIABOX_PATH}/zigbee2mqtt:/app/data
             - /run/udev:/run/udev:ro
@@ -208,7 +208,7 @@ services:
            - mediabox_network
 
     timemachine:
-        image: mbentley/timemachine:latest
+        image: mbentley/timemachine:smb
         container_name: timemachine
         network_mode: host
         restart: unless-stopped
@@ -218,7 +218,7 @@ services:
             - SET_PERMISSIONS=true
             
     unifi-controller:
-        image: lscr.io/linuxserver/unifi-controller:latest
+        image: lscr.io/linuxserver/unifi-controller:7.4.162
         container_name: unifi-controller
         restart: unless-stopped
         networks:
@@ -249,7 +249,7 @@ services:
         command: tunnel run
 
     tailscale:
-        image: tailscale/tailscale:latest
+        image: tailscale/tailscale:v1.44.0
         container_name: tailscale
         hostname: tailscale
         restart: unless-stopped
@@ -263,7 +263,7 @@ services:
            - net_raw
 
     uptimekuma:
-        image: louislam/uptime-kuma:latest
+        image: louislam/uptime-kuma:1.22.1
         container_name: uptimekuma
         ports:
             - 3001:3001
