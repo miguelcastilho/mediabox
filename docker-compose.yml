@@ -276,9 +276,9 @@ services:
     networks:
       - mediabox_network
     labels:
-      - 'traefik.enable=true'
-      - 'traefik.http.routers.uptimekuma.entrypoints=web'
-      - "traefik.http.routers.uptimekuma.rule=Host('uptimekuma.localhost')"
+      #- 'traefik.enable=true'
+      #- 'traefik.http.routers.uptimekuma.entrypoints=web'
+      - traefik.http.routers.uptimekuma.rule=Host(`uptimekuma.localhost`)
 
   traefik:
     image: 'traefik:v2.10.4'
