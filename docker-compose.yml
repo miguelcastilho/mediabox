@@ -40,7 +40,7 @@ services:
             - mediabox_network
 
     sonarr:
-        image: ghcr.io/linuxserver/sonarr:latest
+        image: ghcr.io/linuxserver/sonarr:3.0.10
         container_name: sonarr
         environment:
             - PUID=1000
@@ -57,7 +57,7 @@ services:
             - mediabox_network
 
     radarr:
-        image: ghcr.io/linuxserver/radarr:latest
+        image: ghcr.io/linuxserver/radarr:4.6.4
         container_name: radarr
         environment:
             - PUID=1000
@@ -91,7 +91,7 @@ services:
             - mediabox_network
 
     overseerr:
-        image: ghcr.io/linuxserver/overseerr:latest
+        image: ghcr.io/linuxserver/overseerr:1.33.2
         container_name: overseerr
         environment:
             - PUID=1000
@@ -123,7 +123,7 @@ services:
 
     homeassistant:
         container_name: homeassistant
-        image: "ghcr.io/home-assistant/home-assistant:2023.8"
+        image: ghcr.io/home-assistant/home-assistant:2023.8
         volumes:
             - ${MEDIABOX_PATH}/homeassistant:/config
             - /etc/localtime:/etc/localtime:ro
@@ -150,7 +150,7 @@ services:
             - mediabox_network
 
     prowlarr:
-        image: lscr.io/linuxserver/prowlarr:latest
+        image: lscr.io/linuxserver/prowlarr:1.7.4
         container_name: prowlarr
         environment:
             - PUID=1000
@@ -236,7 +236,7 @@ services:
             - PGID=1000
 
     cloudflared:
-        image: cloudflare/cloudflared:latest
+        image: cloudflare/cloudflared:2023.7.3
         container_name: cloudflared
         restart: unless-stopped
         networks:
