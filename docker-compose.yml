@@ -275,10 +275,20 @@ services:
     restart: unless-stopped
     networks:
       - mediabox_network
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.uptimekuma.entrypoints=websecure
-      - 'traefik.http.routers.uptimekuma.rule=Host(`portainer.capzulu.xyz`)'
+
+  homer:
+    image: b4bz/homer:latest
+    container_name: homer
+    volumes:
+      - '${MEDIABOX_PATH}/homer:/www/assets'
+    ports:
+      - 80:8080
+    user: 1000:1000 # default
+    environment:
+      - INIT_ASSETS=1 # default
+    restart: unless-stopped
+    networks:
+      - mediabox_network
 
 networks:
   mediabox_network:
