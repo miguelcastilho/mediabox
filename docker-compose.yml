@@ -280,28 +280,6 @@ services:
       - traefik.http.routers.uptimekuma.entrypoints=websecure
       - 'traefik.http.routers.uptimekuma.rule=Host(`portainer.capzulu.xyz`)'
 
-  traefik:
-    image: 'traefik:v2.10.4'
-    container_name: traefik
-    command:
-      - '--api=true'
-      - '--api.dashboard=true'
-      - '--api.insecure=true'
-      - '--entrypoints.web.address=:80'
-      - '--entrypoints.websecure.address=:443'
-      - '--providers.docker=true'
-      - '--providers.docker.exposedbydefault=false'
-    ports:
-      - '80:80'
-      - '443:443'
-      - '8083:8080'
-    volumes:
-      - '${MEDIABOX_PATH}/traefik:/etc/traefik'
-      - 'traefik-ssl-certs:/ssl-certs'
-      - '/var/run/docker.sock:/var/run/docker.sock:ro'
-    networks:
-      - mediabox_network
-
 networks:
   mediabox_network:
     name: mediabox
