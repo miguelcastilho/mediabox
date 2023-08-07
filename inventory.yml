@@ -1,0 +1,20 @@
+all:
+  hosts:
+    <ip_address>:
+      ansible_ssh_user: <ssh username>
+      ansible_become_pass: <ssh password>
+  vars:
+    data_path: <path to data>
+    timezone: Europe/Amsterdam
+    cloudflare_tunnel_token: <cloudflare tunnel token>
+    portainer_user: <portainer username>
+    portainer_password: <portainer password>
+    portainer_port: 9443
+    portainer_license: <portainer license>
+    portainer_env_name: local
+    portainer_gitcredential_name: github
+    portainer_gitcredential_username: <github username>
+    portainer_gitcredential_password: <github personal access token>
+    portainer_stack_name: mediabox
+    portainer_stack_repo: <github repo>
+    uptimekuma_port: 3001

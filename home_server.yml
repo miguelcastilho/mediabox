@@ -1,0 +1,191 @@
+---
+- name: Setup home server
+  hosts: all
+
+  tasks:
+    - name: Update apt cache
+      become: true
+      apt:
+        name: "*"
+        state: latest
+        update_cache: yes
+
+    - name: Install required packages for docker
+      become: true
+      apt:
+        name: "{{ item }}"
+        state: latest
+      loop:
+        - ca-certificates
+        - curl
+        - gnupg
+
+    - name: Docker - Add GPG key
+      become: true
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Docker - Add APT repository
+      become: true
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+        state: present
+
+    - name: Docker - Install
+      become: true
+      apt:
+        name: docker-ce
+        state: latest
+        update_cache: yes
+
+    - name: Docker - Start and enable service
+      become: true
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Docker - Install compose
+      become: true
+      apt:
+        name: docker-compose-plugin
+        state: latest
+        update_cache: yes
+
+    - name: Portainer - Create container
+      community.docker.docker_container:
+        name: portainer
+        image: portainer/portainer-ee:latest
+        ports:
+          - "{{ portainer_port }}:9443"
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+          - "{{ data_path }}/portainer:/data"
+        restart_policy: always
+      register: portainer_docker
+
+    - name: "Portainer - Set API endpoint"
+      set_fact:
+        portainer_api: https://{{ ansible_default_ipv4.address }}:{{ portainer_port }}/api
+
+    - name: Portainer - Wait for web interface to get available
+      uri:
+        url: "https://{{ ansible_default_ipv4.address }}:{{ portainer_port }}"
+        method: GET
+        validate_certs: no
+      register: wait_portainer_result
+      until: wait_portainer_result is succeeded
+      retries: 10
+      delay: 3
+      changed_when: false
+
+    - name: "Portainer - Configure admin user password"
+      uri:
+        url: "{{ portainer_api }}/users/admin/init"
+        method: POST
+        return_content: true
+        body_format: json
+        body:
+          Username: "{{ portainer_user }}"
+          Password: "{{ portainer_password }}"
+        status_code: 200, 409
+        validate_certs: no
+
+    - name: "Portainer - Authenticate against API"
+      uri:
+        url: "{{ portainer_api }}/auth"
+        method: POST
+        body_format: json
+        body:
+          Username: "{{ portainer_user }}"
+          Password: "{{ portainer_password }}"
+        return_content: true
+        validate_certs: no
+      register: portainer_token_response
+
+    - name: "Portainer  Set api token"
+      set_fact:
+        portainer_api_token: "Bearer {{ portainer_token_response.json.jwt }}"
+
+    - name: "Portainer - Add license"
+      uri:
+        url: "{{ portainer_api }}/licenses/add"
+        headers:
+          Authorization: "{{ portainer_api_token }}"
+        method: POST
+        body_format: json
+        body:
+          key: "{{ portainer_license }}"
+        return_content: true
+        validate_certs: no
+
+    - name: "Portainer - Add local docker environment"
+      uri:
+        url: "{{ portainer_api }}/endpoints"
+        headers:
+          Authorization: "{{ portainer_api_token }}"
+        method: POST
+        body_format: form-multipart
+        body:
+          Name: "{{ portainer_env_name }}"
+          EndpointCreationType: "1"
+        return_content: true
+        validate_certs: no
+      register: portainer_env_response
+
+    - name: "Portainer - Set environment ID"
+      set_fact:
+        portainer_env_id: "{{ portainer_env_response.json.Id }}"
+
+    - name: "Portainer - Create git credential"
+      uri:
+        url: "{{ portainer_api }}/users/1/gitcredentials"
+        headers:
+          Authorization: "{{ portainer_api_token }}"
+        method: POST
+        body_format: json
+        body:
+          name: "{{ portainer_gitcredential_name }}"
+          username: "{{ portainer_gitcredential_username }}"
+          password: "{{ portainer_gitcredential_password }}"
+        return_content: true
+        validate_certs: no
+        status_code: 201
+
+    - name: "Portainer - Create a stack"
+      uri:
+        url: "{{ portainer_api }}/stacks?type=2&method=repository&endpointId={{ portainer_env_id }}"
+        headers:
+          Authorization: "{{ portainer_api_token }}"
+        method: POST
+        body_format: json
+        body:
+          composeFile: docker-compose.yml
+          env:
+            - name: MEDIABOX_PATH
+              value: "{{ data_path }}"
+            - name: TIMEZONE
+              value: "{{ timezone }}"
+            - name: CLOUDFLARE_TUNNEL_TOKEN
+              value: "{{ cloudflare_tunnel_token }}"
+          name: "{{ portainer_stack_name }}"
+          repositoryReferenceName: refs/heads/main
+          repositoryURL: "{{ portainer_stack_repo }}"
+          repositoryAuthentication: true
+          repositoryGitCredentialID: 1
+          tlsskipVerify: false
+        return_content: true
+        validate_certs: no
+      register: portainer_stack_response
+      failed_when:
+        - portainer_stack_response.status == -1
+        - '"The read operation timed out" not in portainer_stack_response.msg'
+
+    - name: Wait until stack gets deployed
+      uri:
+        url: "http://{{ ansible_default_ipv4.address }}:{{ uptimekuma_port }}"
+      register: uptimekuma_webinterface
+      retries: 60
+      delay: 10
+      until: uptimekuma_webinterface is succeeded
