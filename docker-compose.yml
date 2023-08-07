@@ -271,6 +271,23 @@ services:
     restart: unless-stopped
     networks:
       - mediabox_network
+    depends_on:
+      - duplicati
+      - sabnzbd
+      - sonarr
+      - radarr
+      - bazarr
+      - overseerr
+      - plex
+      - homeassistant
+      - deluge
+      - prowlarr
+      - flaresolverr
+      - timemachine
+      - unifi-controller
+      - cloudflared
+      - tailscale
+      - homer
 
   homer:
     image: b4bz/homer:latest
