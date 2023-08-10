@@ -18,3 +18,4 @@ all:
     portainer_stack_name: mediabox
     portainer_stack_repo: <github repo>
     uptimekuma_port: 3001
+    tailscale_auth_key: <tailscale auth key>
