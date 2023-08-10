@@ -256,6 +256,8 @@ services:
     volumes:
       - '${MEDIABOX_PATH}/tailscale:/var/lib'
       - '/dev/net/tun:/dev/net/tun'
+    environment:
+      - 'TS_AUTHKEY=${TAILSCALE_AUTH_KEY}'
     cap_add:
       - net_admin
       - net_raw

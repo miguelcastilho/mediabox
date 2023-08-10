@@ -169,6 +169,8 @@
               value: "{{ timezone }}"
             - name: CLOUDFLARE_TUNNEL_TOKEN
               value: "{{ cloudflare_tunnel_token }}"
+            - name: TAILSCALE_AUTH_KEY
+              value: "{{ tailscale_auth_key }}"
           name: "{{ portainer_stack_name }}"
           repositoryReferenceName: refs/heads/main
           repositoryURL: "{{ portainer_stack_repo }}"
