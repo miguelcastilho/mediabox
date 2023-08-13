@@ -171,6 +171,8 @@
               value: "{{ cloudflare_tunnel_token }}"
             - name: TAILSCALE_AUTH_KEY
               value: "{{ tailscale_auth_key }}"
+            - name: TAILSCALE_ADVERTISE_ROUTES
+              value: "{{ tailscale_advertise_routes }}"
           name: "{{ portainer_stack_name }}"
           repositoryReferenceName: refs/heads/main
           repositoryURL: "{{ portainer_stack_repo }}"
