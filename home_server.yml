@@ -173,6 +173,10 @@
               value: "{{ tailscale_auth_key }}"
             - name: TAILSCALE_ADVERTISE_ROUTES
               value: "{{ tailscale_advertise_routes }}"
+            - name: PIHOLE_PASSWORD
+              value: "{{ pihole_password }}"
+            - name: DOCKER_HOST_IP
+              value: "{{ ansible_default_ipv4.address }}"
           name: "{{ portainer_stack_name }}"
           repositoryReferenceName: refs/heads/main
           repositoryURL: "{{ portainer_stack_repo }}"

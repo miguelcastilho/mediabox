@@ -291,6 +291,7 @@ services:
       - cloudflared
       - tailscale
       - homer
+      - pihole
 
   homer:
     image: b4bz/homer:latest
@@ -302,6 +303,23 @@ services:
     user: 1000:1000 # default
     environment:
       - INIT_ASSETS=1 # default
+    restart: unless-stopped
+    networks:
+      - mediabox_network
+
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:2023.05.2
+    ports:
+      - "${DOCKER_HOST_IP}:53:53/tcp"
+      - "${DOCKER_HOST_IP}:53:53/udp"
+      - "82:80/tcp"
+    environment:
+      - 'TZ=${TIMEZONE}'
+      - 'WEBPASSWORD=${PIHOLE_PASSWORD}'
+    volumes:
+      - '${MEDIABOX_PATH}/pihole/etc-pihole:/etc/pihole'
+      - '${MEDIABOX_PATH}pihole/etc-dnsmasq.d:/etc/dnsmasq.d'
     restart: unless-stopped
     networks:
       - mediabox_network
