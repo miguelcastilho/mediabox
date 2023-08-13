@@ -306,6 +306,23 @@ services:
     networks:
       - mediabox_network
 
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:2023.05.2
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "82:80/tcp"
+    environment:
+      - 'TZ=${TIMEZONE}'
+      - 'WEBPASSWORD=${PIHOLE_PASSWORD}'
+    volumes:
+      - '${MEDIABOX_PATH}/pihole/etc-pihole:/etc/pihole'
+      - '${MEDIABOX_PATH}pihole/etc-dnsmasq.d:/etc/dnsmasq.d'
+    restart: unless-stopped
+    networks:
+      - mediabox_network
+
 networks:
   mediabox_network:
     name: mediabox
