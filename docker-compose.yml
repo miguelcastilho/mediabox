@@ -206,7 +206,7 @@ services:
       - mqtt
 
   timemachine:
-    image: 'mbentley/timemachine:latest'
+    image: 'mbentley/timemachine:smb'
     container_name: timemachine
     network_mode: host
     restart: unless-stopped
