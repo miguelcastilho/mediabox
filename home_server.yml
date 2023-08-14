@@ -173,6 +173,8 @@
               value: "{{ tailscale_auth_key }}"
             - name: TAILSCALE_ADVERTISE_ROUTES
               value: "{{ tailscale_advertise_routes }}"
+            - name: TIMEMACHINE_PASSWORD
+              value: "{{ timemachine_password  }}"
           name: "{{ portainer_stack_name }}"
           repositoryReferenceName: refs/heads/main
           repositoryURL: "{{ portainer_stack_repo }}"

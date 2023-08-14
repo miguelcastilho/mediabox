@@ -212,8 +212,11 @@ services:
     restart: unless-stopped
     volumes:
       - '/media/timemachine:/opt/timemachine'
+      - '${MEDIABOX_PATH}/timemachine/var/lib/samba:/var/lib/samba'
+      - '${MEDIABOX_PATH}/timemachine/var/cache/samba:/var/cache/samba'
+      - '${MEDIABOX_PATH}/timemachine/run/samba:/run/samba'
     environment:
-      - SET_PERMISSIONS=true
+      - 'PASSWORD=${TIMEMACHINE_PASSWORD}'
 
   unifi-controller:
     image: 'lscr.io/linuxserver/unifi-controller:7.4.162'
