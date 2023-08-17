@@ -175,7 +175,7 @@ services:
       - mediabox_network
 
   mqtt:
-    image: 'eclipse-mosquitto:2.0.15'
+    image: 'eclipse-mosquitto:2.0.16'
     container_name: mqtt
     restart: unless-stopped
     volumes:
