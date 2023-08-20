@@ -330,9 +330,11 @@ services:
     volumes:
       - '${MEDIABOX_PATH}/tdarr/server:/app/server'
       - '${MEDIABOX_PATH}/tdarr/configs:/app/configs'
-      - '${MEDIABOX_PATH}/tdarr/logs:/app/logs'
+      - '${MEDIABOX_PATH}/:/app/logs'
       - /media:/media
       - /transcode_cache:/temp
+      - /media/HDD/Media/movies:/home/Tdarr/Media/movies
+      - /media/HDD/Media/tv_shows:/home/Tdarr/Media/tv_shows
 
 networks:
   mediabox_network:
