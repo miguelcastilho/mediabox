@@ -26,8 +26,8 @@ services:
       - PGID=1000
     volumes:
       - '${MEDIABOX_PATH}/sabnzbd:/config'
-      - '/media/HDD/downloads:/downloads'
-      - '/media/HDD/incomplete-downloads:/incomplete-downloads'
+      - '${MEDIABOX_PATH}/downloads/complete:/downloads'
+      - '${MEDIABOX_PATH}/downloads/incomplete:/incomplete-downloads'
       - '/etc/localtime:/etc/localtime:ro'
     ports:
       - '8081:8080'
