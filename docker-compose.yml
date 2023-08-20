@@ -329,8 +329,8 @@ services:
       - nodeName=MyInternalNode
     volumes:
       - '${MEDIABOX_PATH}/tdarr/server:/app/server'
-      - '${MEDIABOX_PATH}/tdarr/configs:/app/configs
-      - '${MEDIABOX_PATH}/tdarr/logs:/app/logs
+      - '${MEDIABOX_PATH}/tdarr/configs:/app/configs'
+      - '${MEDIABOX_PATH}/tdarr/logs:/app/logs'
       - /media:/media
       - /transcode_cache:/temp
 
