@@ -331,7 +331,7 @@ services:
       - '${MEDIABOX_PATH}/tdarr/server:/app/server'
       - '${MEDIABOX_PATH}/tdarr/configs:/app/configs'
       - '${MEDIABOX_PATH}/:/app/logs'
-      - /transcode_cache:/temp
+      - /transcode_cache:/tmp
       - /media/HDD/Media/movies:/movies
       - /media/HDD/Media/tv_shows:/tv_shows
 
