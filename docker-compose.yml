@@ -307,33 +307,21 @@ services:
     networks:
       - mediabox_network
 
-  tdarr:
-    container_name: tdarr
-    image: ghcr.io/haveagitgat/tdarr:2.00.25
-    restart: unless-stopped
-    networks:
-      - mediabox_network
-    ports:
-      - 8265:8265 # webUI port
-      - 8266:8266 # server port
+  fileflows:
+    image: revenz/fileflows:23.08
+    container_name: fileflows
     environment:
       - 'TZ=${TIMEZONE}'
-      - PUID=1000
-      - PGID=1000
-      - UMASK_SET=002
-      - serverIP=0.0.0.0
-      - serverPort=8266
-      - webUIPort=8265
-      - internalNode=true
-      - inContainer=true
-      - nodeName=MyInternalNode
+      - TempPathHost=/tmp
     volumes:
-      - '${MEDIABOX_PATH}/tdarr/server:/app/server'
-      - '${MEDIABOX_PATH}/tdarr/configs:/app/configs'
-      - '${MEDIABOX_PATH}/:/app/logs'
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - '${MEDIABOX_PATH}/fileflows/data:/app/Data'
+      - '${MEDIABOX_PATH}/fileflows/logs:/app/Logs'
       - /tmp:/tmp
-      - /media/HDD/Media/movies:/movies
-      - /media/HDD/Media/tv_shows:/tv_shows
+      - /media/HDD/Media:/media
+    ports:
+      - 5000:5000
+    restart: unless-stopped
 
 networks:
   mediabox_network:
