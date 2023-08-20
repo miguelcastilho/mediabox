@@ -44,7 +44,7 @@ services:
     volumes:
       - '${MEDIABOX_PATH}/sonarr:/config'
       - '/media/HDD/Media/tv_shows:/tv'
-      - '/media/HDD/downloads:/downloads'
+      - '${MEDIABOX_PATH}/downloads:/downloads'
       - '/etc/localtime:/etc/localtime:ro'
     ports:
       - '8989:8989'
@@ -61,7 +61,7 @@ services:
     volumes:
       - '${MEDIABOX_PATH}/radarr:/config'
       - '/media/HDD/Media/movies:/movies'
-      - '/media/HDD/downloads:/downloads'
+      - '${MEDIABOX_PATH}/downloads:/downloads'
       - '/etc/localtime:/etc/localtime:ro'
     ports:
       - '7878:7878'
@@ -292,6 +292,7 @@ services:
       - cloudflared
       - tailscale
       - homer
+      - fileflows
 
   homer:
     image: b4bz/homer:latest
@@ -318,7 +319,7 @@ services:
       - '${MEDIABOX_PATH}/fileflows/data:/app/Data'
       - '${MEDIABOX_PATH}/fileflows/logs:/app/Logs'
       - /tmp:/tmp
-      - /media/HDD/Media:/media
+      - '${MEDIABOX_PATH}/downloads:/media'
     ports:
       - 5000:5000
     restart: unless-stopped
