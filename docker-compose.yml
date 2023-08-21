@@ -44,7 +44,7 @@ services:
     volumes:
       - '${MEDIABOX_PATH}/sonarr:/config'
       - '/media/HDD/Media/tv_shows:/tv'
-      - '${MEDIABOX_PATH}/downloads:/downloads'
+      - '${MEDIABOX_PATH}/downloads/converted:/downloads'
       - '/etc/localtime:/etc/localtime:ro'
     ports:
       - '8989:8989'
@@ -61,7 +61,7 @@ services:
     volumes:
       - '${MEDIABOX_PATH}/radarr:/config'
       - '/media/HDD/Media/movies:/movies'
-      - '${MEDIABOX_PATH}/downloads:/downloads'
+      - '${MEDIABOX_PATH}/downloads/converted:/downloads'
       - '/etc/localtime:/etc/localtime:ro'
     ports:
       - '7878:7878'
@@ -138,7 +138,7 @@ services:
       - PGID=1000
     volumes:
       - '${MEDIABOX_PATH}/deluge:/config'
-      - '/media/HDD/downloads:/downloads'
+      - '/media/HDD/downloads/complete:/downloads'
       - '/etc/localtime:/etc/localtime:ro'
     ports:
       - '8112:8112'
