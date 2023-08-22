@@ -1,0 +1,164 @@
+version: '3.5'
+
+services:
+  duplicati:
+    image: 'lscr.io/linuxserver/duplicati:2.0.7'
+    container_name: duplicati
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - '${DATA_PATH}/duplicati:/config'
+      - '${DATA_PATH}/duplicati/backups:/backups'
+      - '${DATA_PATH}:/source'
+      - '/etc/localtime:/etc/localtime:ro'
+    ports:
+      - '8200:8200'
+    restart: unless-stopped
+    networks:
+      - infra
+
+  homeassistant:
+    container_name: homeassistant
+    image: 'ghcr.io/home-assistant/home-assistant:2023.8'
+    volumes:
+      - '${DATA_PATH}/homeassistant:/config'
+      - '/etc/localtime:/etc/localtime:ro'
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
+    depends_on:
+      - mqtt
+      - zigbee2mqtt
+
+  mqtt:
+    image: 'eclipse-mosquitto:2.0.16'
+    container_name: mqtt
+    restart: unless-stopped
+    volumes:
+      - '${DATA_PATH}/mqtt:/mosquitto'
+    ports:
+      - '1883:1883'
+    command: mosquitto -c /mosquitto-no-auth.conf
+    environment:
+      - 'TZ=${TIMEZONE}'
+    networks:
+      - infra
+
+  zigbee2mqtt:
+    image: 'koenkk/zigbee2mqtt:1.32.2'
+    container_name: zigbee2mqtt
+    privileged: true
+    restart: unless-stopped
+    volumes:
+      - '${DATA_PATH}/zigbee2mqtt:/app/data'
+      - '/run/udev:/run/udev:ro'
+    ports:
+      - '8082:8080'
+    environment:
+      - 'TZ=${TIMEZONE}'
+    networks:
+      - infra
+    depends_on:
+      - mqtt
+
+  #timemachine:
+  #  image: 'mbentley/timemachine:smb'
+  #  container_name: timemachine
+  #  network_mode: host
+  #  restart: unless-stopped
+  #  volumes:
+  #    - '/media/timemachine:/opt/timemachine'
+  #    - '${DATA_PATH}/timemachine/var/lib/samba:/var/lib/samba'
+  #    - '${DATA_PATH}/timemachine/var/cache/samba:/var/cache/samba'
+  #    - '${DATA_PATH}/timemachine/run/samba:/run/samba'
+
+  unifi-controller:
+    image: 'lscr.io/linuxserver/unifi-controller:7.4.162'
+    container_name: unifi-controller
+    restart: unless-stopped
+    networks:
+      - infra
+    volumes:
+      - '/media/unifi-controller:/config'
+    ports:
+      - '8080:8080'
+      - '8443:8443'
+      - '3478:3478/udp'
+      - '10001:10001/udp'
+    environment:
+      - 'TZ=${TIMEZONE}'
+      - PUID=1000
+      - PGID=1000
+
+  cloudflared:
+    image: 'cloudflare/cloudflared:2023.7.3'
+    container_name: cloudflared
+    restart: unless-stopped
+    networks:
+      - infra
+    environment:
+      - 'TZ=${TIMEZONE}'
+      - PUID=1000
+      - PGID=1000
+      - 'TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}'
+    command: tunnel run
+
+  tailscale:
+    image: 'tailscale/tailscale:v1.44.0'
+    container_name: tailscale
+    hostname: tailscale
+    restart: unless-stopped
+    network_mode: host
+    privileged: true
+    volumes:
+      - '${DATA_PATH}/tailscale:/var/lib'
+      - '/dev/net/tun:/dev/net/tun'
+    environment:
+      - 'TS_AUTHKEY=${TAILSCALE_AUTH_KEY}'
+      - 'TS_ROUTES=${TAILSCALE_ADVERTISE_ROUTES}'
+    cap_add:
+      - net_admin
+      - net_raw
+
+  homer:
+    image: b4bz/homer:latest
+    container_name: homer
+    volumes:
+      - '${DATA_PATH}/homer:/www/assets'
+    ports:
+      - 80:8080
+    user: 1000:1000
+    environment:
+      - INIT_ASSETS=1
+    restart: unless-stopped
+    networks:
+      - infra
+
+  uptimekuma:
+    image: 'louislam/uptime-kuma:1.22.1'
+    container_name: uptimekuma
+    ports:
+      - '3001:3001'
+    volumes:
+      - '${DATA_PATH}/uptimekuma:/app/data'
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+    restart: unless-stopped
+    networks:
+      - infra
+    depends_on:
+      - duplicati
+      - homeassistant
+      - unifi-controller
+      - cloudflared
+      - tailscale
+      - homer
+
+networks:
+  infra:
+    name: infra
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.23.0.0/16
+          gateway: 172.23.0.1

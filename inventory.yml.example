@@ -4,9 +4,13 @@ all:
       ansible_ssh_user: <ssh username>
       ansible_become_pass: <ssh password>
   vars:
+    # general vars
     data_path: <path to data>
     timezone: Europe/Amsterdam
     cloudflare_tunnel_token: <cloudflare tunnel token>
+    tailscale_auth_key: <tailscale auth key>
+    tailscale_advertise_routes: <tailscale advertise routes>
+    # portainer vars
     portainer_user: <portainer username>
     portainer_password: <portainer password>
     portainer_port: 9443
@@ -15,8 +19,10 @@ all:
     portainer_gitcredential_name: github
     portainer_gitcredential_username: <github username>
     portainer_gitcredential_password: <github personal access token>
-    portainer_stack_name: mediabox
+    portainer_infra_stack_name: infra
+    portainer_infra_compose_name: infra-docker-compose.yml
+    portainer_media_stack_name: media
+    portainer_media_compose_name: media-docker-compose.yml
     portainer_stack_repo: <github repo>
+    # containers port
     uptimekuma_port: 3001
-    tailscale_auth_key: <tailscale auth key>
-    tailscale_advertise_routes: <tailscale advertise routes>
