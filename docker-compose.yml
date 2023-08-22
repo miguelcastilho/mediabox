@@ -281,36 +281,6 @@ services:
       - net_admin
       - net_raw
 
-  uptimekuma:
-    image: 'louislam/uptime-kuma:1.22.1'
-    container_name: uptimekuma
-    ports:
-      - '3001:3001'
-    volumes:
-      - '${MEDIABOX_PATH}/uptimekuma:/app/data'
-      - '/var/run/docker.sock:/var/run/docker.sock:ro'
-    restart: unless-stopped
-    networks:
-      - mediabox_network
-    depends_on:
-      - duplicati
-      - sabnzbd
-      - sonarr
-      - radarr
-      - bazarr
-      - overseerr
-      - plex
-      - homeassistant
-      - deluge
-      - prowlarr
-      - flaresolverr
-      - timemachine
-      - unifi-controller
-      - cloudflared
-      - tailscale
-      - homer
-      - fileflows
-
   homer:
     image: b4bz/homer:latest
     container_name: homer
@@ -340,6 +310,35 @@ services:
     ports:
       - 5000:5000
     restart: unless-stopped
+
+  uptimekuma:
+    image: 'louislam/uptime-kuma:1.22.1'
+    container_name: uptimekuma
+    ports:
+      - '3001:3001'
+    volumes:
+      - '${MEDIABOX_PATH}/uptimekuma:/app/data'
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+    restart: unless-stopped
+    networks:
+      - mediabox_network
+    depends_on:
+      - duplicati
+      - sabnzbd
+      - sonarr
+      - radarr
+      - bazarr
+      - overseerr
+      - homeassistant
+      - deluge
+      - prowlarr
+      - flaresolverr
+      - unifi-controller
+      - cloudflared
+      - tailscale
+      - homer
+      - fileflows
+      - jellyfin
 
 networks:
   mediabox_network:
