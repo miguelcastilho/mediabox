@@ -213,7 +213,6 @@
         - portainer_stack_response.status == -1
         - '"The read operation timed out" not in portainer_stack_response.msg'
 
-      
     - name: Wait until stack gets deployed
       uri:
         url: "http://{{ ansible_default_ipv4.address }}:{{ uptimekuma_port }}"
