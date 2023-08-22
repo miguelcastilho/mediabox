@@ -86,20 +86,31 @@ services:
     networks:
       - mediabox_network
 
-  overseerr:
-    image: 'ghcr.io/linuxserver/overseerr:1.33.2'
-    container_name: overseerr
+  #overseerr:
+  #  image: 'ghcr.io/linuxserver/overseerr:1.33.2'
+  #  container_name: overseerr
+  #  environment:
+  #    - PUID=1000
+  #    - PGID=1000
+  #  volumes:
+  #    - '${MEDIABOX_PATH}/overseerr:/config'
+  #    - '/etc/localtime:/etc/localtime:ro'
+  #  ports:
+  #    - '5055:5055'
+  #  restart: unless-stopped
+  #  networks:
+  #    - mediabox_network
+
+  jellyseerr:
+    image: fallenbagel/jellyseerr:1.6.0
+    container_name: jellyseerr
     environment:
-      - PUID=1000
-      - PGID=1000
-    volumes:
-      - '${MEDIABOX_PATH}/overseerr:/config'
-      - '/etc/localtime:/etc/localtime:ro'
+      - 'TZ=${TIMEZONE}'
     ports:
-      - '5055:5055'
+      - 5055:5055
+    volumes:
+     - '${MEDIABOX_PATH}/jellyseerr/config:/app/config
     restart: unless-stopped
-    networks:
-      - mediabox_network
 
   #plex:
   #  image: 'ghcr.io/linuxserver/plex:1.32.5'
