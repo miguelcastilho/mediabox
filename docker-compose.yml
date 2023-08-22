@@ -101,20 +101,37 @@ services:
     networks:
       - mediabox_network
 
-  plex:
-    image: 'ghcr.io/linuxserver/plex:1.32.5'
-    container_name: plex
-    network_mode: host
+  #plex:
+  #  image: 'ghcr.io/linuxserver/plex:1.32.5'
+  #  container_name: plex
+  #  network_mode: host
+  #  environment:
+  #    - PUID=1000
+  #    - PGID=1000
+  #    - VERSION=docker
+  #    - PLEX_CLAIM=claim-W5WTiks9n28nFUrXmiFx
+  #  volumes:
+  #    - '${MEDIABOX_PATH}/plex:/config'
+  #    - '/media/HDD/Media/tv_shows:/tv'
+  #    - '/media/HDD/Media/movies:/movies'
+  #    - '/etc/localtime:/etc/localtime:ro'
+  #  restart: unless-stopped
+
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:10.8.10
+    container_name: jellyfin
     environment:
       - PUID=1000
       - PGID=1000
-      - VERSION=docker
-      - PLEX_CLAIM=claim-W5WTiks9n28nFUrXmiFx
+      - 'TZ=${TIMEZONE}'
     volumes:
-      - '${MEDIABOX_PATH}/plex:/config'
-      - '/media/HDD/Media/tv_shows:/tv'
-      - '/media/HDD/Media/movies:/movies'
-      - '/etc/localtime:/etc/localtime:ro'
+      - '${MEDIABOX_PATH}/jellyfin:/config'
+      - '/media/HDD/Media/tv_shows:/data/tvshows'
+      - '/media/HDD/Media/movies:/data/movies'
+    ports:
+      - 8096:8096
+      - 7359:7359/udp
+      - 1900:1900/udp
     restart: unless-stopped
 
   homeassistant:
