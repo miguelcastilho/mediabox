@@ -138,16 +138,17 @@ services:
   adguardhome:
     image: adguard/adguardhome:v0.107.36
     container_name: adguardhome
-    ports:
-      - '53:53/tcp'
-      - '53:53/udp'
-      - '3000:3000/tcp'
+    #ports:
+    #  - '53:53/tcp'
+    #  - '53:53/udp'
+    #  - '3000:3000/tcp'
     volumes:
       - '${DATA_PATH}/adguardhome/work:/opt/adguardhome/work'
       - '${DATA_PATH}/adguardhome/conf:/opt/adguardhome/conf'
     restart: unless-stopped
-    networks:
-      - infra
+    network_mode: host
+    #networks:
+    #  - infra
 
   uptimekuma:
     image: 'louislam/uptime-kuma:1.22.1'
