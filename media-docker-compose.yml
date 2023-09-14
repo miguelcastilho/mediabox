@@ -151,7 +151,7 @@ services:
       - media
 
   prowlarr:
-    image: 'lscr.io/linuxserver/prowlarr:1.7.4'
+    image: 'lscr.io/linuxserver/prowlarr:1.8.6'
     container_name: prowlarr
     environment:
       - PUID=1000
