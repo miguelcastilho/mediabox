@@ -20,7 +20,7 @@ services:
 
   homeassistant:
     container_name: homeassistant
-    image: 'ghcr.io/home-assistant/home-assistant:2023.8'
+    image: 'ghcr.io/home-assistant/home-assistant:2023.9'
     volumes:
       - '${DATA_PATH}/homeassistant:/config'
       - '/etc/localtime:/etc/localtime:ro'
@@ -32,7 +32,7 @@ services:
       - zigbee2mqtt
 
   mqtt:
-    image: 'eclipse-mosquitto:2.0.16'
+    image: 'eclipse-mosquitto:2.0.17'
     container_name: mqtt
     restart: unless-stopped
     volumes:
@@ -46,7 +46,7 @@ services:
       - infra
 
   zigbee2mqtt:
-    image: 'koenkk/zigbee2mqtt:1.32.2'
+    image: 'koenkk/zigbee2mqtt:1.33.0'
     container_name: zigbee2mqtt
     privileged: true
     restart: unless-stopped
@@ -74,7 +74,7 @@ services:
   #    - '${DATA_PATH}/timemachine/run/samba:/run/samba'
 
   unifi-controller:
-    image: 'lscr.io/linuxserver/unifi-controller:7.4.162'
+    image: 'lscr.io/linuxserver/unifi-controller:7.5.174'
     container_name: unifi-controller
     restart: unless-stopped
     networks:
@@ -92,7 +92,7 @@ services:
       - PGID=1000
 
   cloudflared:
-    image: 'cloudflare/cloudflared:2023.7.3'
+    image: 'cloudflare/cloudflared:2023.8.2'
     container_name: cloudflared
     restart: unless-stopped
     networks:
@@ -105,7 +105,7 @@ services:
     command: tunnel run
 
   tailscale:
-    image: 'tailscale/tailscale:v1.44.0'
+    image: 'tailscale/tailscale:v1.48.2'
     container_name: tailscale
     hostname: tailscale
     restart: unless-stopped
@@ -136,22 +136,16 @@ services:
       - infra
 
   adguardhome:
-    image: adguard/adguardhome:v0.107.36
+    image: adguard/adguardhome:v0.107.38
     container_name: adguardhome
-    #ports:
-    #  - '53:53/tcp'
-    #  - '53:53/udp'
-    #  - '3000:3000/tcp'
     volumes:
       - '${DATA_PATH}/adguardhome/work:/opt/adguardhome/work'
       - '${DATA_PATH}/adguardhome/conf:/opt/adguardhome/conf'
     restart: unless-stopped
     network_mode: host
-    #networks:
-    #  - infra
 
   uptimekuma:
-    image: 'louislam/uptime-kuma:1.22.1'
+    image: 'louislam/uptime-kuma:1.23.2'
     container_name: uptimekuma
     ports:
       - '3001:3001'
