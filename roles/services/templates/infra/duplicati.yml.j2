@@ -29,15 +29,14 @@ spec:
               mountPath: /backups
             - name: source
               mountPath: /source
-              readOnly: true
             - name: source-adguardhome
               mountPath: /source_adguardhome
-              readOnly: true
             - name: localtime
               mountPath: /etc/localtime
               readOnly: true
           ports:
             - containerPort: 8200
+              name: ui
       volumes:
         - name: duplicati-data
           hostPath:
@@ -67,5 +66,5 @@ spec:
   ports:
     - protocol: TCP
       port: 8200
-      targetPort: 8200
+      targetPort: ui
   type: LoadBalancer
