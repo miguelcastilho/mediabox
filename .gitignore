@@ -1,5 +1,3 @@
-config
 inventory/*
 !inventory/inventory.yml.example
-roles/services/templates/test
 roles/services/files

@@ -37,15 +37,22 @@
     dest: "{{ install_path }}/manifests/infra/{{ item.path | basename | regex_replace('\\.j2$','') }}"
   loop: "{{ infra_manifest_files.files }}"
 
-# - name: Create zigbee2mqtt folder
-#   ansible.builtin.file:
-#     path: "{{ data_path }}/zigbee2mqtt"
-#     state: directory
+- name: Check if zigbee2mqtt configuration file already exists
+  stat:
+    path: "{{ data_path }}/zigbee2mqtt/configuration.yaml"
+  register: zigbee2mqtt_configuration_existing
 
-# - name: Copy zigbee2mqtt configuration file
-#   ansible.builtin.copy:
-#     src: config/zigbee2mqtt_config.yml
-#     dest: "{{ data_path }}/zigbee2mqtt/configuration.yaml"
+- name: Create zigbee2mqtt folder
+  ansible.builtin.file:
+    path: "{{ data_path }}/zigbee2mqtt"
+    state: directory
+  when: not zigbee2mqtt_configuration_existing.stat.exists
+
+- name: Copy zigbee2mqtt configuration file
+  ansible.builtin.template:
+    src: templates/zigbee2mqtt_config.yml.j2
+    dest: "{{ data_path }}/zigbee2mqtt/configuration.yaml"
+  when: not zigbee2mqtt_configuration_existing.stat.exists
 
 - name: Deploy Kubernetes infra manifests
   kubernetes.core.k8s:

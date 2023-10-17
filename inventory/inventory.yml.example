@@ -25,3 +25,4 @@ all:
       - dns resolution similar to /etc/hosts in the form of <dns ip_address>
     cloudflared_pem: |-
       paste here your cloudflared pem file content
+    zigbee_adapter_path: specify the connection to zigbee adapter

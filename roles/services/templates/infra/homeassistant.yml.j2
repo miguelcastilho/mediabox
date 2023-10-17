@@ -1,0 +1,53 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homeassistant
+  namespace: infra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: homeassistant
+  template:
+    metadata:
+      labels:
+        app: homeassistant
+    spec:
+      containers:
+        - name: homeassistant
+          image: ghcr.io/home-assistant/home-assistant:2023.9
+          volumeMounts:
+            - name: homeassistant-config
+              mountPath: /config
+            - name: localtime
+              mountPath: /etc/localtime
+              readOnly: true
+          env:
+            - name: TZ
+              value: {{ timezone }}
+          ports:
+            - containerPort: 8123
+              name: ui
+      volumes:
+        - name: homeassistant-config
+          hostPath:
+            path: {{ data_path }}/homeassistant
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: homeassistant
+  namespace: infra
+spec:
+  selector:
+    app: homeassistant
+  ports:
+    - protocol: TCP
+      port: 8123
+      targetPort: ui
+  type: LoadBalancer
