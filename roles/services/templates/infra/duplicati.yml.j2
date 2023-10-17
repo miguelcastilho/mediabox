@@ -1,0 +1,71 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: duplicati
+  namespace: infra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: duplicati
+  template:
+    metadata:
+      labels:
+        app: duplicati
+    spec:
+      containers:
+        - name: duplicati
+          image: lscr.io/linuxserver/duplicati:2.0.7
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+          volumeMounts:
+            - name: duplicati-data
+              mountPath: /config
+            - name: duplicati-backups
+              mountPath: /backups
+            - name: source
+              mountPath: /source
+              readOnly: true
+            - name: source-adguardhome
+              mountPath: /source_adguardhome
+              readOnly: true
+            - name: localtime
+              mountPath: /etc/localtime
+              readOnly: true
+          ports:
+            - containerPort: 8200
+      volumes:
+        - name: duplicati-data
+          hostPath:
+            path: {{ data_path }}/duplicati
+        - name: duplicati-backups
+          hostPath:
+            path: {{ data_path }}/duplicati/backups
+        - name: source
+          hostPath:
+            path: {{ data_path }}
+        - name: source-adguardhome
+          hostPath:
+            path: /opt/AdGuardHome
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: duplicati
+  namespace: infra
+spec:
+  selector:
+    app: duplicati
+  ports:
+    - protocol: TCP
+      port: 8200
+      targetPort: 8200
+  type: LoadBalancer

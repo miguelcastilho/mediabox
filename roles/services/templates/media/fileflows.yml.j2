@@ -1,0 +1,67 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fileflows
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fileflows
+  template:
+    metadata:
+      labels:
+        app: fileflows
+    spec:
+      containers:
+        - name: fileflows
+          image: revenz/fileflows:23.09
+          env:
+            - name: TZ
+              value: {{ timezone }}
+            - name: TempPathHost
+              value: /tmp
+          volumeMounts:
+            - name: docker-sock-volume
+              mountPath: /var/run/docker.sock
+            - name: data-volume
+              mountPath: /app/Data
+            - name: logs-volume
+              mountPath: /app/Logs
+            - name: tmp-volume
+              mountPath: /tmp
+            - name: downloads-volume
+              mountPath: /media
+          ports:
+            - containerPort: 5000
+      volumes:
+        - name: docker-sock-volume
+          hostPath:
+            path: /var/run/docker.sock
+        - name: data-volume
+          hostPath:
+            path: {{ data_path }}/fileflows/data
+        - name: logs-volume
+          hostPath:
+            path: {{ data_path }}/fileflows/logs
+        - name: tmp-volume
+          hostPath:
+            path: /tmp
+        - name: downloads-volume
+          hostPath:
+            path: {{ data_path }}/downloads
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fileflows
+  namespace: media
+spec:
+  selector:
+    app: fileflows
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+  type: LoadBalancer

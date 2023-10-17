@@ -1,0 +1,79 @@
+---
+- name: Create resolved.conf.d directory
+  ansible.builtin.file:
+    path: /etc/systemd/resolved.conf.d
+    state: directory
+  become: true
+
+- name: Create AdGuard Home DNS configuration file
+  ansible.builtin.copy:
+    content: |
+      [Resolve]
+      DNS=127.0.0.1
+      DNSStubListener=no
+    dest: /etc/systemd/resolved.conf.d/adguardhome.conf
+  become: true
+  register: adguard_conf_result
+
+- name: Backup the existing resolv.conf
+  ansible.builtin.copy:
+    src: /etc/resolv.conf
+    dest: /etc/resolv.conf.backup
+    remote_src: true
+  become: true
+  when: adguard_conf_result.changed
+
+- name: Remove existing resolv.conf
+  ansible.builtin.file:
+    path: /etc/resolv.conf
+    state: absent
+  become: true
+  when: adguard_conf_result.changed
+
+- name: Create a symbolic link to systemd-resolve's resolv.conf
+  ansible.builtin.file:
+    src: /run/systemd/resolve/resolv.conf
+    dest: /etc/resolv.conf
+    state: link
+  become: true
+  when: adguard_conf_result.changed
+
+- name: Reload systemd-resolved service
+  ansible.builtin.systemd:
+    name: systemd-resolved
+    state: restarted
+  become: true
+  when: adguard_conf_result.changed
+
+- name: Start AdGuardHome service
+  become: true
+  ansible.builtin.systemd:
+    name: AdGuardHome.service
+    state: started
+  register: adguardhome_status
+  ignore_errors: true
+
+- name: Download and run AdGuard Home installation script
+  ansible.builtin.shell: curl -s -S -L https://raw.githubusercontent.com/AdguardTeam/AdGuardHome/master/scripts/install.sh | sh -s
+  when: adguardhome_status.failed
+
+- name: Stop AdGuardHome service
+  become: true
+  ansible.builtin.systemd:
+    name: AdGuardHome.service
+    state: stopped
+  when: adguardhome_status.failed
+
+- name: Copy AdGuardHome.yaml
+  ansible.builtin.template:
+    src: AdGuardHome.yaml.j2
+    dest: /opt/AdGuardHome/AdGuardHome.yaml
+  become: true
+  when: adguardhome_status.failed
+
+- name: Start AdGuardHome service
+  become: true
+  ansible.builtin.systemd:
+    name: AdGuardHome.service
+    state: started
+  when: adguardhome_status.failed

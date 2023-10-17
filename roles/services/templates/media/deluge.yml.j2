@@ -1,0 +1,75 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deluge
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deluge
+  template:
+    metadata:
+      labels:
+        app: deluge
+    spec:
+      containers:
+        - name: deluge
+          image: lscr.io/linuxserver/deluge:2.1.1
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config
+            - name: downloads-volume
+              mountPath: /downloads
+            - name: localtime-volume
+              mountPath: /etc/localtime
+              readOnly: true
+          ports:
+            - containerPort: 8112
+              name: web
+            - containerPort: 6881
+              protocol: TCP
+              name: inbound
+            - containerPort: 6881
+              protocol: UDP
+              name: inbound-udp
+      volumes:
+        - name: config-volume
+          hostPath:
+            path: {{ data_path }}/deluge
+        - name: downloads-volume
+          hostPath:
+            path: {{ data_path }}/downloads
+        - name: localtime-volume
+          hostPath:
+            path: /etc/localtime
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: deluge
+  namespace: media
+spec:
+  selector:
+    app: deluge
+  ports:
+    - protocol: TCP
+      port: 8112
+      targetPort: web
+      name: web
+    - protocol: TCP
+      port: 6881
+      targetPort: inbound
+      name: inbound
+    - protocol: UDP
+      port: 6881
+      targetPort: inbound-udp
+      name: inbound-udp
+  type: LoadBalancer

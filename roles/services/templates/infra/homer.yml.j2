@@ -1,0 +1,44 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homer
+  namespace: infra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: homer
+  template:
+    metadata:
+      labels:
+        app: homer
+    spec:
+      containers:
+        - name: homer
+          image: b4bz/homer:v23.09.1
+          volumeMounts:
+            - name: homer-assets
+              mountPath: /www/assets
+          ports:
+            - containerPort: 8080
+              name: web
+      volumes:
+        - name: homer-assets
+          hostPath:
+            path: {{ data_path }}/homer
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: homer
+  namespace: infra
+spec:
+  selector:
+    app: homer
+  ports:
+    - protocol: TCP
+      port: 8083
+      targetPort: web
+  type: LoadBalancer

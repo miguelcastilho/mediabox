@@ -1,0 +1,49 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uptimekuma-deployment
+  namespace: infra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: uptimekuma
+  template:
+    metadata:
+      labels:
+        app: uptimekuma
+    spec:
+      containers:
+        - name: uptimekuma
+          image: louislam/uptime-kuma:1.23.2
+          volumeMounts:
+            - name: uptimekuma-data
+              mountPath: /app/data
+            - name: docker-sock
+              mountPath: /var/run/docker.sock
+              readOnly: true
+          ports:
+            - containerPort: 3001
+      volumes:
+        - name: uptimekuma-data
+          hostPath:
+            path: {{ data_path }}/uptimekuma
+        - name: docker-sock
+          hostPath:
+            path: /var/run/docker.sock
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: uptimekuma
+  namespace: infra
+spec:
+  selector:
+    app: uptimekuma
+  ports:
+    - protocol: TCP
+      port: 3001
+      targetPort: 3001
+  type: LoadBalancer

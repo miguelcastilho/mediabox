@@ -1,0 +1,66 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unifi-controller
+  namespace: infra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: unifi-controller
+  template:
+    metadata:
+      labels:
+        app: unifi-controller
+    spec:
+      containers:
+        - name: unifi-controller
+          image: lscr.io/linuxserver/unifi-controller:7.5.174
+          ports:
+            - containerPort: 8080
+            - containerPort: 8443
+            - containerPort: 3478
+            - containerPort: 10001
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config
+          env:
+            - name: TZ
+              value: {{ timezone }}
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+      volumes:
+        - name: config-volume
+          hostPath:
+            path: {{ data_path }}/unifi-controller
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: unifi-controller
+  namespace: infra
+spec:
+  selector:
+    app: unifi-controller
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      name: device-comm
+    - protocol: TCP
+      port: 8443
+      targetPort: 8443
+      name: web
+    - protocol: UDP
+      port: 3478
+      targetPort: 3478
+      name: stun
+    - protocol: UDP
+      port: 10001
+      targetPort: 10001
+      name: discovery
+  type: LoadBalancer

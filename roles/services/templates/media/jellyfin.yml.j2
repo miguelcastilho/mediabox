@@ -1,0 +1,60 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jellyfin
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jellyfin
+  template:
+    metadata:
+      labels:
+        app: jellyfin
+    spec:
+      containers:
+      - name: jellyfin
+        image: lscr.io/linuxserver/jellyfin:10.8.10
+        env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: TZ
+          value: {{ timezone }}
+        ports:
+        - containerPort: 8096
+        volumeMounts:
+        - name: jellyfin-config
+          mountPath: /config
+        - name: jellyfin-tvshows
+          mountPath: /data/tvshows
+        - name: jellyfin-movies
+          mountPath: /data/movies
+      volumes:
+      - name: jellyfin-config
+        hostPath:
+          path: {{ data_path }}/jellyfin
+      - name: jellyfin-tvshows
+        hostPath:
+          path: {{ tvshows_path }}
+      - name: jellyfin-movies
+        hostPath:
+          path: {{ movies_path }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jellyfin
+  namespace: media
+spec:
+  selector:
+    app: jellyfin
+  ports:
+    - protocol: TCP
+      port: 8096
+      targetPort: 8096
+  type: LoadBalancer

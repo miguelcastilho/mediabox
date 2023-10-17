@@ -1,0 +1,104 @@
+---
+- name: Check if cloudflared binary already exists
+  stat:
+    path: /usr/local/bin/cloudflared
+  register: cloudflared_existing
+
+- name: Download cloudflared
+  get_url:
+    url: "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb"
+    dest: /tmp/cloudflared-linux-amd64.deb
+  when: cloudflared_existing.stat.exists == False
+
+- name: Install cloudflared using dpkg
+  become: true
+  command: dpkg -i /tmp/cloudflared-linux-amd64.deb
+  when: cloudflared_existing.stat.exists == False
+  failed_when: false
+
+- name: Cleanup downloaded binary
+  file:
+    path: /tmp/cloudflared-linux-amd64.deb
+    state: absent
+  when: cloudflared_existing.stat.exists == False
+
+- name: Check cloudflared version
+  command: /usr/local/bin/cloudflared --version
+  register: cloudflared_version
+  changed_when: false
+
+- name: Print cloudflared version
+  debug:
+    var: cloudflared_version.stdout_lines
+
+- name: Create .cloudflared directory if it doesn't exist
+  file:
+    path: "/home/{{ ansible_user }}/.cloudflared"
+    state: directory
+    mode: '0755'
+
+- name: Create ~/.cloudflared/cert.pem
+  copy:
+    content: "{{ cloudflared_pem }}"
+    dest: "/home/{{ ansible_user }}/.cloudflared/cert.pem"
+    mode: '0600'
+
+- name: Check If Tunnel Exists
+  command: "cloudflared tunnel info {{ cloudflare_tunnel_name }}"
+  register: tunnel_check_result
+  changed_when: false
+  failed_when: "tunnel_check_result.rc != 0 and tunnel_check_result.stderr is not search('error parsing tunnel ID')"
+
+- name: Create Cloudflared Tunnel
+  command: "cloudflared tunnel create {{ cloudflare_tunnel_name }}"
+  register: tunnel_creation_result
+  when: tunnel_check_result.rc != 0
+
+- name: Extract Tunnel Credentials File Path
+  set_fact:
+    tunnel_credentials_path: "{{ tunnel_creation_result.stdout_lines }}"
+  when: tunnel_check_result.rc != 0
+
+- name: Retrieve Tunnel ID
+  set_fact:
+    tunnel_id: "{{ tunnel_credentials_path[2].split(' ')[-1] }}"
+  when: tunnel_check_result.rc != 0
+
+- name: Create cloudflared namespace
+  kubernetes.core.k8s:
+    name: cloudflared
+    api_version: v1
+    kind: Namespace
+    state: present
+
+- name: Create cloudflared secret
+  shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl create secret generic tunnel-credentials --from-file=credentials.json=/home/{{ ansible_user }}/.cloudflared/{{ tunnel_id }}.json -n cloudflared"
+  when: tunnel_check_result.rc != 0
+
+- name: Get Traefik External IP
+  shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl get svc traefik -n kube-system -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'"
+  register: external_ip
+  changed_when: false
+
+- name: Create cloudflared manifest folder
+  ansible.builtin.file:
+    path: "{{ install_path }}/manifests/cloudflared"
+    state: directory
+
+- name: Copy cloudflared manifest file
+  ansible.builtin.template:
+    src: cloudflared.yml.j2
+    dest: "{{ install_path }}/manifests/cloudflared/cloudflared.yml"
+
+- name: Apply cloudflared.yaml
+  kubernetes.core.k8s:
+    state: present
+    template: templates/cloudflared.yml.j2
+
+- name: Check containers status
+  shell: KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl wait pod --for condition=ready --field-selector=status.phase!=Succeeded -n cloudflared --all --timeout 60s
+  changed_when: false
+
+- name: Execute cloudflared tunnel route dns
+  command: "cloudflared tunnel route dns --overwrite-dns {{ cloudflare_tunnel_name }} {{ item.name }}.{{ domain }}"
+  loop: "{{ cloudflare_tunnel_dns_list }}"

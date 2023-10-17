@@ -1,0 +1,89 @@
+---
+- name: Uninstall media server
+  hosts: all
+  ignore_errors: yes
+  tasks:
+    - name: Run K3s uninstallation script
+      command: /usr/local/bin/k3s-uninstall.sh
+
+    - name: Delete .kube directory
+      file:
+        path: "/home/{{ ansible_user }}/.kube"
+        state: absent
+
+    - name: Delete Helm binary
+      become: true
+      file:
+        path: /usr/local/bin/helm
+        state: absent
+
+    - name: Delete Helm configuration directory
+      file:
+        path: "/home/{{ ansible_user }}/.config/helm"
+        state: absent
+
+    - name: Delete Helm cache directory
+      file:
+        path: "/home/{{ ansible_user }}/.cache/helm"
+        state: absent
+
+    - name: Delete Helm data directory
+      file:
+        path: "/home/{{ ansible_user }}/.local/share/helm"
+        state: absent
+
+    - name: Cleanup Cloudflared connections
+      command: cloudflared tunnel cleanup test
+
+    - name: Delete Cloudflared tunnel
+      command: cloudflared tunnel delete test
+
+    - name: Remove cloudflared
+      become: true
+      apt:
+        name: cloudflared
+        state: absent
+
+    - name: Delete cloudflared folder
+      file:
+        path: "/home/{{ ansible_user }}/.cloudflared/"
+        state: absent
+
+    - name: Delete k3s folder
+      become: true
+      file:
+        path: "/opt/k3s"
+        state: absent
+
+    - name: Uninstall AdGuard Home
+      shell: curl -s -S -L https://raw.githubusercontent.com/AdguardTeam/AdGuardHome/master/scripts/install.sh | sh -s -- -u
+
+    - name: Remove AdGuard Home directory
+      file:
+        path: /opt/AdGuardHome
+        state: absent
+
+    - name: Remove the AdGuard Home DNS configuration file
+      file:
+        path: /etc/systemd/resolved.conf.d/adguardhome.conf
+        state: absent
+      become: yes
+
+    - name: Restore the original resolv.conf file
+      ansible.builtin.copy:
+        src: /etc/resolv.conf.backup
+        dest: /etc/resolv.conf
+        remote_src: true
+      become: yes
+
+    - name: Delete backup of resolv.conf
+      ansible.builtin.file:
+        path: /etc/resolv.conf.backup
+        state: absent
+      become: yes
+
+    - name: Reload systemd-resolved service
+      systemd:
+        name: systemd-resolved
+        state: restarted
+      become: true

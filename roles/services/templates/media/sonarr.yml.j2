@@ -1,0 +1,63 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonarr
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sonarr
+  template:
+    metadata:
+      labels:
+        app: sonarr
+    spec:
+      containers:
+        - name: sonarr
+          image: ghcr.io/linuxserver/sonarr:3.0.10
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+          ports:
+            - containerPort: 8989
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: tv
+              mountPath: /tv
+            - name: downloads
+              mountPath: /downloads
+            - name: localtime
+              mountPath: /etc/localtime
+              readOnly: true
+      volumes:
+        - name: config
+          hostPath:
+            path: {{ data_path }}/sonarr
+        - name: tv
+          hostPath:
+            path: {{ tvshows_path }}
+        - name: downloads
+          hostPath:
+            path: {{ data_path }}/downloads/converted
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sonarr
+  namespace: media
+spec:
+  selector:
+    app: sonarr
+  ports:
+    - protocol: TCP
+      port: 8989
+      targetPort: 8989
+  type: LoadBalancer

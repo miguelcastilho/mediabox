@@ -1,0 +1,63 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sabnzbd
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sabnzbd
+  template:
+    metadata:
+      labels:
+        app: sabnzbd
+    spec:
+      containers:
+        - name: sabnzbd
+          image: ghcr.io/linuxserver/sabnzbd:4.0.3
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: downloads
+              mountPath: /downloads
+            - name: incomplete-downloads
+              mountPath: /incomplete-downloads
+            - name: localtime
+              mountPath: /etc/localtime
+              readOnly: true
+      volumes:
+        - name: config
+          hostPath:
+            path: {{ data_path }}/sabnzbd
+        - name: downloads
+          hostPath:
+            path: {{ data_path }}/downloads/complete
+        - name: incomplete-downloads
+          hostPath:
+            path: {{ data_path }}/downloads/incomplete
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sabnzbd
+  namespace: media
+spec:
+  selector:
+    app: sabnzbd
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 8080
+  type: LoadBalancer

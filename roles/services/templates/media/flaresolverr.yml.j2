@@ -1,0 +1,43 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flaresolverr
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flaresolverr
+  template:
+    metadata:
+      labels:
+        app: flaresolverr
+    spec:
+      containers:
+        - name: flaresolverr
+          image: ghcr.io/flaresolverr/flaresolverr:v3.3.6
+          ports:
+            - containerPort: 8191
+          volumeMounts:
+            - name: localtime-volume
+              mountPath: /etc/localtime
+              readOnly: true
+      volumes:
+        - name: localtime-volume
+          hostPath:
+            path: /etc/localtime
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flaresolverr
+  namespace: media
+spec:
+  selector:
+    app: flaresolverr
+  ports:
+    - protocol: TCP
+      port: 8191
+      targetPort: 8191
+  type: LoadBalancer

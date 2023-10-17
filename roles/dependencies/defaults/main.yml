@@ -1,0 +1,6 @@
+---
+packages:
+  - curl
+  - python3-pip
+  - git
+reboot_timeout: 600

@@ -1,0 +1,63 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bazarr
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bazarr
+  template:
+    metadata:
+      labels:
+        app: bazarr
+    spec:
+      containers:
+        - name: bazarr
+          image: ghcr.io/linuxserver/bazarr:1.3.0
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+          ports:
+            - containerPort: 6767
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: movies
+              mountPath: /movies
+            - name: tv
+              mountPath: /tv
+            - name: localtime
+              mountPath: /etc/localtime
+              readOnly: true
+      volumes:
+        - name: config
+          hostPath:
+            path: {{ data_path }}/bazarr
+        - name: movies
+          hostPath:
+            path: {{ movies_path }}
+        - name: tv
+          hostPath:
+            path: {{ tvshows_path }}
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bazarr
+  namespace: media
+spec:
+  selector:
+    app: bazarr
+  ports:
+    - protocol: TCP
+      port: 6767
+      targetPort: 6767
+  type: LoadBalancer

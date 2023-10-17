@@ -1,0 +1,70 @@
+---
+- name: "Create {{ install_path }} directory"
+  become: true
+  ansible.builtin.file:
+    path: "{{ install_path }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+- name: Check if k3s is installed
+  command: k3s --version
+  register: k3s_version
+  ignore_errors: true
+  changed_when: false
+
+- name: Install k3s
+  shell: curl -sfL https://get.k3s.io | sh -
+  when: k3s_version.rc != 0
+  register: install_k3s
+
+- name: Ensure k3s is running
+  become: true
+  command: systemctl is-active --quiet k3s
+  register: k3s_running
+  changed_when: false
+
+- name: Start k3s if not running
+  become: true
+  command: systemctl start k3s
+  when: k3s_running.rc != 0
+
+- name: Get k3s version
+  command: k3s --version
+  register: k3s_version
+  changed_when: false
+
+- name: Print K3s version
+  debug:
+    msg: "K3s version: {{ k3s_version.stdout }}"
+
+- name: Create .kube directory
+  file:
+    path: "/home/{{ ansible_user }}/.kube"
+    state: directory
+    mode: '0755'
+
+- name: Copy k3s kubeconfig to default location
+  become: true
+  copy:
+    src: /etc/rancher/k3s/k3s.yaml
+    dest: "/home/{{ ansible_user }}/.kube/config"
+    mode: 0600
+    remote_src: yes
+  when: k3s_running.rc == 0
+
+- name: Set owner of kubeconfig file to the Ansible remote user
+  become: true
+  file:
+    dest: "/home/{{ ansible_user }}/.kube/config"
+    owner: "{{ ansible_user }}"
+  when: k3s_running.rc == 0
+
+- name: Pause for 1 minute
+  ansible.builtin.pause:
+    minutes: 1
+  when: install_k3s.changed
+
+- name: Check containers status
+  shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl wait pod --for condition=ready --field-selector=status.phase!=Succeeded -n kube-system --all --timeout 10m"
+  changed_when: false

@@ -1,0 +1,96 @@
+---
+- name: Create infra namespace
+  kubernetes.core.k8s:
+    name: infra
+    kind: Namespace
+    state: present
+
+- name: List all YAML files in the infra manifests directory
+  delegate_to: localhost
+  find:
+    paths: roles/services/templates/infra
+    recurse: no
+    file_type: file
+    patterns: "*.yml.j2"
+  register: infra_manifest_files
+
+- name: Create infra manifests folder
+  ansible.builtin.file:
+    path: "{{ install_path }}/manifests/infra"
+    state: directory
+
+- name: "Create homer directory"
+  ansible.builtin.file:
+    path: "{{ install_path }}/homer"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+- name: Copy homer config file to remote server
+  copy:
+    src: files/homer-config.yml
+    dest: "{{ install_path }}/homer/config.yml"
+
+- name: Copy infra manifest files
+  ansible.builtin.template:
+    src: "{{ item.path }}"
+    dest: "{{ install_path }}/manifests/infra/{{ item.path | basename | regex_replace('\\.j2$','') }}"
+  loop: "{{ infra_manifest_files.files }}"
+
+# - name: Create zigbee2mqtt folder
+#   ansible.builtin.file:
+#     path: "{{ data_path }}/zigbee2mqtt"
+#     state: directory
+
+# - name: Copy zigbee2mqtt configuration file
+#   ansible.builtin.copy:
+#     src: config/zigbee2mqtt_config.yml
+#     dest: "{{ data_path }}/zigbee2mqtt/configuration.yaml"
+
+- name: Deploy Kubernetes infra manifests
+  kubernetes.core.k8s:
+    state: patched
+    template: "{{ item.path }}"
+    apply: true
+  with_items: "{{ infra_manifest_files.files }}"
+
+- name: Check containers status
+  shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl wait pod --for condition=ready --field-selector=status.phase!=Succeeded -n infra --all --timeout 10m"
+  changed_when: false
+
+- name: Create media namespace
+  kubernetes.core.k8s:
+    name: media
+    kind: Namespace
+    state: present
+
+- name: Create media manifest folder
+  ansible.builtin.file:
+    path: "{{ install_path }}/manifests/media"
+    state: directory
+
+- name: List all YAML files in the media manifests directory
+  delegate_to: localhost
+  find:
+    paths: roles/services/templates/media
+    recurse: no
+    file_type: file
+    patterns: "*.yml.j2"
+  register: media_manifest_files
+
+- name: Copy media manifest files
+  ansible.builtin.template:
+    src: "{{ item.path }}"
+    dest: "{{ install_path }}/manifests/media/{{ item.path | basename | regex_replace('\\.j2$','') }}"
+  loop: "{{ media_manifest_files.files }}"
+
+- name: Deploy Kubernetes media manifests
+  kubernetes.core.k8s:
+    state: patched
+    template: "{{ item.path }}"
+    apply: true
+  with_items: "{{ media_manifest_files.files }}"
+
+- name: Check containers status
+  shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl wait pod --for condition=ready --field-selector=status.phase!=Succeeded -n media --all --timeout 10m"
+  changed_when: false

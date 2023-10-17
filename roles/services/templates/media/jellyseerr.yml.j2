@@ -1,0 +1,46 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jellyseerr
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jellyseerr
+  template:
+    metadata:
+      labels:
+        app: jellyseerr
+    spec:
+      containers:
+      - name: jellyseerr
+        image: fallenbagel/jellyseerr:1.7.0
+        env:
+        - name: TZ
+          value: {{ timezone }}
+        ports:
+        - containerPort: 5055
+        volumeMounts:
+        - name: jellyseerr-data
+          mountPath: /app/config
+      volumes:
+      - name: jellyseerr-data
+        hostPath:
+          path: {{ data_path }}/jellyseerr
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jellyseerr
+  namespace: media
+spec:
+  selector:
+    app: jellyseerr
+  ports:
+    - protocol: TCP
+      port: 5055
+      targetPort: 5055
+  type: LoadBalancer
