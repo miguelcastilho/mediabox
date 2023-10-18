@@ -100,7 +100,10 @@ filters:
     name: AdAway Default Blocklist
     id: 2
 whitelist_filters: []
-user_rules: "{{ adguard_home_user_rules }}"
+user_rules:
+{% for rule in adguard_home_user_rules %}
+  - {{ rule }}
+{% endfor %}
 dhcp:
   enabled: false
   interface_name: ""
