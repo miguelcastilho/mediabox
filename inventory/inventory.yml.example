@@ -15,10 +15,6 @@ all:
       - name: dns name of the service
         port: port of the service
         domain: internet domain
-    cloudflare_tunnel_additional_dns_list: # list here additional services from your local network to expose to the internet
-      - name: dns name of the service
-        service: dns or ip address
-        domain: internet domain
     install_path: path to install manifests and files
     adguard_home_username: adguard home username
     adguard_home_password: adguard home password
