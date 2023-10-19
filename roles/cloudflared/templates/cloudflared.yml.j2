@@ -91,11 +91,11 @@ data:
     # E.g. `cloudflared tunnel route dns example-tunnel tunnel.example.com`.
     ingress:
     {% for dns_name in cloudflare_tunnel_dns_list -%}
-    - hostname: {{ dns_name.name }}.{{ item.domain }}
+    - hostname: {{ dns_name.name }}.{{ dns_name.domain }}
       service: http://{{ external_ip.stdout }}:{{ dns_name.port }}
     {% endfor %}
     {%- for dns_name in cloudflare_tunnel_additional_dns_list -%}
-    - hostname: {{ dns_name.name }}.{{ item.domain }}
+    - hostname: {{ dns_name.name }}.{{ dns_name.domain }}
       service: {{ dns_name.service }}
     {% endfor -%}
     # This rule matches any traffic which didn't match a previous rule, and responds with HTTP 404.
