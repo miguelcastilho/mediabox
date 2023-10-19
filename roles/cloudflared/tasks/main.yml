@@ -100,5 +100,5 @@
   changed_when: false
 
 - name: Execute cloudflared tunnel route dns
-  command: "cloudflared tunnel route dns --overwrite-dns {{ cloudflare_tunnel_name }} {{ item.name }}.{{ domain }}"
+  command: "cloudflared tunnel route dns --overwrite-dns {{ cloudflare_tunnel_name }} {{ item.name }}.{{ item.domain }}"
   loop: "{{ cloudflare_tunnel_dns_list }}"
