@@ -89,6 +89,7 @@
   ansible.builtin.template:
     src: cloudflared.yml.j2
     dest: "{{ install_path }}/manifests/cloudflared/cloudflared.yml"
+    trim_blocks: false
 
 - name: Apply cloudflared.yaml
   kubernetes.core.k8s:
