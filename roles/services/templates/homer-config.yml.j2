@@ -1,0 +1,140 @@
+---
+# Homepage configuration
+# See https://fontawesome.com/v5/search for icons options
+
+title: "Homelab Dashboard"
+subtitle: "Homer"
+logo: "logo.png"
+#icon: "fas fa-skull-crossbones" # Optional icon
+
+header: false
+footer: false
+
+# Optional theme customization
+theme: default
+colors:
+  light:
+    highlight-primary: "#3367d6"
+    highlight-secondary: "#4285f4"
+    highlight-hover: "#5a95f5"
+    background: "#f5f5f5"
+    card-background: "#ffffff"
+    text: "#363636"
+    text-header: "#ffffff"
+    text-title: "#303030"
+    text-subtitle: "#424242"
+    card-shadow: rgba(0, 0, 0, 0.1)
+    link: "#3273dc"
+    link-hover: "#363636"
+  dark:
+    highlight-primary: "#3367d6"
+    highlight-secondary: "#4285f4"
+    highlight-hover: "#5a95f5"
+    background: "#131313"
+    card-background: "#2b2b2b"
+    text: "#eaeaea"
+    text-header: "#ffffff"
+    text-title: "#fafafa"
+    text-subtitle: "#f5f5f5"
+    card-shadow: rgba(0, 0, 0, 0.4)
+    link: "#3273dc"
+    link-hover: "#ffdd57"
+
+# Optional navbar
+# links: [] # Allows for navbar (dark mode, layout, and search) without any links
+links:
+  - name: "GitHub"
+    icon: "fab fa-github"
+    url: "https://github.com/miguelcastilho"
+    target: "_blank" # optional html a tag target attribute
+
+# Services
+# First level array represent a group.
+# Leave only a "items" key if not using group (group name, icon & tagstyle are optional, section separation will not be displayed).
+services:
+  - name: "Media"
+    icon: "fas fa-film"
+    items:
+      - name: "Jellyseerr"
+        logo: "https://static-00.iconduck.com/assets.00/jellyseerr-icon-2048x1968-ox8q7e49.png"
+        url: "http://jellyseerr.{{ domain }}"
+        target: "_blank"
+      - name: "Jellyfin"
+        logo: "https://www.dockhunt.com/_next/image?url=https%3A%2F%2Fdockhunt-images.nyc3.cdn.digitaloceanspaces.com%2F4b054cbd-4ede-4f5e-8192-b1af71698ea0&w=384&q=75"
+        url: "http://jellyfin.{{ domain }}"
+        target: "_blank"
+      - name: "Radarr"
+        logo: "https://static-00.iconduck.com/assets.00/radarr-icon-1845x2048-97le6lim.png"
+        url: "http://radarr.{{ domain }}"
+        target: "_blank"
+        type: "Radarr"
+        apikey: "1136edee57d547eeaa5e9da3f6586dd6"
+      - name: "Sonarr"
+        logo: "http://192.168.2.158:8989/Content/Images/logo.svg"
+        url: "http://sonarr.{{ domain }}"
+        target: "_blank"
+        type: "Sonarr"
+        apikey: "02253ed3a20949fa861e29226de14edb"
+      - name: "Bazarr"
+        logo: "https://static-00.iconduck.com/assets.00/bazarr-icon-512x512-7u7ig8ss.png"
+        url: "http://bazarr.{{ domain }}"
+        target: "_blank"
+      - name: "Prowlarr"
+        logo: "http://192.168.2.158:9696/Content/Images/logo.png"
+        url: "http://prowlarr.{{ domain }}"
+        target: "_blank"
+        type: "Prowlarr"
+        apikey: "91002a2fb0504c448c058a2a03fd94a2"
+      - name: "Deluge"
+        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Deluge-Logo.svg/1200px-Deluge-Logo.svg.png"
+        url: "http://deluge.{{ domain }}"
+        target: "_blank"
+      - name: "SABnzbd"
+        logo: "https://static-00.iconduck.com/assets.00/sabnzbd-text-icon-511x512-dq0m7rr6.png"
+        url: "http://sabnzbd.{{ domain }}"
+        target: "_blank"
+        type: "SABnzbd"
+        apikey: "0c2f93b7b5544506be8fcd2b3850db98"
+      - name: "FileFlows"
+        logo: "https://yt3.googleusercontent.com/x52yhM0ZsVYskS6xJEH3SCKPWBkwg3pcnWRfzYgP7FX-pcbvaHWmCaLCvxxB0COgY5tgijg7=s900-c-k-c0x00ffffff-no-rj"
+        url: "http://fileflows.{{ domain }}"
+        target: "_blank"
+  - name: "Home Automation"
+    icon: "fas fa-laptop-house"
+    items:
+      - name: "Home Assistant"
+        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Home_Assistant_Logo.svg/1200px-Home_Assistant_Logo.svg.png"
+        url: "https://homeassistant.{{ domain }}"
+        target: "_blank"
+      - name: "Busch-free@home"
+        logo: "https://play-lh.googleusercontent.com/HrfxZ_LpJpkJ-tfQkHJiztxndi0Qn9ODk6Bgcqk3OHoFkUwg-_6aatYLDszu1sZqltI"
+        url: "http://192.168.2.185"
+        target: "_blank"
+      - name: "Zigbee2MQTT"
+        logo: "https://www.zigbee2mqtt.io/logo.png"
+        url: "http://zigbee2mqtt.{{ domain }}"
+        target: "_blank"
+  - name: "Management"
+    icon: "fas fa-tools"
+    items:
+      - name: "Uptime Kuma"
+        logo: "https://static-00.iconduck.com/assets.00/uptime-kuma-icon-2048x1892-iigw6pmz.png"
+        url: "http://uptimekuma.{{ domain }}"
+        target: "_blank"
+      - name: "Duplicati"
+        logo: "https://static-00.iconduck.com/assets.00/duplicati-icon-2048x1857-5pgrnzdy.png"
+        url: "http://duplicati.{{ domain }}"
+        target: "_blank"
+      - name: "UniFi Controller"
+        logo: "https://static-00.iconduck.com/assets.00/ubiquiti-icon-512x512-5rc8ewvu.png"
+        url: "https://unifi-controller.{{ domain }}"
+        target: "_blank"
+      - name: "Tailscale"
+        logo: "https://ugeek.github.io/blog/images-blog/tailscale.png"
+        url: "https://login.tailscale.com/admin/machines"
+        target: "_blank"
+      - name: "AdGuard Home"
+        logo: "https://static-00.iconduck.com/assets.00/adguard-home-icon-507x512-ovjn0dm6.png"
+        url: "http://adguard-home.{{ domain }}"
+        target: "_blank"
+        type: "AdGuardHome"

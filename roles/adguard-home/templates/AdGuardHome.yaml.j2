@@ -102,7 +102,7 @@ filters:
 whitelist_filters: []
 user_rules:
 {% for rule in adguard_home_user_rules %}
-  - {{ rule }}.{{ domain }}
+  - {{ rule }}
 {% endfor %}
 dhcp:
   enabled: false

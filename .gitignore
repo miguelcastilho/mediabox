@@ -1,3 +1,2 @@
 inventory/*
 !inventory/inventory.yml.example
-roles/services/files
