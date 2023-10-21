@@ -60,7 +60,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: uptimekuma.capzulu.xyz
+    - host: uptimekuma.{{ domain }}
       http:
         paths:
           - path: /

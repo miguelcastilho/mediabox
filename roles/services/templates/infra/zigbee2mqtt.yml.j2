@@ -65,7 +65,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: zigbee2mqtt.capzulu.xyz
+    - host: zigbee2mqtt.{{ domain }}
       http:
         paths:
           - path: /

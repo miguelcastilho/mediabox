@@ -78,7 +78,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: fileflows.capzulu.xyz
+    - host: fileflows.{{ domain }}
       http:
         paths:
           - path: /

@@ -74,7 +74,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: sabnzbd.capzulu.xyz
+    - host: sabnzbd.{{ domain }}
       http:
         paths:
           - path: /

@@ -64,7 +64,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: prowlarr.capzulu.xyz
+    - host: prowlarr.{{ domain }}
       http:
         paths:
           - path: /

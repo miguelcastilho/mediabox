@@ -69,11 +69,9 @@
     src: AdGuardHome.yaml.j2
     dest: /opt/AdGuardHome/AdGuardHome.yaml
   become: true
-  when: adguardhome_status.failed
 
 - name: Start AdGuardHome service
   become: true
   ansible.builtin.systemd:
     name: AdGuardHome.service
-    state: started
-  when: adguardhome_status.failed
+    state: restarted

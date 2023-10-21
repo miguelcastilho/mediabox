@@ -74,7 +74,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: bazarr.capzulu.xyz
+    - host: bazarr.{{ domain }}
       http:
         paths:
           - path: /

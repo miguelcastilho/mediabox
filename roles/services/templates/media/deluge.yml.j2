@@ -85,7 +85,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: deluge.capzulu.xyz
+    - host: deluge.{{ domain }}
       http:
         paths:
           - path: /

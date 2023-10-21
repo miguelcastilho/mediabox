@@ -57,7 +57,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: jellyseerr.capzulu.xyz
+    - host: jellyseerr.{{ domain }}
       http:
         paths:
           - path: /

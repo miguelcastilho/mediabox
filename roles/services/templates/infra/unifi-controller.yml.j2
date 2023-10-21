@@ -76,7 +76,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: unifi-controller.capzulu.xyz
+    - host: unifi-controller.{{ domain }}
       http:
         paths:
           - path: /

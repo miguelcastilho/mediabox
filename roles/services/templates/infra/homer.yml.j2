@@ -54,7 +54,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: homer.casa
+    - host: homer.{{ domain }}
       http:
         paths:
           - path: /

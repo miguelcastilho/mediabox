@@ -29,7 +29,7 @@
 - name: Copy homer config file to remote server
   copy:
     src: files/homer-config.yml
-    dest: "{{ install_path }}/homer/config.yml"
+    dest: "{{ data_path }}/homer/config.yml"
 
 - name: Copy infra manifest files
   ansible.builtin.template:

@@ -63,7 +63,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: homeassistant.capzulu.xyz
+    - host: homeassistant.{{ domain }}
       http:
         paths:
           - path: /

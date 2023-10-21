@@ -71,7 +71,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: jellyfin.capzulu.xyz
+    - host: jellyfin.{{ domain }}
       http:
         paths:
           - path: /
