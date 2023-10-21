@@ -24,6 +24,7 @@ spec:
               value: "1000"
           ports:
             - containerPort: 8080
+              name: webui
           volumeMounts:
             - name: config
               mountPath: /config
@@ -59,5 +60,27 @@ spec:
   ports:
     - protocol: TCP
       port: 8081
-      targetPort: 8080
+      targetPort: webui
   type: LoadBalancer
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sabnzbd
+  namespace: media
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: sabnzbd.capzulu.xyz
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: sabnzbd
+                port:
+                  number: 8081

@@ -22,7 +22,7 @@ spec:
               mountPath: /www/assets
           ports:
             - containerPort: 8080
-              name: web
+              name: webui
       volumes:
         - name: homer-assets
           hostPath:
@@ -40,5 +40,27 @@ spec:
   ports:
     - protocol: TCP
       port: 8083
-      targetPort: web
+      targetPort: webui
   type: LoadBalancer
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: homer
+  namespace: infra
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: homer.casa
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: homer
+                port:
+                  number: 8083

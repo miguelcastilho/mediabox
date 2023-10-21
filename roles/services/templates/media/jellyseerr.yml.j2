@@ -22,6 +22,7 @@ spec:
           value: {{ timezone }}
         ports:
         - containerPort: 5055
+          name: webui
         volumeMounts:
         - name: jellyseerr-data
           mountPath: /app/config
@@ -42,5 +43,27 @@ spec:
   ports:
     - protocol: TCP
       port: 5055
-      targetPort: 5055
+      targetPort: webui
   type: LoadBalancer
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jellyseerr
+  namespace: media
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: jellyseerr.capzulu.xyz
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: jellyseerr
+                port:
+                  number: 5055

@@ -35,6 +35,7 @@ spec:
               mountPath: /media
           ports:
             - containerPort: 5000
+              name: webui
       volumes:
         - name: docker-sock-volume
           hostPath:
@@ -63,5 +64,27 @@ spec:
   ports:
     - protocol: TCP
       port: 5000
-      targetPort: 5000
+      targetPort: webui
   type: LoadBalancer
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: fileflows
+  namespace: media
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: fileflows.capzulu.xyz
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: fileflows
+                port:
+                  number: 5000

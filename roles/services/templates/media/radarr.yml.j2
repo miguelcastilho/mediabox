@@ -24,6 +24,7 @@ spec:
               value: "1000"
           ports:
             - containerPort: 7878
+              name: webui
           volumeMounts:
             - name: config
               mountPath: /config
@@ -59,5 +60,27 @@ spec:
   ports:
     - protocol: TCP
       port: 7878
-      targetPort: 7878
+      targetPort: webui
   type: LoadBalancer
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: radarr
+  namespace: media
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: radarr.capzulu.xyz
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: radarr
+                port:
+                  number: 7878
