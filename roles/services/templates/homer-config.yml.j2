@@ -135,6 +135,6 @@ services:
         target: "_blank"
       - name: "AdGuard Home"
         logo: "https://static-00.iconduck.com/assets.00/adguard-home-icon-507x512-ovjn0dm6.png"
-        url: "http://adguard-home.{{ domain }}"
+        url: "http://{{ external_ip.stdout }}:3000"
         target: "_blank"
         type: "AdGuardHome"
