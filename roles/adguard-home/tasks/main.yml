@@ -70,7 +70,7 @@
     dest: /opt/AdGuardHome/AdGuardHome.yaml
   become: true
 
-- name: Start AdGuardHome service
+- name: Restart AdGuardHome service
   become: true
   ansible.builtin.systemd:
     name: AdGuardHome.service

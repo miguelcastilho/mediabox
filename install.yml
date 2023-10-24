@@ -1,12 +1,28 @@
 ---
-- name: Deploy media server
+- name: Install k3s
   hosts: all
-  roles:
-    - dependencies
-    - k3s
-    - cloudflared
-    - adguard-home
-    - services
+  tasks:
+    - name: Install dependencies
+      include_role:
+        name: dependencies
+
+    - name: Install k3s
+      include_role:
+        name: k3s
+
+    - name: Install cloudflared
+      include_role:
+        name: cloudflared
+      when: install_cloudflared
+
+    - name: Install adguard-home
+      include_role:
+        name: adguard-home
+      when: install_adguard_home
+
+    - name: Install services
+      include_role:
+        name: services
 
     # - include_tasks: helm.yml
 

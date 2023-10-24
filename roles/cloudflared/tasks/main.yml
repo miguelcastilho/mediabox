@@ -93,8 +93,10 @@
 
 - name: Apply cloudflared.yaml
   kubernetes.core.k8s:
-    state: present
     template: templates/cloudflared.yml.j2
+    apply: true
+    server_side_apply:
+      field_manager: ansible
 
 - name: Check containers status
   shell: KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl wait pod --for condition=ready --field-selector=status.phase!=Succeeded -n cloudflared --all --timeout 60s

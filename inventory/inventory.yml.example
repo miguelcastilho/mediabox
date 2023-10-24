@@ -23,3 +23,22 @@ all:
     cloudflared_pem: |-
       paste here your cloudflared pem file content
     zigbee_adapter_path: specify the connection to zigbee adapter
+    install_cloudflared: true
+    install_adguard_home: true
+    enable_services:
+      - duplicati
+      - homeassistant
+      - homer
+      - mqtt
+      - tailscale
+      - unifi-controller
+      - uptimekuma
+      - zigbee2mqtt
+      - bazarr
+      - deluge
+      - fileflows
+      - flaresolverr
+      - prowlarr
+      - radarr
+      - sabnzbd
+      - sonarr
