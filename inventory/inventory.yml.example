@@ -4,6 +4,7 @@ all:
     <target IP address>:
       ansible_ssh_user: <username>
   vars:
+    email: email for letsencrypt
     timezone: timezone, ex. Europe/Amsterdam
     data_path: path to persistent storage, ex. /home/media
     tailscale_auth_key: tailscale auth key
@@ -20,6 +21,7 @@ all:
     adguard_home_password: adguard home password
     adguard_home_user_rules:
       - dns resolution similar to /etc/hosts in the form of <dns ip_address>
+    cloudflare_api_token: api token
     cloudflared_pem: |-
       paste here your cloudflared pem file content
     zigbee_adapter_path: specify the connection to zigbee adapter

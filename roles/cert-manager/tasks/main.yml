@@ -1,0 +1,32 @@
+---
+- name: Download cert-manager manifest to the cluster.
+  ansible.builtin.get_url:
+    url: https://github.com/cert-manager/cert-manager/releases/download/v1.13.1/cert-manager.yaml
+    dest: /tmp/cert-manager.yml
+    mode: '0664'
+
+- name: Apply cert-manager manifest to the cluster.
+  kubernetes.core.k8s:
+    src: /tmp/cert-manager.yml
+    apply: true
+    server_side_apply:
+      field_manager: ansible
+
+- name: Delete cert-manager manifest file
+  file:
+    state: absent
+    path: /tmp/cert-manager.yml
+
+- name: Deploy secret
+  kubernetes.core.k8s:
+    template: "secret.yml.j2"
+    apply: true
+    server_side_apply:
+      field_manager: ansible
+
+- name: Deploy ClusterIssuer
+  kubernetes.core.k8s:
+    template: "cluster_issuer.yml.j2"
+    apply: true
+    server_side_apply:
+      field_manager: ansible
