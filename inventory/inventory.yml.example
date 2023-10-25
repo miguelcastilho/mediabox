@@ -45,3 +45,4 @@ all:
       - sabnzbd
       - sonarr
       - jellyfin
+      - jellyseerr
