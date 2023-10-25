@@ -37,7 +37,7 @@
 - name: Include 'adguard-home' if install_adguard_home is true
   when: install_adguard_home
   set_fact:
-    service_list: "{{ service_list + ['adguard-home'] }}"
+    service_list: "{{ service_list + ['adguard-home'] + ['freeathome'] }}"
 
 - name: Copy icons files
   ansible.builtin.copy:
@@ -45,6 +45,12 @@
     dest: "{{ data_path }}/homer/tools/{{ item }}.png"
   loop: "{{ service_list }}"
   when: item != 'homer' and item != 'flaresolverr' and item != 'mqtt'
+
+- name: Get Traefik External IP
+  shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl get svc traefik -n kube-system -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'"
+  register: external_ip
+  changed_when: false
+  when: external_ip is not defined
 
 - name: Copy homer config file to remote server
   ansible.builtin.template:
