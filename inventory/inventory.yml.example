@@ -44,3 +44,4 @@ all:
       - radarr
       - sabnzbd
       - sonarr
+      - jellyfin
