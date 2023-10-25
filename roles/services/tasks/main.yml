@@ -16,11 +16,10 @@
     path: "{{ install_path }}/manifests"
     state: directory
 
-- name: "Copy manifest files"
+- name: Copy manifest files
   ansible.builtin.template:
     src: "manifests/{{ item }}.yml.j2"
     dest: "{{ install_path }}/manifests/{{ item | regex_replace('\\.j2$','') }}"
-  when: "item in enable_services"
   loop: "{{ enable_services }}"
 
 - name: Deploy manifests
@@ -30,6 +29,22 @@
     server_side_apply:
       field_manager: ansible
   loop: "{{ enable_services }}"
+
+- name: Create list of services to copy logo files
+  set_fact:
+    service_list: "{{ enable_services | default([]) }}"
+
+- name: Include 'adguard-home' if install_adguard_home is true
+  when: install_adguard_home
+  set_fact:
+    service_list: "{{ service_list + ['adguard-home'] }}"
+
+- name: Copy icons files
+  ansible.builtin.copy:
+    src: "files/{{ item }}.png"
+    dest: "{{ data_path }}/homer/tools/{{ item }}.png"
+  loop: "{{ service_list }}"
+  when: item != 'homer' and item != 'flaresolverr' and item != 'mqtt'
 
 - name: Copy homer config file to remote server
   ansible.builtin.template:
