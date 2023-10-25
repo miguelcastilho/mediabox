@@ -1,21 +1,27 @@
 ---
-- name: Download cert-manager manifest to the cluster.
+- name: Create manifest folder
+  ansible.builtin.file:
+    path: "{{ install_path }}/manifests"
+    state: directory
+
+- name: Download cert-manager manifest
   ansible.builtin.get_url:
     url: https://github.com/cert-manager/cert-manager/releases/download/v1.13.1/cert-manager.yaml
-    dest: /tmp/cert-manager.yml
-    mode: '0664'
+    dest: "{{ install_path }}/manifests/cert-manager.yml"
+  register: result
 
 - name: Apply cert-manager manifest to the cluster.
   kubernetes.core.k8s:
-    src: /tmp/cert-manager.yml
+    src: "{{ install_path }}/manifests/cert-manager.yml"
     apply: true
     server_side_apply:
       field_manager: ansible
+  when: result.changed
 
-- name: Delete cert-manager manifest file
-  file:
-    state: absent
-    path: /tmp/cert-manager.yml
+- name: Check containers status
+  shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl wait pod --for condition=ready --field-selector=status.phase!=Succeeded -n cert-manager --all --timeout 10m"
+  changed_when: false
+  when: result.changed
 
 - name: Deploy secret
   kubernetes.core.k8s:

@@ -64,25 +64,3 @@ spec:
       targetPort: 10001
       name: discovery
   type: LoadBalancer
-
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: unifi-controller
-  namespace: infra
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-spec:
-  ingressClassName: traefik
-  rules:
-    - host: unifi-controller.{{ domain }}
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: unifi-controller
-                port:
-                  number: 8443
