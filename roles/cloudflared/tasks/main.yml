@@ -80,15 +80,15 @@
   register: external_ip
   changed_when: false
 
-- name: Create cloudflared manifest folder
+- name: Create manifest folder
   ansible.builtin.file:
-    path: "{{ install_path }}/manifests/cloudflared"
+    path: "{{ install_path }}/manifests"
     state: directory
 
 - name: Copy cloudflared manifest file
   ansible.builtin.template:
     src: cloudflared.yml.j2
-    dest: "{{ install_path }}/manifests/cloudflared/cloudflared.yml"
+    dest: "{{ install_path }}/manifests/cloudflared.yml"
     trim_blocks: false
 
 - name: Apply cloudflared.yaml
