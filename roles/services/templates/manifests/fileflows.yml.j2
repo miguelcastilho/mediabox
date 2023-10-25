@@ -75,6 +75,9 @@ metadata:
   namespace: media
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    cert-manager.io/cluster-issuer: letsencrypt
 spec:
   ingressClassName: traefik
   rules:
@@ -88,3 +91,7 @@ spec:
                 name: fileflows
                 port:
                   number: 5000
+  tls:
+    - secretName: fileflows-service-cert
+      hosts:
+        - fileflows.{{ domain }}

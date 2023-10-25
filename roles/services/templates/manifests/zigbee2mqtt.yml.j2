@@ -62,6 +62,9 @@ metadata:
   namespace: infra
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    cert-manager.io/cluster-issuer: letsencrypt
 spec:
   ingressClassName: traefik
   rules:
@@ -75,3 +78,7 @@ spec:
                 name: zigbee2mqtt
                 port:
                   number: 8082
+  tls:
+    - secretName: zigbee2mqtt-service-cert
+      hosts:
+        - zigbee2mqtt.{{ domain }}

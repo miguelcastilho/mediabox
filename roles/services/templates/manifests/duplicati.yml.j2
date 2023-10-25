@@ -77,6 +77,9 @@ metadata:
   namespace: infra
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    cert-manager.io/cluster-issuer: letsencrypt
 spec:
   ingressClassName: traefik
   rules:
@@ -90,3 +93,7 @@ spec:
                 name: duplicati
                 port:
                   number: 8200
+  tls:
+    - secretName: duplicati-service-cert
+      hosts:
+        - duplicati.{{ domain }}

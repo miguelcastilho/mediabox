@@ -57,6 +57,9 @@ metadata:
   namespace: infra
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    cert-manager.io/cluster-issuer: letsencrypt
 spec:
   ingressClassName: traefik
   rules:
@@ -70,3 +73,7 @@ spec:
                 name: uptimekuma
                 port:
                   number: 3001
+  tls:
+    - secretName: uptimekuma-service-cert
+      hosts:
+        - uptimekuma.{{ domain }}

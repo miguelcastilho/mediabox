@@ -68,6 +68,9 @@ metadata:
   namespace: media
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    cert-manager.io/cluster-issuer: letsencrypt
 spec:
   ingressClassName: traefik
   rules:
@@ -81,3 +84,7 @@ spec:
                 name: jellyfin
                 port:
                   number: 8096
+  tls:
+    - secretName: jellyfin-service-cert
+      hosts:
+        - jellyfin.{{ domain }}

@@ -71,6 +71,9 @@ metadata:
   namespace: media
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    cert-manager.io/cluster-issuer: letsencrypt
 spec:
   ingressClassName: traefik
   rules:
@@ -84,3 +87,7 @@ spec:
                 name: radarr
                 port:
                   number: 7878
+  tls:
+    - secretName: radarr-service-cert
+      hosts:
+        - radarr.{{ domain }}
