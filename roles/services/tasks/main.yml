@@ -19,7 +19,7 @@
 - name: Copy manifest files
   ansible.builtin.template:
     src: "manifests/{{ item }}.yml.j2"
-    dest: "{{ install_path }}/manifests/{{ item | regex_replace('\\.j2$','') }}"
+    dest: "{{ install_path }}/manifests/{{ item }}.yml"
   loop: "{{ enable_services }}"
 
 - name: Deploy manifests
