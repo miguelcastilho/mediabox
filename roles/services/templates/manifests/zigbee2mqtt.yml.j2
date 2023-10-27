@@ -50,9 +50,8 @@ spec:
     app: zigbee2mqtt
   ports:
     - protocol: TCP
-      port: 8082
+      port: 8080
       targetPort: ui
-  type: LoadBalancer
 
 ---
 apiVersion: networking.k8s.io/v1
@@ -61,7 +60,6 @@ metadata:
   name: zigbee2mqtt
   namespace: infra
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
     cert-manager.io/cluster-issuer: letsencrypt
@@ -77,7 +75,7 @@ spec:
               service:
                 name: zigbee2mqtt
                 port:
-                  number: 8082
+                  number: 8080
   tls:
     - secretName: zigbee2mqtt-service-cert
       hosts:
