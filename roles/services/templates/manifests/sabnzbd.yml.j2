@@ -59,9 +59,8 @@ spec:
     app: sabnzbd
   ports:
     - protocol: TCP
-      port: 8081
+      port: 8080
       targetPort: webui
-  type: LoadBalancer
 
 ---
 apiVersion: networking.k8s.io/v1
@@ -70,7 +69,6 @@ metadata:
   name: sabnzbd
   namespace: media
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
     cert-manager.io/cluster-issuer: letsencrypt
@@ -86,7 +84,7 @@ spec:
               service:
                 name: sabnzbd
                 port:
-                  number: 8081
+                  number: 8080
   tls:
     - secretName: sabnzbd-service-cert
       hosts:

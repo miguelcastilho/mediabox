@@ -19,6 +19,7 @@ spec:
           image: ghcr.io/flaresolverr/flaresolverr:v3.3.6
           ports:
             - containerPort: 8191
+              name: incoming
           volumeMounts:
             - name: localtime-volume
               mountPath: /etc/localtime
@@ -39,5 +40,4 @@ spec:
   ports:
     - protocol: TCP
       port: 8191
-      targetPort: 8191
-  type: LoadBalancer
+      targetPort: incoming

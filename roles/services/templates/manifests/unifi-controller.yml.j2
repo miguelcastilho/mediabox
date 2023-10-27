@@ -19,9 +19,15 @@ spec:
           image: lscr.io/linuxserver/unifi-controller:7.5.174
           ports:
             - containerPort: 8080
+              name: device-comm
             - containerPort: 8443
+              name: webui
             - containerPort: 3478
+              name: stun
+              protocol: UDP
             - containerPort: 10001
+              name: discovery
+              protocol: UDP
           volumeMounts:
             - name: config-volume
               mountPath: /config
@@ -49,12 +55,12 @@ spec:
   ports:
     - protocol: TCP
       port: 8080
-      targetPort: 8080
+      targetPort: device-comm
       name: device-comm
     - protocol: TCP
       port: 8443
-      targetPort: 8443
-      name: web
+      targetPort: webui
+      name: webui
     - protocol: UDP
       port: 3478
       targetPort: 3478
@@ -63,4 +69,3 @@ spec:
       port: 10001
       targetPort: 10001
       name: discovery
-  type: LoadBalancer
