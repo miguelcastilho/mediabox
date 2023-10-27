@@ -46,12 +46,6 @@
   loop: "{{ service_list }}"
   when: item != 'homer' and item != 'flaresolverr' and item != 'mqtt'
 
-- name: Get Traefik External IP
-  shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl get svc traefik -n kube-system -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'"
-  register: external_ip
-  changed_when: false
-  when: external_ip is not defined
-
 - name: Copy homer config file to remote server
   ansible.builtin.template:
     src: homer-config.yml.j2
