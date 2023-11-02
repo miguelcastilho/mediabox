@@ -1,0 +1,29 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recyclarr
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recyclarr
+  template:
+    metadata:
+      labels:
+        app: recyclarr
+    spec:
+      containers:
+        - name: recyclarr
+          image: ghcr.io/recyclarr/recyclarr:6
+          env:
+            - name: TZ
+              value: {{ timezone }}
+          volumeMounts:
+            - name: config
+              mountPath: /config
+      volumes:
+        - name: config
+          hostPath:
+            path: {{ data_path }}/recyclarr

@@ -16,10 +16,11 @@
     state: present
   loop: "{{ packages }}"
 
-- name: Install kubernetes Python library
+- name: Install pip dependencies
   become: true
   pip:
-    name: kubernetes
+    name: "{{ item }}"
+  loop: "{{ pip_dependencies }}"
 
 - name: Check if a reboot is required
   stat:

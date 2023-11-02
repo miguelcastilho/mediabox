@@ -29,10 +29,11 @@
     server_side_apply:
       field_manager: ansible
   loop: "{{ enable_services }}"
+  when: item != 'recyclarr'
 
 - name: Create list of services to copy logo files
   set_fact:
-    service_list: "{{ enable_services | default([]) }}"
+    service_list: "{{ enable_services | default([]) | difference(services_not_shown_on_homer) }}"
 
 - name: Include 'adguard-home' if install_adguard_home is true
   when: install_adguard_home
@@ -44,7 +45,11 @@
     src: "files/{{ item }}.png"
     dest: "{{ data_path }}/homer/tools/{{ item }}.png"
   loop: "{{ service_list }}"
-  when: item != 'homer' and item != 'flaresolverr' and item != 'mqtt'
+
+- name: Get Traefik External IP
+  shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl get svc traefik -n kube-system -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'"
+  register: external_ip
+  changed_when: false
 
 - name: Copy homer config file to remote server
   ansible.builtin.template:
@@ -76,3 +81,61 @@
 - name: Check containers status
   shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl wait pod --for condition=ready --field-selector=status.phase!=Succeeded -A --all --timeout 10m"
   changed_when: false
+
+- block:
+    - name: Read the content of Sonarr config.xml
+      community.general.xml:
+        path: "{{ data_path }}/sonarr/config.xml"
+        xpath: "/Config/ApiKey"
+        content: text
+      register: sonarr_config
+
+    - set_fact:
+        sonarr_api_key: "{{ sonarr_config.matches[0].ApiKey }}"
+
+    - name: Read the content of Radarr config.xml
+      community.general.xml:
+        path: "{{ data_path }}/radarr/config.xml"
+        xpath: "/Config/ApiKey"
+        content: text
+      register: radarr_config
+
+    - set_fact:
+        radarr_api_key: "{{ radarr_config.matches[0].ApiKey }}"
+
+    - name: Create recyclarr folder
+      file:
+        path: "{{ data_path }}/recyclarr"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: '0755'
+
+    - name: Template the file
+      template:
+        src: recyclarr_config.yml.j2
+        dest: "{{ data_path }}/recyclarr/config.yml"
+
+    - name: Deploy recyclarr
+      kubernetes.core.k8s:
+        template: "manifests/recyclarr.yml.j2"
+        apply: true
+        server_side_apply:
+          field_manager: ansible
+
+    - name: Check containers status
+      shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl wait pod --for condition=ready --field-selector=status.phase!=Succeeded -A --all --timeout 10m"
+      changed_when: false
+
+    - name: Get recyclarr pod name
+      kubernetes.core.k8s_info:
+        kind: Pod
+        api_version: v1
+        namespace: media
+        label_selectors:
+          - app = recyclarr
+      register: pod_info
+
+    - name: Execute recyclarr sync command
+      shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl exec {{ pod_info.resources[0].metadata.name }} -n media -- recyclarr sync"
+  when: "'recyclarr' in enable_services"
