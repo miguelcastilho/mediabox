@@ -28,10 +28,8 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
-            - name: downloads
-              mountPath: /downloads
-            - name: incomplete-downloads
-              mountPath: /incomplete-downloads
+            - name: data
+              mountPath: /data/usenet
             - name: localtime
               mountPath: /etc/localtime
               readOnly: true
@@ -39,12 +37,9 @@ spec:
         - name: config
           hostPath:
             path: {{ data_path }}/sabnzbd
-        - name: downloads
+        - name: data
           hostPath:
-            path: {{ data_path }}/downloads/complete
-        - name: incomplete-downloads
-          hostPath:
-            path: {{ data_path }}/downloads/incomplete
+            path: {{ media_path }}/usenet
         - name: localtime
           hostPath:
             path: /etc/localtime

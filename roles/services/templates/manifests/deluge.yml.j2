@@ -25,27 +25,27 @@ spec:
           ports:
             - containerPort: 8112
               name: webui
-            - containerPort: 6881
+            - containerPort: 58946
               name: inbound
-            - containerPort: 6881
+            - containerPort: 58946
               protocol: UDP
               name: inbound-udp
           volumeMounts:
-            - name: config-volume
+            - name: config
               mountPath: /config
-            - name: downloads-volume
-              mountPath: /downloads
-            - name: localtime-volume
+            - name: data
+              mountPath: /data/torrents
+            - name: localtime
               mountPath: /etc/localtime
               readOnly: true
       volumes:
-        - name: config-volume
+        - name: config
           hostPath:
             path: {{ data_path }}/deluge
-        - name: downloads-volume
+        - name: data
           hostPath:
-            path: {{ data_path }}/downloads
-        - name: localtime-volume
+            path: {{ media_path }}/torrents
+        - name: localtime
           hostPath:
             path: /etc/localtime
 
@@ -64,11 +64,11 @@ spec:
       targetPort: webui
       name: webui
     - protocol: TCP
-      port: 6881
+      port: 58946
       targetPort: inbound
       name: inbound
     - protocol: UDP
-      port: 6881
+      port: 58946
       targetPort: inbound-udp
       name: inbound-udp
 

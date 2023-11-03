@@ -28,22 +28,17 @@ spec:
         - containerPort: 8096
           name: webui
         volumeMounts:
-        - name: jellyfin-config
+        - name: config
           mountPath: /config
-        - name: jellyfin-tvshows
-          mountPath: /data/tvshows
-        - name: jellyfin-movies
-          mountPath: /data/movies
+        - name: data
+          mountPath: /data/media
       volumes:
-      - name: jellyfin-config
+      - name: config
         hostPath:
           path: {{ data_path }}/jellyfin
-      - name: jellyfin-tvshows
+      - name: data
         hostPath:
-          path: {{ tvshows_path }}
-      - name: jellyfin-movies
-        hostPath:
-          path: {{ movies_path }}
+          path: {{ media_path }}/media
 
 ---
 apiVersion: v1

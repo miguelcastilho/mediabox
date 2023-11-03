@@ -1,0 +1,68 @@
+---
+- name: Create 'media' directory
+  file:
+    path: "{{ media_path }}"
+    state: directory
+
+- name: Create 'torrents' directory
+  file:
+    path: "{{ media_path }}/torrents"
+    state: directory
+
+- name: Create 'usenet' directory
+  file:
+    path: "{{ media_path }}/usenet"
+    state: directory
+
+- name: Create 'complete' directory inside 'usenet'
+  file:
+    path: "{{ media_path }}/usenet/complete"
+    state: directory
+
+- name: Create 'incomplete' directory inside 'usenet'
+  file:
+    path: "{{ media_path }}/usenet/incomplete"
+    state: directory
+
+- name: Create 'movies' directory
+  file:
+    path: "{{ media_path }}/media/movies"
+    state: directory
+
+- name: Create 'tv' directory
+  file:
+    path: "{{ media_path }}/media/tv"
+    state: directory
+
+- name: Create 'movies' directory inside 'torrents'
+  file:
+    path: "{{ media_path }}/torrents/movies"
+    state: directory
+
+- name: Create 'tv' directory inside 'torrents'
+  file:
+    path: "{{ media_path }}/torrents/tv"
+    state: directory
+
+- name: Create 'movies' directory inside 'usenet/complete'
+  file:
+    path: "{{ media_path }}/usenet/complete/movies"
+    state: directory
+
+- name: Create 'tv' directory inside 'usenet/complete'
+  file:
+    path: "{{ media_path }}/usenet/complete/tv"
+    state: directory
+
+- name: Change ownership of media folder structure
+  file:
+    path: "{{ media_path }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    recurse: yes
+
+# - name: Set permissions on media folder structure
+#   file:
+#     path: "{{ media_path }}"
+#     recurse: yes
+#     mode: "u+w,g+w,a=,a+rX"

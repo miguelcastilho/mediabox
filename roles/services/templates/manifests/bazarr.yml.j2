@@ -28,10 +28,8 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
-            - name: movies
-              mountPath: /movies
-            - name: tv
-              mountPath: /tv
+            - name: data
+              mountPath: /data/media
             - name: localtime
               mountPath: /etc/localtime
               readOnly: true
@@ -39,12 +37,9 @@ spec:
         - name: config
           hostPath:
             path: {{ data_path }}/bazarr
-        - name: movies
+        - name: data
           hostPath:
-            path: {{ movies_path }}
-        - name: tv
-          hostPath:
-            path: {{ tvshows_path }}
+            path: {{ media_path }}/media
         - name: localtime
           hostPath:
             path: /etc/localtime

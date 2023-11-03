@@ -1,4 +1,6 @@
 ---
+- include_tasks: folder_structure.yml
+
 - name: Create infra namespace
   kubernetes.core.k8s:
     name: infra
