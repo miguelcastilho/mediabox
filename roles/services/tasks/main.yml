@@ -138,4 +138,9 @@
 
     - name: Execute recyclarr sync command
       shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl exec {{ pod_info.resources[0].metadata.name }} -n media -- recyclarr sync"
+      register: output
+
+    - name: Show output of recyclarr sync command
+      debug:
+        var: output.stdout_lines
   when: "'recyclarr' in enable_services"
