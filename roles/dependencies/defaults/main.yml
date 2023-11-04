@@ -7,3 +7,4 @@ reboot_timeout: 600
 pip_dependencies:
     - kubernetes
     - lxml
+    - netaddr

@@ -4,26 +4,29 @@ all:
     <target IP address>:
       ansible_ssh_user: <username>
   vars:
+    # General
+    domain: internet domain
     email: email for letsencrypt
     timezone: timezone, ex. Europe/Amsterdam
-    data_path: path to persistent storage, ex. /home/media
-    tailscale_auth_key: tailscale auth key
-    tailscale_advertise_routes: local network to advertise on tailscale, ex. 192.168.1.0/24
-    tvshows_path: path to tvshows storage, ex. /media/tvshows
-    movies_path: path to movies storage, ex. /media/movies
+    data_path: path to persistent storage for configs, DBs and logs, ex. /mediabox
+    install_path: path to install manifests and files
+    media_path: path to media storage
+    # Adguard-Home
+    adguard_home_username: adguard home username
+    adguard_home_password: adguard home password
+    adguard_home_user_rules:
+      - dns resolution similar to /etc/hosts in the form of <ip_address dns>
+    # Cloudflare
+    cloudflare_api_token: cloudflare api token
     cloudflare_tunnel_name: cloudflared tunnel name
     cloudflare_tunnel_dns_list: # list here the services deployed on k3s that you want to expose to the internet
       - name: dns name of the service
         port: port of the service
-        domain: internet domain
-    install_path: path to install manifests and files
-    adguard_home_username: adguard home username
-    adguard_home_password: adguard home password
-    adguard_home_user_rules:
-      - dns resolution similar to /etc/hosts in the form of <dns ip_address>
-    cloudflare_api_token: api token
     cloudflared_pem: |-
       paste here your cloudflared pem file content
+    # Tailscale
+    tailscale_auth_key: tailscale auth key
+    # Services
     zigbee_adapter_path: specify the connection to zigbee adapter
     install_cloudflared: true
     install_adguard_home: true
@@ -45,3 +48,5 @@ all:
       - sonarr
       - jellyfin
       - jellyseerr
+      - recyclarr
+    services_not_shown_on_homer: ["homer", "flaresolverr", "mqtt", "recyclarr"]
