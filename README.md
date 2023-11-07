@@ -35,6 +35,7 @@ Before you get started with this automation tool, make sure you have the followi
   ```bash
   username ALL=(ALL:ALL) NOPASSWD: ALL
   ```
+- [Tailscale auth key](https://tailscale.com/kb/1085/auth-keys/#step-1-generate-an-auth-key) In case you want to deploy Tailscale
 
 ## Installation
 
