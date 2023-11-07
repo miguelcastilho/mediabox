@@ -33,7 +33,7 @@ Before you get started with this automation tool, make sure you have the followi
 - Ensure the Ansible controller node can SSH to the server node without password.
 - Ensure that the SSH user does not require root password
   ```bash
-  username ALL=(ALL:ALL) NOPASSWD: ALL)
+  username ALL=(ALL:ALL) NOPASSWD: ALL
   ```
 
 ## Installation
