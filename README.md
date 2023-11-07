@@ -30,6 +30,11 @@ Before you get started with this automation tool, make sure you have the followi
 - Ubuntu 22.04.3 LTS
 - [Cloudflare account](https://dash.cloudflare.com/sign-up)
 - [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-and-upgrading-ansible-with-pipx)
+- Ensure the Ansible controller node can SSH to the server node without password.
+- Ensure that the SSH user does not require root password
+  ```bash
+  username ALL=(ALL:ALL) NOPASSWD: ALL)
+  ```
 
 ## Installation
 
