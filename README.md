@@ -28,7 +28,7 @@ This project empowers you to enjoy your digital content, secure your network, en
 Before you get started with this automation tool, make sure you have the following prerequisites:
 
 - Ubuntu 22.04.3 LTS
-- [Cloudflare account](https://dash.cloudflare.com/sign-up)
+- [Cloudflare account](https://dash.cloudflare.com/sign-up) In case you want to expose your services to the internet
 - [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-and-upgrading-ansible-with-pipx)
 - Ensure the Ansible controller node can SSH to the server node without password.
 - Ensure that the SSH user does not require root password
