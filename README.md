@@ -59,12 +59,40 @@ The following steps should be executed in your client machine (aka your laptop):
    ```bash
    ansible-galaxy install -r requirements.yml
    ```
-3. Create your own inventory file based on the [sample inventory](inventory/inventory.yml.example)
+3. Create your own inventory file based on the [sample inventory](inventory/inventory.yml)
+   A description of the variables can be found in the table [below](#configuration variables).
 
 4. Execute the playbook:
    ```bash
    ansible-playbook -i inventory/<YOUR_INVENTORY>.yml install.yml
    ```
+
+## Configuration Variables
+
+| Variable                    | Description                                       | Example Value              |
+|-----------------------------|---------------------------------------------------|----------------------------|
+| `domain`                    | Internet domain for your server.                 | example.com                |
+| `email`                     | Email address for Let's Encrypt certificates.    | user@example.com           |
+| `timezone`                  | Timezone                | Europe/Amsterdam           |
+| `data_path`                 | Path to persistent storage for configs, DBs, and logs (e.g., /mediabox). | /mediabox |
+| `install_path`              | Path to installation manifests and files.        | /opt/myapp                |
+| `media_path`                | Path to media storage.                           | /media/storage            |
+| `adguard_home_username`     | Adguard Home username.                          | myusername                |
+| `adguard_home_password`     | Adguard Home password.                          | mysecretpassword           |
+| `adguard_home_user_rules`   | DNS resolution similar to /etc/hosts in the form of `<ip_address dns>`. | 192.168.1.1 myhostname |
+| `cloudflare_api_token`      | Cloudflare API token.                            | YOUR_CLOUDFLARE_API_TOKEN |
+| `cloudflare_tunnel_name`    | Name of the Cloudflared tunnel.                 | my-tunnel                 |
+| `cloudflare_tunnel_dns_list`| List of services deployed on k3s to expose to the internet. | [ {"name": "service1", "port": 8080}, {"name": "service2", "port": 9000} ] |
+| `cloudflared_pem`           | Cloudflared PEM file content.                   | -----BEGIN CERTIFICATE-----\n...  |
+| `tailscale_auth_key`        | Tailscale authentication key.                   | my-tailscale-auth-key     |
+| `zigbee_adapter_path`       | Specify the connection to the Zigbee adapter.  | /dev/ttyUSB0              |
+| `install_cloudflared`       | Set to `true` to install Cloudflared.           | true                      |
+| `install_adguard_home`      | Set to `true` to install Adguard Home.          | true                      |
+| `enable_services`           | List of services to enable.                     | [ "duplicati", "mqtt", "homeassistant" ] |
+| `services_not_shown_on_homer`| List of services not shown on Homer dashboard.  | [ "homer", "mqtt", "recyclarr" ] |
+
+
+
 
 ## Contributing
 If you'd like to contribute to this project, please follow these steps:
