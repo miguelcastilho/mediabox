@@ -1,42 +1,42 @@
 ---
 - name: Update APT package cache
   become: true
-  apt:
+  ansible.builtin.apt:
     update_cache: true
 
 - name: Upgrade all packages
   become: true
-  apt:
+  ansible.builtin.apt:
     upgrade: true
 
 - name: Install required dependencies
   become: true
-  apt:
+  ansible.builtin.apt:
     name: "{{ item }}"
     state: present
   loop: "{{ packages }}"
 
 - name: Install pip dependencies
   become: true
-  pip:
+  community.general.pipx:
     name: "{{ item }}"
   loop: "{{ pip_dependencies }}"
 
 - name: Check if a reboot is required
-  stat:
+  ansible.builtin.stat:
     path: /var/run/reboot-required
   register: reboot_required
 
 - name: Reboot if required
   become: true
-  reboot:
+  ansible.builtin.reboot:
     msg: "Rebooting the system as updates require it"
   when: reboot_required.stat.exists
   async: "{{ reboot_timeout }}"  # Set a reasonable timeout for the reboot to complete
   poll: 0     # Don't wait for the reboot to complete
 
 - name: Wait for the system to come back online
-  wait_for:
+  ansible.builtin.wait_for:
     host: "{{ inventory_hostname }}"
     port: 22
     state: started

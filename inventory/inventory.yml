@@ -8,15 +8,17 @@ all:
     domain: internet domain
     email: email for letsencrypt
     timezone: timezone, ex. Europe/Amsterdam
-    data_path: path to persistent storage for configs, DBs and logs, ex. /mediabox
-    install_path: path to install manifests and files
+    data_path: /opt/HomeServeMate
+    install_path: "{{ data_path }}/install_files"
     media_path: path to media storage
     # Adguard-Home
+    install_adguard_home: true
     adguard_home_username: adguard home username
     adguard_home_password: adguard home password
     adguard_home_user_rules:
       - dns resolution similar to /etc/hosts in the form of <ip_address dns>
     # Cloudflare
+    install_cloudflared: true
     cloudflare_api_token: cloudflare api token
     cloudflare_tunnel_name: cloudflared tunnel name
     cloudflare_tunnel_dns_list: # list here the services deployed on k3s that you want to expose to the internet
@@ -28,8 +30,6 @@ all:
     tailscale_auth_key: tailscale auth key
     # Services
     zigbee_adapter_path: specify the connection to zigbee adapter
-    install_cloudflared: true
-    install_adguard_home: true
     enable_services:
       - duplicati
       - homeassistant
