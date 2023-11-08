@@ -67,7 +67,7 @@ The following steps should be executed in your client machine (aka your laptop):
    ansible-playbook -i inventory/<YOUR_INVENTORY>.yml install.yml
    ```
 
-## Configuration Variables
+<a name="configuration-variables"></a>## Configuration Variables
 
 | Variable                    | Description                                       | Example Value              |
 |-----------------------------|---------------------------------------------------|----------------------------|
