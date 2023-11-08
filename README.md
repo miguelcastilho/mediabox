@@ -80,14 +80,15 @@ The following steps should be executed in your client machine (aka your laptop):
 | `adguard_home_username`     | Required (if install_adguard_home=true)  | Adguard Home username.             | myusername                |
 | `adguard_home_password`     | Required (if install_adguard_home=true)  | Adguard Home password.             | mysecretpassword           |
 | `adguard_home_user_rules`   | Required (if install_adguard_home=true)  | DNS resolution similar to /etc/hosts in the form of `<ip_address dns>`. | 192.168.1.1 myhostname |
-| `cloudflare_api_token`      | Required (if install_cloudflared=true)                      | Cloudflare API token.                            | YOUR_CLOUDFLARE_API_TOKEN |
+| `install_adguard_home`      | Required                       | Set to `true` to install Adguard Home.          | true                      |
+| |`cloudflare_api_token`      | Required (if install_cloudflared=true)                      | Cloudflare API token.                            | YOUR_CLOUDFLARE_API_TOKEN |
 | `cloudflare_tunnel_name`    | Required (if install_cloudflared=true)                      | Name of the Cloudflared tunnel.                 | my-tunnel                 |
 | `cloudflare_tunnel_dns_list`| Required (if install_cloudflared=true)                      | List of services deployed on k3s to expose to the internet. | [ {"name": "service1", "port": 8080}, {"name": "service2", "port": 9000} ] |
 | `cloudflared_pem`           | Required (if install_cloudflared=true)                      | Cloudflared PEM file content.                   | -----BEGIN CERTIFICATE-----\n...  |
 | `tailscale_auth_key`        | Required                       | Tailscale authentication key.                   | my-tailscale-auth-key     |
 | `zigbee_adapter_path`       | Required                       | Specify the connection to the Zigbee adapter.  | /dev/ttyUSB0              |
 | `install_cloudflared`       | Required                       | Set to `true` to install Cloudflared.           | true                      |
-| `install_adguard_home`      | Required                       | Set to `true` to install Adguard Home.          | true                      |
+
 | `enable_services`           | Required                       | List of services to enable.                     | [ "duplicati", "mqtt", "homeassistant" ] |
 | `services_not_shown_on_homer`| Required                    | List of services not shown on Homer dashboard.  | [ "homer", "mqtt", "recyclarr" ] |
 
