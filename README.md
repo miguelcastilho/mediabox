@@ -60,14 +60,14 @@ The following steps should be executed in your client machine (aka your laptop):
    ansible-galaxy install -r requirements.yml
    ```
 3. Create your own inventory file based on the [sample inventory](inventory/inventory.yml)
-   [Description of the variables can be found in the table below](#configuration-variables).
+   Description of the variables can be found in the [table below](#configuration-variables).
 
 4. Execute the playbook:
    ```bash
    ansible-playbook -i inventory/<YOUR_INVENTORY>.yml install.yml
    ```
 
-<a name="configuration-variables"></a>## Configuration Variables
+## Configuration Variables
 
 | Variable                    | Description                                       | Example Value              |
 |-----------------------------|---------------------------------------------------|----------------------------|
