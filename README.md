@@ -27,7 +27,7 @@ This project empowers you to enjoy your digital content, secure your network, en
 
 Before you get started with this automation tool, make sure you have the following prerequisites:
 
-- Client and server machines. This works best if you run the playbooks, for example, on your laptop against a remote server. Running the playbooks directly on the remote server might break the execution if the server needs to reboot when upgrading packages with apt.
+- **Client and Server Machines**: This works best if you run the playbooks, for example, on your laptop against a remote server. Running the playbooks directly on the remote server might break the execution if the server needs to reboot when upgrading packages with apt.
 - Client: (aka your laptop)
   - You need to have ansible installed. Check how to install it [here](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-and-upgrading-ansible-with-pipx)
   - Ensure the client can SSH to the server without password. This can be done by executing the following commands on your laptop if you are using MacOS or Linux:
@@ -69,29 +69,27 @@ The following steps should be executed in your client machine (aka your laptop):
 
 ## Configuration Variables
 
-| Variable                    | Description                                       | Example Value              |
-|-----------------------------|---------------------------------------------------|----------------------------|
-| `domain`                    | Internet domain for your server.                 | example.com                |
-| `email`                     | Email address for Let's Encrypt certificates.    | user@example.com           |
-| `timezone`                  | Timezone                | Europe/Amsterdam           |
-| `data_path`                 | Path to persistent storage for configs, DBs, and logs (e.g., /mediabox). | /mediabox |
-| `install_path`              | Path to installation manifests and files.        | /opt/myapp                |
-| `media_path`                | Path to media storage.                           | /media/storage            |
-| `adguard_home_username`     | Adguard Home username.                          | myusername                |
-| `adguard_home_password`     | Adguard Home password.                          | mysecretpassword           |
-| `adguard_home_user_rules`   | DNS resolution similar to /etc/hosts in the form of `<ip_address dns>`. | 192.168.1.1 myhostname |
-| `cloudflare_api_token`      | Cloudflare API token.                            | YOUR_CLOUDFLARE_API_TOKEN |
-| `cloudflare_tunnel_name`    | Name of the Cloudflared tunnel.                 | my-tunnel                 |
-| `cloudflare_tunnel_dns_list`| List of services deployed on k3s to expose to the internet. | [ {"name": "service1", "port": 8080}, {"name": "service2", "port": 9000} ] |
-| `cloudflared_pem`           | Cloudflared PEM file content.                   | -----BEGIN CERTIFICATE-----\n...  |
-| `tailscale_auth_key`        | Tailscale authentication key.                   | my-tailscale-auth-key     |
-| `zigbee_adapter_path`       | Specify the connection to the Zigbee adapter.  | /dev/ttyUSB0              |
-| `install_cloudflared`       | Set to `true` to install Cloudflared.           | true                      |
-| `install_adguard_home`      | Set to `true` to install Adguard Home.          | true                      |
-| `enable_services`           | List of services to enable.                     | [ "duplicati", "mqtt", "homeassistant" ] |
-| `services_not_shown_on_homer`| List of services not shown on Homer dashboard.  | [ "homer", "mqtt", "recyclarr" ] |
-
-
+| Variable                    | Requirement                    | Description                                       | Example Value              |
+|-----------------------------|--------------------------------|---------------------------------------------------|----------------------------|
+| `domain`                    | Required                       | Internet domain for your server.                | example.com                |
+| `email`                     | Required                       | Email address for Let's Encrypt certificates.   | user@example.com           |
+| `timezone`                  | Required                       | Timezone.                                        | Europe/Amsterdam           |
+| `data_path`                 | Required                       | Path to persistent storage for configs, DBs, and logs (e.g., /mediabox). | /mediabox |
+| `install_path`              | Required                       | Path to installation manifests and files.      | /opt/myapp                |
+| `media_path`                | Required                       | Path to media storage.                           | /media/storage            |
+| `adguard_home_username`     | Required (if install_adguard_home=true)  | Adguard Home username.             | myusername                |
+| `adguard_home_password`     | Required (if install_adguard_home=true)  | Adguard Home password.             | mysecretpassword           |
+| `adguard_home_user_rules`   | Required (if install_adguard_home=true)  | DNS resolution similar to /etc/hosts in the form of `<ip_address dns>`. | 192.168.1.1 myhostname |
+| `cloudflare_api_token`      | Required (if install_cloudflared=true)                      | Cloudflare API token.                            | YOUR_CLOUDFLARE_API_TOKEN |
+| `cloudflare_tunnel_name`    | Required (if install_cloudflared=true)                      | Name of the Cloudflared tunnel.                 | my-tunnel                 |
+| `cloudflare_tunnel_dns_list`| Required (if install_cloudflared=true)                      | List of services deployed on k3s to expose to the internet. | [ {"name": "service1", "port": 8080}, {"name": "service2", "port": 9000} ] |
+| `cloudflared_pem`           | Required (if install_cloudflared=true)                      | Cloudflared PEM file content.                   | -----BEGIN CERTIFICATE-----\n...  |
+| `tailscale_auth_key`        | Required                       | Tailscale authentication key.                   | my-tailscale-auth-key     |
+| `zigbee_adapter_path`       | Required                       | Specify the connection to the Zigbee adapter.  | /dev/ttyUSB0              |
+| `install_cloudflared`       | Required                       | Set to `true` to install Cloudflared.           | true                      |
+| `install_adguard_home`      | Required                       | Set to `true` to install Adguard Home.          | true                      |
+| `enable_services`           | Required                       | List of services to enable.                     | [ "duplicati", "mqtt", "homeassistant" ] |
+| `services_not_shown_on_homer`| Required                    | List of services not shown on Homer dashboard.  | [ "homer", "mqtt", "recyclarr" ] |
 
 
 ## Contributing
