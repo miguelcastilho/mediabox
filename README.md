@@ -59,7 +59,8 @@ The following steps should be executed in your client machine (aka your laptop):
    ```bash
    ansible-galaxy install -r requirements.yml
    ```
-3. Create your own inventory file based on the [sample inventory](inventory/inventory.yml).  
+3. Create your own inventory file based on the [sample inventory](inventory/inventory.yml).
+
    Description of the variables can be found in the [table below](#configuration-variables).
 
 4. Execute the playbook:
