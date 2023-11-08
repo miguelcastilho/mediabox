@@ -64,15 +64,6 @@
     state: stopped
   when: adguardhome_status.failed
 
-- name: Retrieve the server's IP address
-  command: hostname -I | awk '{print $1}'
-  register: server_ip_output
-  changed_when: false
-
-- name: Set the server's IP address as a variable
-  set_fact:
-    server_ip: "{{ server_ip_output.stdout }}"
-
 - name: Copy AdGuardHome.yaml
   ansible.builtin.template:
     src: AdGuardHome.yaml.j2
