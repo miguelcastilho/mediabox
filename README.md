@@ -46,7 +46,7 @@ Before you get started with this automation tool, make sure you have the followi
 
 ## Deploy HomeServeMate
 
-To deploy and configure HomeServeMate using this automation tool, follow these steps:
+The following steps should be executed in your client machine (aka your laptop):
 1. Clone this repository to your server:
    ```bash
    git clone https://github.com/miguelcastilho/HomeServeMate.git
