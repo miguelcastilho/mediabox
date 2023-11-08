@@ -27,41 +27,41 @@ This project empowers you to enjoy your digital content, secure your network, en
 
 Before you get started with this automation tool, make sure you have the following prerequisites:
 
-- Ubuntu 22.04.3 LTS
-- [Cloudflare account](https://dash.cloudflare.com/sign-up) In case you want to expose your services to the internet
-- [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-and-upgrading-ansible-with-pipx)
-- Ensure the Ansible controller node can SSH to the server node without password.
-- Ensure that the SSH user does not require root password
-  ```bash
-  username ALL=(ALL:ALL) NOPASSWD: ALL
-  ```
+- Client and server machines. This works best if you run the playbooks, for example, on your laptop against a remote server. Running the playbooks directly on the remote server might break the execution if the server needs to reboot when upgrading packages with apt.
+- Client: (aka your laptop)
+  - You need to have ansible installed. Check how to install it [here](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-and-upgrading-ansible-with-pipx)
+  - Ensure the client can SSH to the server without password. This can be done by executing the following commands on your laptop if you are using MacOS or Linux:
+    ```bash
+    ssh-keygen
+    ssh-copy-id username@remote_server
+    ```
+- Server:
+  - OS: Ubuntu 22.04.3 LTS
+  - Ensure that the SSH user does not require root password:
+    ```bash
+    echo 'YOUR_SSH_USERNAME ALL=(ALL:ALL) NOPASSWD: ALL' | sudo tee /etc/sudoers.d/YOUR_SSH_USERNAME
+    ```
+- [Cloudflare account](https://dash.cloudflare.com/sign-up) In case you want to expose your services to the internet (optional)
 - [Tailscale auth key](https://tailscale.com/kb/1085/auth-keys/#step-1-generate-an-auth-key) In case you want to deploy Tailscale
 
-## Installation
+## Deploy HomeServeMate
 
-To deploy and configure your home server using this automation tool, follow these steps:
-
+To deploy and configure HomeServeMate using this automation tool, follow these steps:
 1. Clone this repository to your server:
-
    ```bash
    git clone https://github.com/miguelcastilho/HomeServeMate.git
    ```
 2. Change to project directory:
-
    ```bash
    cd HomeServeMate
    ```
-
 2. Install ansible requirements:
-
    ```bash
    ansible-galaxy install -r requirements.yml
    ```
-
 3. Create your own inventory file based on the [sample inventory](inventory/inventory.yml.example)
 
 4. Execute the playbook:
-
    ```bash
    ansible-playbook -i inventory/<YOUR_INVENTORY>.yml install.yml
    ```
