@@ -1,0 +1,76 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homarr
+  namespace: infra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: homarr
+  template:
+    metadata:
+      labels:
+        app: homarr
+    spec:
+      containers:
+        - name: homarr
+          image: ghcr.io/ajnart/homarr:0.13.4
+          volumeMounts:
+            - name: configs
+              mountPath: /app/data/configs
+            - name: icons
+              mountPath: /app/public/icons
+          ports:
+            - containerPort: 7575
+              name: webui
+      volumes:
+        - name: configs
+          hostPath:
+            path: {{ data_path }}/homarr
+        - name: icons
+          hostPath:
+            path: {{ data_path }}/homarr/icons
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: homarr
+  namespace: infra
+spec:
+  selector:
+    app: homarr
+  ports:
+    - protocol: TCP 
+      port: 7575
+      targetPort: webui
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: homarr
+  namespace: infra
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: homarr.{{ domain }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: homarr
+                port:
+                  number: 7575
+  tls:
+    - secretName: homarr-service-cert
+      hosts:
+        - homarr.{{ domain }}
