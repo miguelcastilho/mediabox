@@ -1,5 +1,5 @@
 ---
-- name: Install k3s
+- name: Deploy HomeServeMate
   hosts: all
   tasks:
     - name: Install dependencies
