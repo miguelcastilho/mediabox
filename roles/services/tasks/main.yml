@@ -44,11 +44,11 @@
   register: external_ip
   changed_when: false
 
-- name: Copy homer config file to remote server
+- name: Copy homarr config file to remote server
   ansible.builtin.template:
-    src: homer-config.yml.j2
-    dest: "{{ data_path }}/homer/config.yml"
-  when: "'homer' in enable_services"
+    src: homarr_default.json.j2
+    dest: "{{ data_path }}/homarr/default.json"
+  when: "'homarr' in enable_services"
 
 - block:
     - name: Check if zigbee2mqtt configuration file already exists
