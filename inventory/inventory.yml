@@ -9,7 +9,6 @@ all:
     email: email for letsencrypt
     timezone: timezone, ex. Europe/Amsterdam
     data_path: /opt/HomeServeMate
-    install_path: "{{ data_path }}/install_files"
     media_path: path to media storage
     # Adguard-Home
     install_adguard_home: true

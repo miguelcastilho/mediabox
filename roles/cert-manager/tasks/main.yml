@@ -1,18 +1,18 @@
 ---
 - name: Create manifest folder
   ansible.builtin.file:
-    path: "{{ install_path }}/manifests"
+    path: "{{ data_path }}/manifests"
     state: directory
 
 - name: Download cert-manager manifest
   ansible.builtin.get_url:
     url: https://github.com/cert-manager/cert-manager/releases/download/v1.13.1/cert-manager.yaml
-    dest: "{{ install_path }}/manifests/cert-manager.yml"
+    dest: "{{ data_path }}/manifests/cert-manager.yml"
   register: result
 
 - name: Apply cert-manager manifest to the cluster.
   kubernetes.core.k8s:
-    src: "{{ install_path }}/manifests/cert-manager.yml"
+    src: "{{ data_path }}/manifests/cert-manager.yml"
     apply: true
     server_side_apply:
       field_manager: ansible

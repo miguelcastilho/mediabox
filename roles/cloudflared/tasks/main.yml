@@ -78,13 +78,13 @@
 
 - name: Create manifest folder
   ansible.builtin.file:
-    path: "{{ install_path }}/manifests"
+    path: "{{ data_path }}/manifests"
     state: directory
 
 - name: Copy cloudflared manifest file
   ansible.builtin.template:
     src: cloudflared.yml.j2
-    dest: "{{ install_path }}/manifests/cloudflared.yml"
+    dest: "{{ data_path }}/manifests/cloudflared.yml"
     trim_blocks: false
 
 - name: Apply cloudflared.yaml

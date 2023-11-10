@@ -75,7 +75,6 @@ The following steps should be executed in your client machine (aka your laptop):
 | `email`                     | Required                       | Email address for Let's Encrypt certificates.   | user@example.com           |
 | `timezone`                  | Required                       | Timezone.                                        | Europe/Amsterdam           |
 | `data_path`                 | Required                       | Path to persistent storage for configs, DBs, and logs (e.g., /mediabox). | /mediabox |
-| `install_path`              | Required                       | Path to installation manifests and files.      | /opt/myapp                |
 | `media_path`                | Required                       | Path to media storage.                           | /media/storage            |
 | `install_adguard_home`      | Required                       | Set to `true` to install Adguard Home.          | true                      |
 | `adguard_home_username`     | Required (if install_adguard_home=true)  | Adguard Home username.             | myusername                |

@@ -1,8 +1,8 @@
 ---
-- name: "Create {{ install_path }} directory"
+- name: "Create {{ data_path }} directory"
   become: true
   ansible.builtin.file:
-    path: "{{ install_path }}"
+    path: "{{ data_path }}"
     state: directory
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"

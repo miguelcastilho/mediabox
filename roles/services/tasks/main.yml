@@ -21,13 +21,13 @@
 
 - name: Create manifests folder
   ansible.builtin.file:
-    path: "{{ install_path }}/manifests"
+    path: "{{ data_path }}/manifests"
     state: directory
 
 - name: Copy manifest files
   ansible.builtin.template:
     src: "manifests/{{ item }}.yml.j2"
-    dest: "{{ install_path }}/manifests/{{ item }}.yml"
+    dest: "{{ data_path }}/manifests/{{ item }}.yml"
   loop: "{{ enable_services }}"
 
 - name: Deploy manifests
@@ -73,7 +73,7 @@
 
     - name: "Create zigbee2mqtt directory"
       ansible.builtin.file:
-        path: "{{ install_path }}/zigbee2mqtt"
+        path: "{{ data_path }}/zigbee2mqtt"
         state: directory
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
