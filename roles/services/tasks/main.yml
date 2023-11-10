@@ -44,11 +44,13 @@
   register: external_ip
   changed_when: false
 
-- name: Copy homarr config file to remote server
-  ansible.builtin.template:
-    src: homarr_default.json.j2
-    dest: "{{ data_path }}/homarr/default.json"
-  when: "'homarr' in enable_services"
+# Disabled because when overwritting the file Homarr will loose the private creds for each app
+# - name: Copy homarr config file to remote server
+#   become: true
+#   ansible.builtin.template:
+#     src: homarr_default.json.j2
+#     dest: "{{ data_path }}/homarr/default.json"
+#   when: "'homarr' in enable_services"
 
 - block:
     - name: Check if zigbee2mqtt configuration file already exists

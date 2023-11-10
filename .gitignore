@@ -1,2 +1,3 @@
 inventory/*
 !inventory/inventory.yml
+roles/services/templates/homarr_default.json.j2
