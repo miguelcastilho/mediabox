@@ -39,21 +39,6 @@
   loop: "{{ enable_services }}"
   when: item != 'recyclarr'
 
-- name: Create list of services to copy logo files
-  set_fact:
-    service_list: "{{ enable_services | default([]) | difference(services_not_shown_on_homer) }}"
-
-- name: Include 'adguard-home' if install_adguard_home is true
-  when: install_adguard_home
-  set_fact:
-    service_list: "{{ service_list + ['adguard-home'] + ['freeathome'] }}"
-
-- name: Copy icons files
-  ansible.builtin.copy:
-    src: "files/{{ item }}.png"
-    dest: "{{ data_path }}/homer/tools/{{ item }}.png"
-  loop: "{{ service_list }}"
-
 - name: Get Traefik External IP
   shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl get svc traefik -n kube-system -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'"
   register: external_ip

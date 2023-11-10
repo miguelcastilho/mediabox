@@ -61,6 +61,14 @@
     group: "{{ ansible_user }}"
     recurse: yes
 
+- name: Create 'teslamate' directory inside
+  become: true
+  file:
+    path: "{{ data_path }}/teslamate"
+    state: directory
+    mode: u=rwx,g=rx,o=rx
+  when: "'teslamate' in enable_services"
+
 - name: Create 'grafana' directory inside 'teslamate'
   become: true
   file:
