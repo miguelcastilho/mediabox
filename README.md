@@ -88,7 +88,6 @@ The following steps should be executed in your client machine (aka your laptop):
 | `tailscale_auth_key`        | Required                       | Tailscale authentication key.                   | my-tailscale-auth-key     |
 | `zigbee_adapter_path`       | Required                       | Specify the connection to the Zigbee adapter.  | /dev/ttyUSB0              |
 | `enable_services`           | Required                       | List of services to enable.                     | [ "duplicati", "mqtt", "homeassistant" ] |
-| `services_not_shown_on_homer`| Required                    | List of services not shown on Homer dashboard.  | [ "homer", "mqtt", "recyclarr" ] |
 
 
 ## Contributing

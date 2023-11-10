@@ -32,7 +32,6 @@ all:
     enable_services:
       - duplicati
       - homeassistant
-      - homer
       - mqtt
       - tailscale
       - unifi-controller
@@ -48,4 +47,3 @@ all:
       - jellyfin
       - jellyseerr
       - recyclarr
-    services_not_shown_on_homer: ["homer", "flaresolverr", "mqtt", "recyclarr"]
