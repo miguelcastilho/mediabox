@@ -196,7 +196,7 @@ spec:
     app: grafana
   ports:
     - protocol: TCP
-      port: 4001
+      port: 3000
       targetPort: webui
 
 ---
@@ -221,7 +221,7 @@ spec:
               service:
                 name: grafana
                 port:
-                  number: 4001
+                  number: 3000
   tls:
     - secretName: grafana-service-cert
       hosts:
