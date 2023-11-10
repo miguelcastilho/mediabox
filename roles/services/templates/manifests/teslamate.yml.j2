@@ -1,0 +1,169 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: teslamate
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: teslamate
+  namespace: teslamate
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: teslamate
+  template:
+    metadata:
+      labels:
+        app: teslamate
+    spec:
+      containers:
+        - name: teslamate
+          image: 'teslamate/teslamate:1.27'
+          env:
+            - name: ENCRYPTION_KEY
+              value: 8@49tq2Hbo6QK$z*mTxT
+            - name: DATABASE_USER
+              value: teslamate
+            - name: DATABASE_PASS
+              value: teslamate
+            - name: DATABASE_NAME
+              value: teslamate
+            - name: DATABASE_HOST
+              value: localhost
+            - name: MQTT_HOST
+              value: "mqtt.infra"
+            - name: TZ
+              value: "{{ timezone }}"
+          ports:
+            - containerPort: 4000
+              name: webui
+          volumeMounts:
+            - name: teslamate
+              mountPath: /opt/app/import
+          securityContext:
+            capabilities:
+              drop:
+                - all
+
+        - name: postgres
+          image: 'postgres:15'
+          env:
+            - name: POSTGRES_USER
+              value: teslamate
+            - name: POSTGRES_PASSWORD
+              value: teslamate
+            - name: POSTGRES_DB
+              value: teslamate
+
+        - name: grafana
+          image: 'teslamate/grafana:1.27'
+          ports:
+            - containerPort: 3000
+              name: grafana
+          env:
+            - name: DATABASE_USER
+              value: teslamate
+            - name: DATABASE_PASS
+              value: teslamate
+            - name: DATABASE_NAME
+              value: teslamate
+            - name: DATABASE_HOST
+              value: localhost
+          volumeMounts:
+            - name: grafana
+              mountPath: /var/lib/grafana
+      volumes:
+        - name: teslamate
+          hostPath:
+            path: "{{ data_path }}/teslamate"
+        - name: grafana
+          hostPath:
+            path: "{{ data_path }}/teslamate/grafana"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: teslamate
+  namespace: teslamate
+spec:
+  selector:
+    app: teslamate
+  ports:
+    - protocol: TCP
+      port: 4000
+      targetPort: webui
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  namespace: teslamate
+spec:
+  selector:
+    app: teslamate
+  ports:
+    - protocol: TCP
+      port: 4001
+      targetPort: grafana
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: teslamate
+  namespace: teslamate
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: 'true'
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: 'teslamate.{{ domain }}'
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: teslamate
+                port:
+                  number: 4000
+  tls:
+    - secretName: teslamate-service-cert
+      hosts:
+        - 'teslamate.{{ domain }}'
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grafana
+  namespace: teslamate
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: grafana.{{ domain }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: grafana
+                port:
+                  number: 4001
+  tls:
+    - secretName: grafana-service-cert
+      hosts:
+        - grafana.{{ domain }}

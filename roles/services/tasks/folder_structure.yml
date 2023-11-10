@@ -61,8 +61,10 @@
     group: "{{ ansible_user }}"
     recurse: yes
 
-# - name: Set permissions on media folder structure
-#   file:
-#     path: "{{ media_path }}"
-#     recurse: yes
-#     mode: "u+w,g+w,a=,a+rX"
+- name: Create 'grafana' directory inside 'teslamate'
+  become: true
+  file:
+    path: "{{ data_path }}/teslamate/grafana"
+    state: directory
+    mode: u=rwx,g=rwx,o=rwx
+  when: "'teslamate' in enable_services"
