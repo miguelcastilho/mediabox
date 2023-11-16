@@ -29,6 +29,8 @@ spec:
           ports:
             - containerPort: 8123
               name: webui
+            - containerPort: 1400
+              name: sonos
       volumes:
         - name: homeassistant-config
           hostPath:
@@ -50,6 +52,11 @@ spec:
     - protocol: TCP
       port: 8123
       targetPort: webui
+      name: webui
+    - protocol: TCP
+      port: 1400
+      targetPort: sonos
+      name: sonos
   type: LoadBalancer
 
 ---
