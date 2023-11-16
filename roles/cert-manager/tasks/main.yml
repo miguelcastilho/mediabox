@@ -6,7 +6,7 @@
 
 - name: Download cert-manager manifest
   ansible.builtin.get_url:
-    url: https://github.com/cert-manager/cert-manager/releases/download/v1.13.1/cert-manager.yaml
+    url: https://github.com/cert-manager/cert-manager/releases/download/v1.13.2/cert-manager.yaml
     dest: "{{ data_path }}/manifests/cert-manager.yml"
   register: result
 
