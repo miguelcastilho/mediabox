@@ -1,9 +1,8 @@
 ---
-all:
-  hosts:
-    <target IP address>:
-      ansible_ssh_user: <username>
+kubernetes:
   vars:
+    ansible_ssh_user: username
+    ansible_ssh_port: 22
     # General
     domain: internet domain
     email: email for letsencrypt
@@ -47,3 +46,8 @@ all:
       - jellyfin
       - jellyseerr
       - recyclarr
+  children:
+    master:
+      hosts:
+        master-1:
+          ansible_host: ip address
