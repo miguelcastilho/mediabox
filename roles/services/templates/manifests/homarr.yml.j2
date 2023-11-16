@@ -20,6 +20,8 @@ spec:
           volumeMounts:
             - name: configs
               mountPath: /app/data/configs
+            - name: data
+              mountPath: /data
             - name: icons
               mountPath: /app/public/icons
           ports:
@@ -28,7 +30,10 @@ spec:
       volumes:
         - name: configs
           hostPath:
-            path: {{ data_path }}/homarr
+            path: {{ data_path }}/homarr/configs
+        - name: data
+          hostPath:
+            path: {{ data_path }}/homarr/data
         - name: icons
           hostPath:
             path: {{ data_path }}/homarr/icons
