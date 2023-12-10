@@ -13,6 +13,9 @@ spec:
     metadata:
       labels:
         app: flaresolverr
+      annotations:
+        diun.enable: "true"
+        diun.watch_repo: "true"
     spec:
       containers:
         - name: flaresolverr

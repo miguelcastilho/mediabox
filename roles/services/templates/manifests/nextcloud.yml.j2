@@ -19,6 +19,9 @@ spec:
     metadata:
       labels:
         app: nextcloud
+      annotations:
+        diun.enable: "true"
+        diun.watch_repo: "true"
     spec:
       containers:
         - name: nextcloud
@@ -103,6 +106,9 @@ spec:
     metadata:
       labels:
         app: postgres
+      annotations:
+        diun.enable: "true"
+        diun.watch_repo: "true"
     spec:
       containers:
         - name: postgres

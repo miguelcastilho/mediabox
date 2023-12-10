@@ -76,6 +76,8 @@
 - name: Check containers status
   shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl wait pod --for condition=ready --field-selector=status.phase!=Succeeded -A --all --timeout 10m"
   changed_when: false
+  retries: 3
+  delay: 5
 
 - block:
     - name: Read the content of Sonarr config.xml
@@ -121,6 +123,8 @@
     - name: Check containers status
       shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl wait pod --for condition=ready --field-selector=status.phase!=Succeeded -A --all --timeout 10m"
       changed_when: false
+      retries: 3
+      delay: 5
 
     - name: Get recyclarr pod name
       kubernetes.core.k8s_info:

@@ -13,6 +13,10 @@ spec:
     metadata:
       labels:
         app: homeassistant
+      annotations:
+        diun.enable: "true"
+        diun.watch_repo: "true"
+        diun.exclude_tags: "dev"
     spec:
       containers:
         - name: homeassistant

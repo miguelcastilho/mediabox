@@ -19,6 +19,9 @@ spec:
     metadata:
       labels:
         app: teslamate
+      annotations:
+        diun.enable: "true"
+        diun.watch_repo: "true"
     spec:
       containers:
         - name: teslamate
@@ -110,6 +113,9 @@ spec:
     metadata:
       labels:
         app: postgres
+      annotations:
+        diun.enable: "true"
+        diun.watch_repo: "true"
     spec:
       containers:
         - name: postgres
@@ -161,6 +167,9 @@ spec:
     metadata:
       labels:
         app: grafana
+      annotations:
+        diun.enable: "true"
+        diun.watch_repo: "true"
     spec:
       containers:
         - name: grafana

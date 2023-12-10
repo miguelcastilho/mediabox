@@ -13,6 +13,10 @@ spec:
     metadata:
       labels:
         app: duplicati
+      annotations:
+        diun.enable: "true"
+        diun.watch_repo: "true"
+        diun.exclude_tags: "development;arm"
     spec:
       containers:
         - name: duplicati
