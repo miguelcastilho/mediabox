@@ -8,6 +8,7 @@ kubernetes:
     email: email for letsencrypt
     timezone: timezone, ex. Europe/Amsterdam
     data_path: /opt/HomeServeMate
+    storage_path: /media/storage
     media_path: path to media storage
     # Adguard-Home
     install_adguard_home: true
@@ -46,6 +47,12 @@ kubernetes:
       - jellyfin
       - jellyseerr
       - recyclarr
+    # mergerfs
+    install_mergefs: true
+    mergerfs_binary: https://github.com/trapexit/mergerfs/releases/download/2.38.0/mergerfs_2.38.0.ubuntu-jammy_amd64.deb
+    diskpool_parts:
+      - sdb1 (example)
+      - sdc1 (example)
   children:
     master:
       hosts:
