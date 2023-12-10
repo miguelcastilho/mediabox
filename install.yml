@@ -6,6 +6,10 @@
       include_role:
         name: dependencies
 
+    - name: Install mergerfs and configure mounts
+      include_role:
+        name: mergerfs
+
     - name: Install k3s
       include_role:
         name: k3s
