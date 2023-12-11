@@ -111,6 +111,10 @@ spec:
     metadata:
       labels:
         app: dash
+      annotations:
+        diun.enable: "true"
+        diun.watch_repo: "true"
+        diun.exclude_tags: "sha-;feature;dev"
     spec:
       containers:
         - name: dash
