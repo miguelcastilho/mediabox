@@ -31,7 +31,6 @@
     path: /etc/fstab
     line: "# disk pool"
     insertafter: EOF
-  loop: "{{ blkid_output.results }}"
 
 - name: Add entries to fstab for each partition
   become: true
@@ -56,7 +55,6 @@
     path: /etc/fstab
     line: "# mergerfs"
     insertafter: EOF
-  loop: "{{ blkid_output.results }}"
 
 - name: Add entries to fstab for each partition
   become: true
