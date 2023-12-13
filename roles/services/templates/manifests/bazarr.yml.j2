@@ -16,11 +16,11 @@ spec:
       annotations:
         diun.enable: "true"
         diun.watch_repo: "true"
-        diun.exclude_tags: "development;arm;latest"
+        diun.exclude_tags: "development;arm;latest;amd;version"
     spec:
       containers:
         - name: bazarr
-          image: ghcr.io/linuxserver/bazarr:1.3.1
+          image: ghcr.io/linuxserver/bazarr:1.4.0
           env:
             - name: PUID
               value: "1000"

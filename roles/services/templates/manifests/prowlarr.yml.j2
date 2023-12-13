@@ -16,10 +16,11 @@ spec:
       annotations:
         diun.enable: "true"
         diun.watch_repo: "true"
+        diun.exclude_tags: "nightly;amd;arm;version"
     spec:
       containers:
         - name: prowlarr
-          image: lscr.io/linuxserver/prowlarr:1.9.4
+          image: lscr.io/linuxserver/prowlarr:1.10.5
           env:
             - name: PUID
               value: "1000"
