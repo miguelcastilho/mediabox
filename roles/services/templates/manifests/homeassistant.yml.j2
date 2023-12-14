@@ -16,11 +16,11 @@ spec:
       annotations:
         diun.enable: "true"
         diun.watch_repo: "true"
-        diun.exclude_tags: "dev;sha"
+        diun.exclude_tags: "dev;sha;rc;latest;stable;beta"
     spec:
       containers:
         - name: homeassistant
-          image: ghcr.io/home-assistant/home-assistant:2023.11
+          image: ghcr.io/home-assistant/home-assistant:2023.12
           volumeMounts:
             - name: homeassistant-config
               mountPath: /config

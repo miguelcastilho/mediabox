@@ -16,10 +16,11 @@ spec:
       annotations:
         diun.enable: "true"
         diun.watch_repo: "true"
+        diun.exclude_tags: "arm;amd;version;ls;mongoless;latest"
     spec:
       containers:
         - name: unifi-controller
-          image: lscr.io/linuxserver/unifi-controller:7.5.187
+          image: lscr.io/linuxserver/unifi-controller:8.0.24
           ports:
             - containerPort: 8080
               name: device-comm
