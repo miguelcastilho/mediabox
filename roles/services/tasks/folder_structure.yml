@@ -61,7 +61,7 @@
     group: "{{ ansible_user }}"
     recurse: yes
 
-- name: Create 'teslamate' directory inside
+- name: Create 'teslamate' directory
   become: true
   file:
     path: "{{ data_path }}/teslamate"
@@ -76,3 +76,9 @@
     state: directory
     mode: u=rwx,g=rwx,o=rwx
   when: "'teslamate' in enable_services"
+
+- name: Create 'nodered' directory
+  file:
+    path: "{{ data_path }}/nodered"
+    state: directory
+  when: "'homeassistant' in enable_services"

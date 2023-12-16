@@ -83,3 +83,98 @@ spec:
                 name: homeassistant
                 port:
                   number: 8123
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+########### NODE RED ############
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodered
+  namespace: infra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodered
+  template:
+    metadata:
+      labels:
+        app: nodered
+      annotations:
+        diun.enable: "true"
+        diun.watch_repo: "true"
+        diun.exclude_tags: ""
+    spec:
+      containers:
+        - name: nodered
+          image: nodered/node-red:3.1.3
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          ports:
+            - containerPort: 1880
+              name: webui
+      volumes:
+        - name: data
+          hostPath:
+            path: {{ data_path }}/nodered
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodered
+  namespace: infra
+spec:
+  selector:
+    app: nodered
+  ports:
+    - protocol: TCP 
+      port: 1880
+      targetPort: webui
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nodered
+  namespace: infra
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: nodered.{{ domain }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: nodered
+                port:
+                  number: 1880
+  tls:
+    - secretName: nodered-service-cert
+      hosts:
+        - nodered.{{ domain }}
