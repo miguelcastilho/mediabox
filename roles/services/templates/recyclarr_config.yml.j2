@@ -19,6 +19,8 @@ sonarr:
   series:
     base_url: http://sonarr.media:8989
     api_key: {{ sonarr_api_key }}
+    delete_old_custom_formats: true
+    replace_existing_custom_formats: true
     quality_definition:
       type: series
     custom_formats:
@@ -107,6 +109,7 @@ radarr:
     quality_definition:
       type: movie
     delete_old_custom_formats: true
+    replace_existing_custom_formats: true
     custom_formats:
       - trash_ids:
           # [No Category]
