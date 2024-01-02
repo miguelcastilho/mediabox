@@ -16,11 +16,11 @@ spec:
       annotations:
         diun.enable: "true"
         diun.watch_repo: "true"
-        diun.exclude_tags: "nightly;arm;amd"
+        diun.exclude_tags: "nightly;arm;amd;ls;develop;version;latest"
     spec:
       containers:
         - name: radarr
-          image: ghcr.io/linuxserver/radarr:5.1.3
+          image: ghcr.io/linuxserver/radarr:5.2.6
           env:
             - name: PUID
               value: "1000"

@@ -16,11 +16,11 @@ spec:
       annotations:
         diun.enable: "true"
         diun.watch_repo: "true"
-        diun.exclude_tags: "arm;latest"
+        diun.exclude_tags: "arm;latest;v"
     spec:
       containers:
         - name: zigbee2mqtt
-          image: koenkk/zigbee2mqtt:1.33.2
+          image: koenkk/zigbee2mqtt:1.35.0
           ports:
             - containerPort: 8080
               name: ui
