@@ -111,7 +111,7 @@
     - name: Template the file
       template:
         src: recyclarr_config.yml.j2
-        dest: "{{ data_path }}/recyclarr/config.yml"
+        dest: "{{ data_path }}/recyclarr/recyclarr.yml"
 
     - name: Deploy recyclarr
       kubernetes.core.k8s:
