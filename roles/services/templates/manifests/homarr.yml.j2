@@ -31,15 +31,6 @@ spec:
           ports:
             - containerPort: 7575
               name: webui
-        - name: dash
-          image: mauricenino/dashdot:5
-          volumeMounts:
-            - name: host
-              mountPath: /mnt/host
-              readOnly: true
-          ports:
-            - containerPort: 3001
-              name: webui
       volumes:
         - name: configs
           hostPath:
