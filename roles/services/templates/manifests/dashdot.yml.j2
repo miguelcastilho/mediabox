@@ -24,6 +24,8 @@ spec:
           env:
             - name: DASHDOT_ACCEPT_OOKLA_EULA
               value: "true"
+            - name: DASHDOT_PORT
+              value: "3001"
           volumeMounts:
             - name: host
               mountPath: /mnt/host
