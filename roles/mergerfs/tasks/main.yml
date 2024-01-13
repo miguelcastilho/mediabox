@@ -20,6 +20,7 @@
   loop: "{{ diskpool_parts }}"
 
 - name: Get UUIDs of partitions
+  become: true
   command: "blkid -s UUID -o value /dev/{{ item }}"
   loop: "{{ diskpool_parts }}"
   register: blkid_output
