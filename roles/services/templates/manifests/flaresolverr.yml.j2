@@ -16,11 +16,11 @@ spec:
       annotations:
         diun.enable: "true"
         diun.watch_repo: "true"
-        diun.exclude_tags: "development;arm;latest"
+        diun.exclude_tags: "development;arm;latest;hotfix"
     spec:
       containers:
         - name: flaresolverr
-          image: ghcr.io/flaresolverr/flaresolverr:v3.3.10
+          image: ghcr.io/flaresolverr/flaresolverr:v3.3.14
           ports:
             - containerPort: 8191
               name: incoming
