@@ -52,12 +52,12 @@ spec:
       annotations:
         diun.enable: "true"
         diun.watch_repo: "true"
-        diun.exclude_tags: "unstable"
+        diun.exclude_tags: "unstable;latest;stable"
     spec:
       serviceAccountName: tailscale-sa
       containers:
         - name: tailscale
-          image: tailscale/tailscale:v1.54.1
+          image: tailscale/tailscale:v1.61.11
           volumeMounts:
             - name: var-lib
               mountPath: /var/lib
