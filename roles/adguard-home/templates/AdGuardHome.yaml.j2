@@ -148,7 +148,8 @@ filtering:
   safebrowsing_block_host: standard-block.dns.adguard.com
   rewrites:
   {% for rewrite in adguard_home_rewrites %}
-    - {{ rewrite }}
+    - domain: {{ rewrite.domain }}
+      answer: {{ rewrite.answer }}
   {% endfor %}
   safebrowsing_cache_size: 1048576
   safesearch_cache_size: 1048576
