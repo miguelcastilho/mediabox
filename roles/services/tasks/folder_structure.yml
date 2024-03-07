@@ -59,7 +59,7 @@
     path: "{{ media_path }}"
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
-    recurse: yes
+    recurse: true
 
 - name: Create 'teslamate' directory
   become: true

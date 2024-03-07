@@ -46,7 +46,7 @@
     src: /etc/rancher/k3s/k3s.yaml
     dest: "/home/{{ ansible_user }}/.kube/config"
     mode: 0600
-    remote_src: yes
+    remote_src: true
   when: k3s_running.rc == 0
 
 - name: Set owner of kubeconfig file to the Ansible remote user

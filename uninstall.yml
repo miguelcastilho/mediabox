@@ -67,20 +67,20 @@
       file:
         path: /etc/systemd/resolved.conf.d/adguardhome.conf
         state: absent
-      become: yes
+      become: true
 
     - name: Restore the original resolv.conf file
       ansible.builtin.copy:
         src: /etc/resolv.conf.backup
         dest: /etc/resolv.conf
         remote_src: true
-      become: yes
+      become: true
 
     - name: Delete backup of resolv.conf
       ansible.builtin.file:
         path: /etc/resolv.conf.backup
         state: absent
-      become: yes
+      become: true
 
     - name: Reload systemd-resolved service
       systemd:
