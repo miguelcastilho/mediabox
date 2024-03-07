@@ -68,6 +68,7 @@
   ansible.builtin.template:
     src: AdGuardHome.yaml.j2
     dest: /opt/AdGuardHome/AdGuardHome.yaml
+    trim_blocks: false
   become: true
 
 - name: Restart AdGuardHome service
