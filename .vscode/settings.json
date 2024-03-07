@@ -1,0 +1,6 @@
+{
+    "yaml.schemas": {
+        "file:///Users/capzulu/.vscode/extensions/atlassian.atlascode-2.8.3/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml",
+        "https://json.schemastore.org/github-workflow.json": "file:///Users/capzulu/git/HomeServeMate/.github/workflows/deploy.yml"
+    }
+}
