@@ -15,7 +15,7 @@ jobs:
       - name: Install openssh
         run: |
           sudo apt-get update
-          sudo apt-get install openssh-client
+          sudo apt-get install -y openssh-client
 
       - name: Setup Python
         uses: actions/setup-python@v5
