@@ -19,9 +19,9 @@ jobs:
         with:
           python-version: '3.10' 
 
-      - name: Install Ansible
+      - name: Install YAML Lint
         run: |
-          pip install ansible-lint
+          pip install yamllint
 
-      - name: Lint Ansible Playbooks
-        run: ansible-lint .
+      - name: Lint YAML files
+        run: yamllint .
