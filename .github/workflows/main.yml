@@ -19,12 +19,15 @@ jobs:
 
       - name: Install Ansible
         run: |
-          python -m pip install --upgrade pip
           pip install ansible
 
       - name: Test
         run: |
-          nc -zv 192.168.2.158 22
+          uname -A
+
+      - name: test 2
+        run: |
+          cat /etc/os-release
             
       - name: Run playbook
         uses: dawidd6/action-ansible-playbook@v2
