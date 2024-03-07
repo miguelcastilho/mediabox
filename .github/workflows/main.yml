@@ -24,4 +24,4 @@ jobs:
           pip install ansible
       
       - name: Run Ansible Playbook
-        run: ansible-playbook -i inventory/hosts.ini playbook.yml
+        run: ansible-playbook -i inventory/inventory.yaml install.yml
