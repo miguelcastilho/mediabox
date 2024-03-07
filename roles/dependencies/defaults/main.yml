@@ -5,6 +5,6 @@ packages:
   - git
 reboot_timeout: 600
 pip_dependencies:
-    - kubernetes
-    - lxml
-    - netaddr
+  - kubernetes
+  - lxml
+  - netaddr

@@ -20,7 +20,7 @@ kubernetes:
     install_cloudflared: true
     cloudflare_api_token: cloudflare api token
     cloudflare_tunnel_name: cloudflared tunnel name
-    cloudflare_tunnel_dns_list: # list here the services deployed on k3s that you want to expose to the internet
+    cloudflare_tunnel_dns_list:  # list here the services deployed on k3s that you want to expose to the internet
       - name: dns name of the service
         port: port of the service
     cloudflared_pem: |-

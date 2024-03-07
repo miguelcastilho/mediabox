@@ -1,4 +1,4 @@
---- 
+---
 - name: Download and install mergerfs
   get_url:
     url: "{{ mergerfs_binary }}"
