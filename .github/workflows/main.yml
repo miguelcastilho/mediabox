@@ -23,7 +23,7 @@ jobs:
 
       - name: Test
         run: |
-          uname -A
+          uname -a
 
       - name: test 2
         run: |
