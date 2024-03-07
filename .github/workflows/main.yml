@@ -3,6 +3,7 @@ name: Deploy HomeServeMate
 on:
   schedule:
     - cron: '0 8 * * 1'  # This schedules the workflow to run at 08:00 every Monday
+  workflow_dispatch:
 
 jobs:
   deploy:
