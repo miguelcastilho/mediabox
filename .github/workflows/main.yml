@@ -16,6 +16,6 @@ jobs:
         uses: dawidd6/action-ansible-playbook@v2
         with:
           playbook: install.yml
-          directory: ./HomeServeMate/.
+          directory: ./
           options: |
             --inventory inventory/inventory.yml
