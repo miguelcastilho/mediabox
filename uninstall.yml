@@ -1,7 +1,7 @@
 ---
 - name: Uninstall media server
   hosts: all
-  ignore_errors: yes
+  ignore_errors: true
   tasks:
     - name: Run K3s uninstallation script
       command: /usr/local/bin/k3s-uninstall.sh

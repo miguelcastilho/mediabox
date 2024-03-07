@@ -1,0 +1,6 @@
+extends: default
+
+rules:
+    line-length: disable
+    truthy:
+        level: error  # Set the truthy warning to be treated as an error
