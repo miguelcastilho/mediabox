@@ -15,9 +15,9 @@ jobs:
 
       - name: Update apt
         run: sudo apt-get update
-      
+
       - name: Install OpenSSH client
-        run:  sudo apt-get install -y openssh-client
+        run: sudo apt-get install -y openssh-client
 
       - name: Prepare SSH environment
         run: |

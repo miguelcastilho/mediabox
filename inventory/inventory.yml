@@ -95,4 +95,3 @@ kubernetes:
       hosts:
         master-1:
           ansible_host: <ip_address>
-    
