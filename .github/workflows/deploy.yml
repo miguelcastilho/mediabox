@@ -15,8 +15,17 @@ jobs:
 
       - name: Install openssh
         run: |
-          sudo apt-get update
-          sudo apt-get install -y openssh-client
+          apt-get update
+          apt-get install -y openssh-client
+
+      - name: Create ssh private key
+        run: |
+          mkdir ~/.ssh
+          touch ~/.ssh/known_hosts
+          ssh-keyscan [127.0.0.1] >> ~/.ssh/known_hosts
+          eval $(ssh-agent)
+          ssh-add - <<< "${{ secrets.SSH_PRIVATE_KEY }}"
+
 
       - name: Setup Python
         uses: actions/setup-python@v5
