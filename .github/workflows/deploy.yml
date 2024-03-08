@@ -25,7 +25,7 @@ jobs:
           touch ~/.ssh/known_hosts
 
       - name: Add server to known hosts
-        run: ssh-keyscan 127.0.0.1 >> ~/.ssh/known_hosts
+        run: ssh-keyscan "${{ secrets.IP_ADDRESS }}" >> ~/.ssh/known_hosts
 
       - name: Decode SSH private key
         run: echo "${{ secrets.ENCODED_SSH_PRIVATE_KEY }}" | base64 --decode > ~/.ssh/id_rsa
