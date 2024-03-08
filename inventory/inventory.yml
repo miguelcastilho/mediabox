@@ -10,6 +10,8 @@ kubernetes:
     data_path: /home/user/homeservemate
     storage_path: /media/HDD
     media_path: "{{ storage_path }}/media"
+    github_repo: https://github.com/miguelcastilho/HomeServeMate
+    github_personal_access_token: github PAT
     # Adguard-Home
     install_adguard_home: true
     adguard_home_username: username
