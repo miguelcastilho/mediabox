@@ -15,8 +15,8 @@ jobs:
 
       - name: Install openssh
         run: |
-          apt-get update
-          apt-get install -y openssh-client
+          sudo apt-get update
+          sudo apt-get install -y openssh-client
 
       - name: Create ssh private key
         run: |
