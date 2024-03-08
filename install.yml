@@ -18,6 +18,10 @@
       include_role:
         name: cert-manager
 
+    - name: Install arc-runners
+      include_role:
+        name: arc-runners
+
     - name: Install cloudflared
       include_role:
         name: cloudflared
