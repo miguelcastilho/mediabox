@@ -27,10 +27,13 @@ jobs:
         run: |
           pip install ansible
 
+      - name: Decode and create the environment file
+        run: echo "${{ secrets.ENCODED_ENV_FILE }}" | base64 -d > ./inventory/prod.yml
+
       - name: Run playbook
         uses: dawidd6/action-ansible-playbook@v2
         with:
           playbook: install.yml
           requirements: requirements.yml
           options: |
-            --inventory inventory/inventory.yml
+            --inventory inventory/prod.yml
