@@ -1,34 +1,67 @@
 ---
 kubernetes:
   vars:
-    ansible_ssh_user: username
+    ansible_ssh_user: ssh user
     ansible_ssh_port: 22
     # General
-    domain: internet domain
-    email: email for letsencrypt
-    timezone: timezone, ex. Europe/Amsterdam
-    data_path: /opt/HomeServeMate
-    storage_path: /media/storage
-    media_path: path to media storage
+    domain: domain
+    email: email
+    timezone: Europe/Amsterdam
+    data_path: /home/user/homeservemate
+    storage_path: /media/HDD
+    media_path: "{{ storage_path }}/media"
     # Adguard-Home
     install_adguard_home: true
-    adguard_home_username: adguard home username
-    adguard_home_password: adguard home password
-    adguard_home_user_rules:
-      - dns resolution similar to /etc/hosts in the form of <ip_address dns>
+    adguard_home_username: username
+    adguard_home_password: password
+    adguard_home_rewrites:
+      - domain: "unifi.{{ domain }}"
+        answer: "{{ ansible_default_ipv4.address }}"
+      - domain: "uptimekuma.{{ domain }}"
+        answer: "{{ ansible_default_ipv4.address }}"
+      - domain: "duplicati.{{ domain }}"
+        answer: "{{ ansible_default_ipv4.address }}"
+      - domain: "zigbee2mqtt.{{ domain }}"
+        answer: "{{ ansible_default_ipv4.address }}"
+      - domain: "bazarr.{{ domain }}"
+        answer: "{{ ansible_default_ipv4.address }}"
+      - domain: "sonarr.{{ domain }}"
+        answer: "{{ ansible_default_ipv4.address }}"
+      - domain: "sabnzbd.{{ domain }}"
+        answer: "{{ ansible_default_ipv4.address }}"
+      - domain: "radarr.{{ domain }}"
+        answer: "{{ ansible_default_ipv4.address }}"
+      - domain: "deluge.{{ domain }}"
+        answer: "{{ ansible_default_ipv4.address }}"
+      - domain: "prowlarr.{{ domain }}"
+        answer: "{{ ansible_default_ipv4.address }}"
+      - domain: "homarr.{{ domain }}"
+        answer: "{{ ansible_default_ipv4.address }}"
+      - domain: "teslamate.{{ domain }}"
+        answer: "{{ ansible_default_ipv4.address }}"
+      - domain: "grafana.{{ domain }}"
+        answer: "{{ ansible_default_ipv4.address }}"
+      - domain: "dashdot.{{ domain }}"
+        answer: "{{ ansible_default_ipv4.address }}"
+      - domain: "nodered.{{ domain }}"
+        answer: "{{ ansible_default_ipv4.address }}"
     # Cloudflare
     install_cloudflared: true
     cloudflare_api_token: cloudflare api token
-    cloudflare_tunnel_name: cloudflared tunnel name
-    cloudflare_tunnel_dns_list:  # list here the services deployed on k3s that you want to expose to the internet
-      - name: dns name of the service
-        port: port of the service
+    cloudflare_tunnel_name: server
+    cloudflare_tunnel_dns_list:
+      - name: jellyseerr
+        port: 5055
+      - name: homeassistant
+        port: 8123
+      - name: jellyfin
+        port: 8096
     cloudflared_pem: |-
-      paste here your cloudflared pem file content
+      cloudflared pem
     # Tailscale
     tailscale_auth_key: tailscale auth key
     # Services
-    zigbee_adapter_path: specify the connection to zigbee adapter
+    zigbee_adapter_path: "tcp://<ip_address>:<port>"
     enable_services:
       - duplicati
       - homeassistant
@@ -47,14 +80,19 @@ kubernetes:
       - jellyfin
       - jellyseerr
       - recyclarr
+      - homarr
+      - teslamate
+      - diun
+      - dashdot
     # mergerfs
     install_mergefs: true
     mergerfs_binary: https://github.com/trapexit/mergerfs/releases/download/2.38.0/mergerfs_2.38.0.ubuntu-jammy_amd64.deb
     diskpool_parts:
-      - sdb1 (example)
-      - sdc1 (example)
+      - sdb1
+      - sdc1
   children:
     master:
       hosts:
         master-1:
-          ansible_host: ip address
+          ansible_host: <ip_address>
+    
