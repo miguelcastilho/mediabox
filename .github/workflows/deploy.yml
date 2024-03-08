@@ -13,19 +13,31 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Install openssh
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y openssh-client
+      - name: Update apt
+        run: sudo apt-get update
+      
+      - name: Install OpenSSH client
+        run:  sudo apt-get install -y openssh-client
 
-      - name: Create ssh private key
+      - name: Prepare SSH environment
         run: |
-          mkdir ~/.ssh
+          mkdir -p ~/.ssh
           touch ~/.ssh/known_hosts
-          ssh-keyscan 127.0.0.1 >> ~/.ssh/known_hosts
-          eval $(ssh-agent)
-          ssh-add - <<< "${{ secrets.SSH_PRIVATE_KEY }}"
 
+      - name: Add server to known hosts
+        run: ssh-keyscan 127.0.0.1 >> ~/.ssh/known_hosts
+
+      - name: Decode SSH private key
+        run: echo "${{ secrets.ENCODED_SSH_PRIVATE_KEY }}" | base64 --decode > ~/.ssh/id_rsa
+
+      - name: Set correct permissions for private key
+        run: chmod 600 ~/.ssh/id_rsa
+
+      - name: Start SSH agent
+        run: eval $(ssh-agent)
+
+      - name: Add SSH private key to agent
+        run: ssh-add ~/.ssh/id_rsa
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -33,8 +45,7 @@ jobs:
           python-version: '3.10'
 
       - name: Install Ansible
-        run: |
-          pip install ansible
+        run: pip install ansible
 
       - name: Decode and create the environment file
         run: echo "${{ secrets.ENCODED_ENV_FILE }}" | base64 -d > ./inventory/prod.yml
@@ -44,5 +55,4 @@ jobs:
         with:
           playbook: install.yml
           requirements: requirements.yml
-          options: |
-            --inventory inventory/prod.yml
+          options: --inventory inventory/prod.yml
