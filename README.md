@@ -79,7 +79,7 @@ The following steps should be executed in your client machine (aka your laptop):
 | `install_adguard_home`      | Required                       | Set to `true` to install Adguard Home.          | true                      |
 | `adguard_home_username`     | Required (if install_adguard_home=true)  | Adguard Home username.             | myusername                |
 | `adguard_home_password`     | Required (if install_adguard_home=true)  | Adguard Home password.             | mysecretpassword           |
-| `adguard_home_user_rules`   | Required (if install_adguard_home=true)  | DNS resolution similar to /etc/hosts in the form of `<ip_address dns>`. | 192.168.1.1 myhostname |
+| `adguard_home_rewrites`   | Required (if install_adguard_home=true)  | DNS resolution. | |
 | `install_cloudflared`       | Required                       | Set to `true` to install Cloudflared.           | true                      |
 | `cloudflare_api_token`      | Required (if install_cloudflared=true)                      | Cloudflare API token.                            | YOUR_CLOUDFLARE_API_TOKEN |
 | `cloudflare_tunnel_name`    | Required (if install_cloudflared=true)                      | Name of the Cloudflared tunnel.                 | my-tunnel                 |
