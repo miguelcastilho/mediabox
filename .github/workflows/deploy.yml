@@ -33,11 +33,10 @@ jobs:
       - name: Set correct permissions for private key
         run: chmod 600 ~/.ssh/id_rsa
 
-      - name: Start SSH agent
-        run: eval $(ssh-agent)
-
-      - name: Add SSH private key to agent
-        run: ssh-add ~/.ssh/id_rsa
+      - name: Start SSH agent and add key
+        run: |
+          eval "$(ssh-agent -s)"
+          ssh-add ~/.ssh/id_rsa
 
       - name: Setup Python
         uses: actions/setup-python@v5
