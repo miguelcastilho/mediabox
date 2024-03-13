@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
         - name: teslamate
-          image: 'teslamate/teslamate:1.28.2'
+          image: 'teslamate/teslamate:1.28.3'
           env:
             - name: ENCRYPTION_KEY
               value: 8@49tq2Hbo6QK$z*mTxT
@@ -116,7 +116,7 @@ spec:
         app: postgres
       annotations:
         diun.enable: "true"
-        diun.watch_repo: "true"
+        diun.watch_repo: "false"
         diun.exclude_tags: "beta;alpine;bookworm;buster;bullseye;stretch;rc;alpha;latest"
     spec:
       containers:
@@ -176,7 +176,7 @@ spec:
     spec:
       containers:
         - name: grafana
-          image: 'teslamate/grafana:1.28.2'
+          image: 'teslamate/grafana:1.28.3'
           ports:
             - containerPort: 3000
               name: webui
