@@ -79,11 +79,7 @@ spec:
             - name: data-volume
               mountPath: /data/db
             - name: init-volume
-              configMap:
-                name: unifi-db
-                items:
-                  - key: init-mongo.js
-                    path: /docker-entrypoint-initdb.d/init-mongo.js
+              mountPath: /docker-entrypoint-initdb.d
       volumes:
         - name: config-volume
           hostPath:
@@ -91,6 +87,12 @@ spec:
         - name: data-volume
           hostPath:
             path: {{ data_path }}/unifi/db
+        - name: init-volume
+          configMap:
+            name: unifi-db
+            items:
+              - key: init-mongo.js
+                path: init-mongo.js
 
 ---
 apiVersion: v1
