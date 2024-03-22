@@ -1,26 +1,36 @@
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: unifi-db
+data:
+  init-mongo.js: |
+    db.getSiblingDB("unifi-db").createUser({user: "unifi", pwd: "unifi", roles: [{role: "dbOwner", db: "unifi-db"}]});
+    db.getSiblingDB("unifi-db_stat").createUser({user: "unifi", pwd: "unifi", roles: [{role: "dbOwner", db: "unifi-db_stat"}]});
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: unifi-controller
+  name: unifi-network-application
   namespace: infra
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: unifi-controller
+      app: unifi-network-application
   template:
     metadata:
       labels:
-        app: unifi-controller
+        app: unifi-network-application
       annotations:
         diun.enable: "true"
         diun.watch_repo: "true"
-        diun.exclude_tags: "arm;amd;version;ls;mongoless;latest"
+        diun.exclude_tags: "latest;ls;version;arm;amd"
     spec:
       containers:
-        - name: unifi-controller
-          image: lscr.io/linuxserver/unifi-controller:8.0.24
+        - name: unifi-network-application
+          image: lscr.io/linuxserver/unifi-network-application:8.1.113
           ports:
             - containerPort: 8080
               name: device-comm
@@ -42,20 +52,54 @@ spec:
               value: "1000"
             - name: PGID
               value: "1000"
+            - name: MONGO_USER
+              value: unifi
+            - name: MONGO_PASS
+              value: unifi
+            - name: MONGO_HOST
+              value: unifi-db
+            - name: MONGO_PORT
+              value: 27017
+            - name: MONGO_DBNAME
+              value: unifi
+        - name: unifi-db
+          image: docker.io/mongo:7.0.7
+          ports:
+            - containerPort: 27017
+              name: db_port
+          env:
+            - name: TZ
+              value: {{ timezone }}
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+          volumeMounts:
+            - name: data-volume
+              mountPath: /data/db
+            - name: init-volume
+              configMap:
+                name: unifi-db
+                items:
+                  - key: init-mongo.js
+                    path: /docker-entrypoint-initdb.d/init-mongo.js
       volumes:
         - name: config-volume
           hostPath:
-            path: {{ data_path }}/unifi-controller
+            path: {{ data_path }}/unifi/unifi-network-application
+        - name: data-volume
+          hostPath:
+            path: {{ data_path }}/unifi/db
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: unifi-controller
+  name: unifi-network-application
   namespace: infra
 spec:
   selector:
-    app: unifi-controller
+    app: unifi-network-application
   ports:
     - protocol: TCP
       port: 8080
@@ -79,7 +123,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: unifi-controller
+  name: unifi-network-application
   namespace: infra
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
@@ -95,6 +139,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: unifi-controller
+                name: unifi-network-application
                 port:
                   number: 8443
