@@ -69,7 +69,7 @@ kubernetes:
       - homeassistant
       - mqtt
       - tailscale
-      - unifi-controller
+      - unifi-network-application
       - uptimekuma
       - zigbee2mqtt
       - bazarr
