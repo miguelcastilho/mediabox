@@ -1,22 +1,12 @@
 ---
-- name: Install Helm
-  shell: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-
-- name: Check if Helm is installed
-  command: helm version
-  changed_when: false
-
-- name: Install helm-diff
-  kubernetes.core.helm_plugin:
-    plugin_path: https://github.com/databus23/helm-diff
-    state: present
-
 - name: Deploy Actions Runner Controller
   kubernetes.core.helm:
     name: arc
     chart_ref: oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set-controller
     release_namespace: arc-systems
     create_namespace: true
+    update_repo_cache: true
+    force: true
 
 - name: Deploy Runner Scale Set
   shell: "helm upgrade --install arc-runner-set --namespace arc-runners --create-namespace --set githubConfigUrl={{ github_repo }} --set githubConfigSecret.github_token={{ github_personal_access_token }} oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set"

@@ -12,6 +12,9 @@ kubernetes:
     media_path: "{{ storage_path }}/media"
     github_repo: https://github.com/miguelcastilho/HomeServeMate
     github_personal_access_token: github PAT
+    # Authentik
+    authentik_pg_password: postgresql password for authentik
+    authentik_secret_key: authentik secret key
     # Adguard-Home
     install_adguard_home: true
     adguard_home_username: username
@@ -46,6 +49,8 @@ kubernetes:
       - domain: "dashdot.{{ domain }}"
         answer: "{{ ansible_default_ipv4.address }}"
       - domain: "nodered.{{ domain }}"
+        answer: "{{ ansible_default_ipv4.address }}"
+      - domain: "authentik.{{ domain }}"
         answer: "{{ ansible_default_ipv4.address }}"
     # Cloudflare
     install_cloudflared: true
