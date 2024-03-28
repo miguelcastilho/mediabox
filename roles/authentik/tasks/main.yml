@@ -8,7 +8,7 @@
   kubernetes.core.helm:
     name: authentik
     chart_ref: authentik/authentik
-    release_namespace: infra
+    release_namespace: authentik
     create_namespace: true
     values: "{{ lookup('template', 'values.yml.j2') | from_yaml }}"
     update_repo_cache: true
