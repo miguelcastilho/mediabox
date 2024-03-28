@@ -120,7 +120,6 @@ spec:
       port: 10001
       targetPort: 10001
       name: discovery
-  type: LoadBalancer
 
 ---
 apiVersion: networking.k8s.io/v1
@@ -145,3 +144,7 @@ spec:
                 name: unifi-network-application
                 port:
                   number: 8443
+  tls:
+    - secretName: unifi-service-cert
+      hosts:
+        - unifi.{{ domain }}
