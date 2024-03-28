@@ -9,28 +9,29 @@ data:
     db.getSiblingDB("unifi").createUser({user: "unifi", pwd: "unifi", roles: [{role: "dbOwner", db: "unifi"}]});
     db.getSiblingDB("unifi_stat").createUser({user: "unifi", pwd: "unifi", roles: [{role: "dbOwner", db: "unifi_stat"}]});
 
+
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: unifi-network-application
+  name: unifi
   namespace: infra
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: unifi-network-application
+      app: unifi
   template:
     metadata:
       labels:
-        app: unifi-network-application
+        app: unifi
       annotations:
         diun.enable: "true"
         diun.watch_repo: "true"
         diun.exclude_tags: "latest;ls;version;arm;amd;rc;windows;mongo:5;mongo:4;mongo:2;mongo:3"
     spec:
       containers:
-        - name: unifi-network-application
+        - name: unifi
           image: lscr.io/linuxserver/unifi-network-application:8.1.113
           ports:
             - containerPort: 8080
@@ -98,11 +99,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: unifi-network-application
+  name: unifi
   namespace: infra
 spec:
   selector:
-    app: unifi-network-application
+    app: unifi
   ports:
     - protocol: TCP
       port: 8080
@@ -120,12 +121,13 @@ spec:
       port: 10001
       targetPort: 10001
       name: discovery
+  type: LoadBalancer
 
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: unifi-network-application
+  name: unifi
   namespace: infra
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
@@ -141,7 +143,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: unifi-network-application
+                name: unifi
                 port:
                   number: 8443
   tls:
