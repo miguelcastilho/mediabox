@@ -126,7 +126,7 @@ spec:
             - name: POSTGRES_USER
               value: teslamate
             - name: POSTGRES_PASSWORD
-              value: teslamate
+              value: {{ teslamate_pg_password }}
             - name: POSTGRES_DB
               value: teslamate
           volumeMounts:

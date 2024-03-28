@@ -97,6 +97,8 @@ kubernetes:
     diskpool_parts:
       - sdb1
       - sdc1
+    # teslamate
+    teslamate_pg_password: teslamate postgresql password
   children:
     master:
       hosts:
