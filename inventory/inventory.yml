@@ -59,12 +59,9 @@ kubernetes:
     cloudflare_api_token: cloudflare api token
     cloudflare_tunnel_name: server
     cloudflare_tunnel_dns_list:
-      - name: jellyseerr
-        port: 5055
-      - name: homeassistant
-        port: 8123
-      - name: jellyfin
-        port: 8096
+      - jellyseerr
+      - homeassistant
+      - jellyfin
     cloudflared_pem: |-
       cloudflared pem
     # Tailscale
