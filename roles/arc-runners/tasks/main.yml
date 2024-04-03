@@ -5,7 +5,6 @@
     chart_ref: oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set-controller
     release_namespace: arc-systems
     create_namespace: true
-    update_repo_cache: true
     force: true
 
 - name: Deploy Runner Scale Set

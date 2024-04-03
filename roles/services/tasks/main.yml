@@ -151,7 +151,7 @@
           - app=nodered
       register: nodered_pod
 
-    - name: Delete nodered pod
+    - name: Restart nodered pod
       kubernetes.core.k8s:
         state: absent
         api_version: v1
