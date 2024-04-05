@@ -54,6 +54,8 @@ kubernetes:
         answer: "{{ ansible_default_ipv4.address }}"
       - domain: "nodered.{{ domain }}"
         answer: "{{ ansible_default_ipv4.address }}"
+      - domain: "authentik.{{ domain }}"
+        answer: "{{ ansible_default_ipv4.address }}"
     # Cloudflare
     install_cloudflared: true
     cloudflare_api_token: cloudflare api token
