@@ -74,10 +74,12 @@
   when: "'zigbee2mqtt' in enable_services"
 
 - name: Check containers status
-  shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl wait pod --for condition=ready --field-selector=status.phase!=Succeeded -A --all --timeout 10m"
+  shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl get pods -A -o json"
+  register: kubectl_get_pods
   changed_when: false
   retries: 3
   delay: 5
+  until: kubectl_get_pods.stdout | from_json | json_query('items[*].status.phase') | unique | difference(["Running","Succeeded"]) | length == 0
 
 - block:
     - name: Read the content of Sonarr config.xml
@@ -121,10 +123,12 @@
           field_manager: ansible
 
     - name: Check containers status
-      shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl wait pod --for condition=ready --field-selector=status.phase!=Succeeded -A --all --timeout 10m"
+      shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl get pods -A -o json"
+      register: kubectl_get_pods
       changed_when: false
       retries: 3
       delay: 5
+      until: kubectl_get_pods.stdout | from_json | json_query('items[*].status.phase') | unique | difference(["Running","Succeeded"]) | length == 0
 
     - name: Get recyclarr pod name
       kubernetes.core.k8s_info:
