@@ -129,6 +129,9 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /data
+            - name: localtime
+              mountPath: /etc/localtime
+              readOnly: true
           ports:
             - containerPort: 1880
               name: webui
@@ -136,6 +139,9 @@ spec:
         - name: data
           hostPath:
             path: {{ data_path }}/nodered
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
 
 ---
 apiVersion: v1
