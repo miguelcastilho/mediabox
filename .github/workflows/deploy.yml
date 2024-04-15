@@ -49,6 +49,9 @@ jobs:
       - name: Install netaddr library
         run: pip install netaddr
 
+      - name: Install jmespath library
+        run: pip install jmespath
+
       - name: Decode and create the environment file
         run: echo "${{ secrets.ENCODED_ENV_FILE }}" | base64 -d > ./inventory/prod.yml
 
