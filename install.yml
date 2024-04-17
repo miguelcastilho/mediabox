@@ -22,10 +22,6 @@
       include_role:
         name: helm
 
-    - name: Install Authentik
-      include_role:
-        name: authentik
-
     - name: Install arc-runners
       include_role:
         name: arc-runners
