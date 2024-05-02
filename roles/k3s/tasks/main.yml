@@ -4,70 +4,36 @@
   ansible.builtin.file:
     path: "{{ data_path }}"
     state: directory
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
 
 - name: Install Kubernetes
   ansible.builtin.include_role:
     name: xanmanning.k3s
     public: true
   vars:
+    k3s_become: true
     k3s_state: installed
+    k3s_release_version: v1.29.4+k3s1
 
-# - name: Check if k3s is installed
-#   command: k3s --version
-#   register: k3s_version
-#   ignore_errors: true
-#   changed_when: false
-
-# - name: Install k3s
-#   shell: curl -sfL https://get.k3s.io | sh -
-#   when: k3s_version.rc != 0
-#   register: install_k3s
-
-# - name: Ensure k3s is running
-#   become: true
-#   command: systemctl is-active --quiet k3s
-#   register: k3s_running
-#   changed_when: false
-
-# - name: Start k3s if not running
-#   become: true
-#   command: systemctl start k3s
-#   when: k3s_running.rc != 0
-
-# - name: Get k3s version
-#   command: k3s --version
-#   register: k3s_version
-#   changed_when: false
-
-- name: Create .kube directory
-  file:
-    path: "/home/{{ ansible_user }}/.kube"
+- name: "Create ~/.kube directory"
+  delegate_to: localhost
+  run_once: true
+  ansible.builtin.file:
+    path: "~/.kube"
     state: directory
-    mode: '0755'
 
-- name: Copy k3s kubeconfig to default location
+- name: Copy kubeconfig to the project directory
   become: true
-  copy:
+  ansible.builtin.fetch:
     src: /etc/rancher/k3s/k3s.yaml
-    dest: "/home/{{ ansible_user }}/.kube/config"
-    mode: 0600
-    remote_src: true
-  when: k3s_running.rc == 0
+    dest: "~/.kube/config"
+    flat: true
 
-- name: Set owner of kubeconfig file to the Ansible remote user
-  become: true
-  file:
-    dest: "/home/{{ ansible_user }}/.kube/config"
-    owner: "{{ ansible_user }}"
-  when: k3s_running.rc == 0
-
-# - name: Pause for 1 minute
-#   ansible.builtin.pause:
-#     minutes: 1
-#   when: install_k3s.changed
-
-# - name: Check containers status
-#   shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl wait pod --for condition=ready --field-selector=status.phase!=Succeeded -n kube-system --all --timeout 10m"
-#   changed_when: false
+- name: Update kubeconfig with the correct load balancer address
+  delegate_to: localhost
+  run_once: true
+  ansible.builtin.replace:
+    path: "~/.kube/config"
+    regexp: https://127.0.0.1:6443
+    replace: "https://{{ ansible_host }}:6443"
