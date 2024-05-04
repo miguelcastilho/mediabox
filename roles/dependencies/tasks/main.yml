@@ -1,4 +1,9 @@
 ---
+- name: Set hostname
+  become: true
+  ansible.builtin.hostname:
+    name: "{{ hostname }}"
+
 - name: Update APT package cache
   become: true
   ansible.builtin.apt:
@@ -21,13 +26,6 @@
 #   ansible.builtin.pip:
 #     name: "{{ item }}"
 #   loop: "{{ pip_dependencies }}"
-
-- name: Disable ufw
-  become: true
-  ansible.builtin.systemd:
-    service: ufw.service
-    enabled: false
-    state: stopped
 
 # - name: Check if a reboot is required
 #   ansible.builtin.stat:
