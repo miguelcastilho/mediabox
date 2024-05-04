@@ -15,7 +15,7 @@
 
 - name: Create media namespace
   kubernetes.core.k8s:
-    name: infra
+    name: media
     kind: Namespace
     state: present
 
