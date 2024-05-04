@@ -8,9 +8,9 @@
       include_role:
         name: dependencies
 
-    - name: Install mergerfs and configure mounts
-      include_role:
-        name: mergerfs
+    # - name: Install mergerfs and configure mounts
+    #   include_role:
+    #     name: mergerfs
 
     - name: Install k3s
       include_role:
@@ -33,10 +33,10 @@
         name: cloudflared
       when: install_cloudflared
 
-    - name: Install adguard-home
-      include_role:
-        name: adguard-home
-      when: install_adguard_home
+    # - name: Install adguard-home
+    #   include_role:
+    #     name: adguard-home
+    #   when: install_adguard_home
 
     - name: Install services
       include_role:

@@ -16,18 +16,17 @@
     state: present
   loop: "{{ packages }}"
 
-- name: Install pip dependencies
-  become: true
-  ansible.builtin.pip:
-    name: "{{ item }}"
-  loop: "{{ pip_dependencies }}"
+# - name: Install pip dependencies
+#   become: true
+#   ansible.builtin.pip:
+#     name: "{{ item }}"
+#   loop: "{{ pip_dependencies }}"
 
-- name: Disable firewalld
+- name: Disable ufw
   become: true
   ansible.builtin.systemd:
-    service: firewalld
+    service: ufw.service
     enabled: false
-    masked: true
     state: stopped
 
 # - name: Check if a reboot is required
