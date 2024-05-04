@@ -22,6 +22,14 @@
     name: "{{ item }}"
   loop: "{{ pip_dependencies }}"
 
+- name: Disable firewalld
+  become: true
+  ansible.builtin.systemd:
+    service: firewalld
+    enabled: false
+    masked: true
+    state: stopped
+
 # - name: Check if a reboot is required
 #   ansible.builtin.stat:
 #     path: /var/run/reboot-required
