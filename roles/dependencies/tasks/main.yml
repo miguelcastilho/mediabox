@@ -10,17 +10,11 @@
     update_cache: true
     upgrade: true
 
-# - name: Upgrade all packages
-#   become: true
-#   ansible.builtin.apt:
-#     upgrade: true
-
 - name: Install required dependencies
   become: true
   ansible.builtin.apt:
     name: "{{ packages }}"
     state: present
-  # loop: "{{ packages }}"
 
 # - name: Install pip dependencies
 #   ansible.builtin.pip:
