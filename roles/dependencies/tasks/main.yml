@@ -16,6 +16,14 @@
     name: "{{ packages }}"
     state: present
 
+- name: "Set {{ data_path }} owner and group"
+  become: true
+  ansible.builtin.file:
+    path: "{{ data_path }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    state: directory
+
 # - name: Install pip dependencies
 #   ansible.builtin.pip:
 #     name: "{{ item }}"
