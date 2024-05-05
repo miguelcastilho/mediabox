@@ -8,18 +8,19 @@
   become: true
   ansible.builtin.apt:
     update_cache: true
-
-- name: Upgrade all packages
-  become: true
-  ansible.builtin.apt:
     upgrade: true
+
+# - name: Upgrade all packages
+#   become: true
+#   ansible.builtin.apt:
+#     upgrade: true
 
 - name: Install required dependencies
   become: true
   ansible.builtin.apt:
-    name: "{{ item }}"
+    name: "{{ packages }}"
     state: present
-  loop: "{{ packages }}"
+  # loop: "{{ packages }}"
 
 # - name: Install pip dependencies
 #   ansible.builtin.pip:
