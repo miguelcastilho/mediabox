@@ -4,14 +4,14 @@
   ansible.builtin.file:
     path: "{{ data_path }}"
     state: directory
-    owner: "{{ ansible_ssh_user }}"
-    group: "{{ ansible_ssh_user }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
 
 - name: Check if cluster is installed
   ansible.builtin.stat:
     path: /etc/rancher/k3s/config.yaml
   register: k3s_installed
-  check_mode: false
+  # check_mode: false
 
 - name: Prevent downgrades
   block:
@@ -27,7 +27,8 @@
 
     - name: Check if upgrades are allowed
       ansible.builtin.assert:
-        that: ["k3s_release_version is version(current_k3s_version, '>=')"]
+        that:
+          - "k3s_release_version is version(current_k3s_version, '>=')"
         fail_msg: "Unable to upgrade k3s because the deployed version is higher than the one specified in the configuration"
   when: k3s_installed.stat.exists
 
