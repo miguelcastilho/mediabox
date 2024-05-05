@@ -21,11 +21,10 @@
     state: present
   loop: "{{ packages }}"
 
-- name: Install pip dependencies
-  become: true
-  ansible.builtin.pip:
-    name: "{{ item }}"
-  loop: "{{ pip_dependencies }}"
+# - name: Install pip dependencies
+#   ansible.builtin.pip:
+#     name: "{{ item }}"
+#   loop: "{{ pip_dependencies }}"
 
 # - name: Check if a reboot is required
 #   ansible.builtin.stat:

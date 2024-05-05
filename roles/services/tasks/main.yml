@@ -8,16 +8,26 @@
     tailscale_advertise_routes: "{{ ip_network | ansible.utils.ipaddr('network/prefix') }}"
 
 - name: Create infra namespace
-  kubernetes.core.k8s:
-    name: infra
-    kind: Namespace
-    state: present
+  shell: |
+    KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl apply -f -
+  args:
+    stdin: |
+      ---
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: infra
 
 - name: Create media namespace
-  kubernetes.core.k8s:
-    name: media
-    kind: Namespace
-    state: present
+  shell: |
+    KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl apply -f -
+  args:
+    stdin: |
+      ---
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: media
 
 - name: Create manifests folder
   ansible.builtin.file:

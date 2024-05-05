@@ -61,11 +61,15 @@
   when: tunnel_check_result.rc != 0
 
 - name: Create cloudflared namespace
-  kubernetes.core.k8s:
-    name: cloudflared
-    api_version: v1
-    kind: Namespace
-    state: present
+  shell: |
+    KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl apply -f -
+  args:
+    stdin: |
+      ---
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: cloudflared
 
 - name: Create cloudflared secret
   shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl apply secret generic tunnel-credentials --from-file=credentials.json=/home/{{ ansible_user }}/.cloudflared/{{ tunnel_id }}.json -n cloudflared"
@@ -87,10 +91,18 @@
     dest: "{{ data_path }}/manifests/cloudflared.yml"
     trim_blocks: false
 
+- name: Template cloudflared.yaml
+  template:
+    src: templates/cloudflared.yml.j2
+    dest: /tmp/cloudflared.yml
+
 - name: Apply cloudflared.yaml
-  kubernetes.core.k8s:
-    template: templates/cloudflared.yml.j2
-    apply: true
+  shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl apply -f /tmp/cloudflared.yml"
+
+- name: Delete cloudflared.yaml
+  file:
+    path: /tmp/cloudflared.yml
+    state: absent
 
 - name: Check containers status
   shell: KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl wait pod --for condition=ready --field-selector=status.phase!=Succeeded -n cloudflared --all --timeout 60s
