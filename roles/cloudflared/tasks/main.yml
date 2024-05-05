@@ -71,9 +71,23 @@
       metadata:
         name: cloudflared
 
-- name: Create cloudflared secret
-  shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl create secret generic tunnel-credentials --from-file=credentials.json=/home/{{ ansible_user }}/.cloudflared/{{ tunnel_id }}.json -n cloudflared"
-  when: tunnel_check_result.rc != 0
+- block:
+    - name: Create cloudflared secret
+      shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl create secret generic tunnel-credentials --from-file=credentials.json=/home/{{ ansible_user }}/.cloudflared/{{ tunnel_id }}.json -n cloudflared"
+      when: tunnel_check_result.rc != 0
+      register: create_secret
+      ignore_errors: true
+
+    - name: Check if cloudflared secret creation failed
+      set_fact:
+        secret_creation_failed: "{{ create_secret.rc != 0 }}"
+  rescue:
+    - name: Delete cloudflared secret
+      shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl delete secret tunnel-credentials -n cloudflared"
+      ignore_errors: true
+
+    - name: Retry creating cloudflared secret
+      shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl create secret generic tunnel-credentials --from-file=credentials.json=/home/{{ ansible_user }}/.cloudflared/{{ tunnel_id }}.json -n cloudflared"
 
 - name: Get Traefik External IP
   shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl get svc traefik -n kube-system -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'"
