@@ -10,9 +10,9 @@
 
 - name: Download and install cmctl
   shell: |
-    curl -fsSL -o cmctl https://github.com/cert-manager/cmctl/releases/download/{{ cmctl_version }}/cmctl_linux_arm64
-    chmod +x cmctl
-    sudo mv cmctl /usr/local/bin
+    curl -fsSL -o /tmp/cmctl https://github.com/cert-manager/cmctl/releases/download/{{ cmctl_version }}/cmctl_linux_arm64
+    chmod +x /tmp/cmctl
+    sudo mv /tmp/cmctl /usr/local/bin
 
 - name: cmcyl dry-run
   shell: "cmctl check api --wait=2m"
