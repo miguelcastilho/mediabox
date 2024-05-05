@@ -4,15 +4,18 @@
     path: "{{ data_path }}/manifests"
     state: directory
 
-- name: Download cert-manager manifest
-  ansible.builtin.get_url:
-    url: https://github.com/cert-manager/cert-manager/releases/download/v1.13.2/cert-manager.yaml
-    dest: "{{ data_path }}/manifests/cert-manager.yml"
+- name: Apply cert-manager manifest
+  shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/{{ cert_manager_version }}/cert-manager.yaml"
   register: result
 
-- name: Apply cert-manager manifest to the cluster.
-  shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl apply -f {{ data_path }}/manifests/cert-manager.yml"
-  when: result.changed
+- name: Download and install cmctl
+  shell: |
+    curl -fsSL -o cmctl https://github.com/cert-manager/cmctl/releases/download/{{ cmctl_version }}/cmctl_linux_arm64
+    chmod +x cmctl
+    sudo mv cmctl /usr/local/bin
+
+- name: cmcyl dry-run
+  shell: "cmctl check api --wait=2m"
 
 - name: Check containers status
   shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl wait pod --for condition=ready --field-selector=status.phase!=Succeeded -n cert-manager --all --timeout 10m"
