@@ -4,28 +4,23 @@
     path: /usr/local/bin/cloudflared
   register: cloudflared_existing
 
-- name: Download cloudflared
-  get_url:
-    url: "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb"
-    dest: /tmp/cloudflared-linux-amd64.deb
-  when: cloudflared_existing.stat.exists == False
+- name: Download and install cloudflared if not exists
+  block:
+    - name: Download cloudflared
+      get_url:
+        url: "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb"
+        dest: /tmp/cloudflared-linux-amd64.deb
 
-- name: Install cloudflared using dpkg
-  become: true
-  command: dpkg -i /tmp/cloudflared-linux-amd64.deb
-  when: cloudflared_existing.stat.exists == False
-  failed_when: false
+    - name: Install cloudflared using dpkg
+      become: true
+      command: dpkg -i /tmp/cloudflared-linux-amd64.deb
+      failed_when: false
 
-- name: Cleanup downloaded binary
-  file:
-    path: /tmp/cloudflared-linux-amd64.deb
-    state: absent
-  when: cloudflared_existing.stat.exists == False
-
-- name: Check cloudflared version
-  command: /usr/local/bin/cloudflared --version
-  register: cloudflared_version
-  changed_when: false
+    - name: Cleanup downloaded binary
+      file:
+        path: /tmp/cloudflared-linux-amd64.deb
+        state: absent
+  when: not cloudflared_existing.stat.exists
 
 - name: Create .cloudflared directory if it doesn't exist
   file:
@@ -45,7 +40,7 @@
   changed_when: false
   failed_when: "tunnel_check_result.rc != 0 and tunnel_check_result.stderr is not search('error parsing tunnel ID')"
 
-- name: Create Cloudflared Tunnel
+- name: Create Cloudflared Tunnel if not exists
   command: "cloudflared tunnel create {{ hostname }}"
   register: tunnel_creation_result
   when: tunnel_check_result.rc != 0
@@ -71,7 +66,8 @@
       metadata:
         name: cloudflared
 
-- block:
+- name: Cloudflared secret
+  block:
     - name: Create cloudflared secret
       shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl create secret generic tunnel-credentials --from-file=credentials.json=/home/{{ ansible_user }}/.cloudflared/{{ tunnel_id }}.json -n cloudflared"
       when: tunnel_check_result.rc != 0
