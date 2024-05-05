@@ -31,11 +31,7 @@
   loop: "{{ enable_services }}"
 
 - name: Deploy manifests
-  kubernetes.core.k8s:
-    template: "manifests/{{ item }}.yml.j2"
-    apply: true
-    server_side_apply:
-      field_manager: ansible
+  shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl apply -f {{ data_path }}/manifests/{{ item }}.yml"
   loop: "{{ enable_services }}"
   when: item != 'recyclarr'
 
@@ -77,8 +73,8 @@
   shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl get pods -A -o json"
   register: kubectl_get_pods
   changed_when: false
-  retries: 3
-  delay: 5
+  retries: 5
+  delay: 10
   until: kubectl_get_pods.stdout | from_json | json_query('items[*].status.phase') | unique | difference(["Running","Succeeded"]) | length == 0
 
 - block:
@@ -116,11 +112,7 @@
         dest: "{{ data_path }}/recyclarr/recyclarr.yml"
 
     - name: Deploy recyclarr
-      kubernetes.core.k8s:
-        template: "manifests/recyclarr.yml.j2"
-        apply: true
-        server_side_apply:
-          field_manager: ansible
+      shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl apply -f {{ data_path }}/manifests/recyclarr.yml"
 
     - name: Check containers status
       shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl get pods -A -o json"

@@ -11,11 +11,7 @@
   register: result
 
 - name: Apply cert-manager manifest to the cluster.
-  kubernetes.core.k8s:
-    src: "{{ data_path }}/manifests/cert-manager.yml"
-    apply: true
-    server_side_apply:
-      field_manager: ansible
+  shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl apply -f {{ data_path }}/manifests/cert-manager.yml"
   when: result.changed
 
 - name: Check containers status
@@ -23,16 +19,28 @@
   changed_when: false
   when: result.changed
 
+- name: Template secret
+  ansible.builtin.template:
+    src: secret.yml.j2
+    dest: "/tmp/secret.yml"
+
 - name: Deploy secret
-  kubernetes.core.k8s:
-    template: "secret.yml.j2"
-    apply: true
-    server_side_apply:
-      field_manager: ansible
+  shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl apply -f /tmp/secret.yml"
+
+- name: Delete secret template
+  ansible.builtin.file:
+    path: "/tmp/secret.yml"
+    state: absent
+
+- name: Template ClusterIssuer
+  ansible.builtin.template:
+    src: cluster_issuer.yml.j2
+    dest: "/tmp/cluster_issuer.yml"
 
 - name: Deploy ClusterIssuer
-  kubernetes.core.k8s:
-    template: "cluster_issuer.yml.j2"
-    apply: true
-    server_side_apply:
-      field_manager: ansible
+  shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl apply -f /tmp/cluster_issuer.yml"
+
+- name: Delete ClusterIssuer template
+  ansible.builtin.file:
+    path: "/tmp/cluster_issuer.yml"
+    state: absent

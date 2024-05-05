@@ -8,9 +8,10 @@
       include_role:
         name: dependencies
 
-    # - name: Install mergerfs and configure mounts
-    #   include_role:
-    #     name: mergerfs
+    - name: Install mergerfs and configure mounts
+      include_role:
+        name: mergerfs
+      when: install_mergefs
 
     - name: Install k3s
       include_role:
