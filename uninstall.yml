@@ -4,7 +4,8 @@
   ignore_errors: true
   tasks:
     - name: Run K3s uninstallation script
-      command: /usr/local/bin/k3s-uninstall.sh
+      become: true
+      shell: /usr/local/bin/k3s-uninstall.sh
 
     - name: Delete .kube directory
       file:
