@@ -72,11 +72,7 @@
       shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl create secret generic tunnel-credentials --from-file=credentials.json=/home/{{ ansible_user }}/.cloudflared/{{ tunnel_id }}.json -n cloudflared"
       when: tunnel_check_result.rc != 0
       register: create_secret
-      ignore_errors: true
-
-    - name: Check if cloudflared secret creation failed
-      set_fact:
-        secret_creation_failed: "{{ create_secret.rc != 0 }}"
+      # ignore_errors: true
   rescue:
     - name: Delete cloudflared secret
       shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl delete secret tunnel-credentials -n cloudflared"
