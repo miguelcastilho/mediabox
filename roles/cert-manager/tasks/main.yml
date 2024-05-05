@@ -16,6 +16,7 @@
 
 - name: cmcyl dry-run
   shell: "cmctl check api --wait=2m"
+  changed_when: false
 
 - name: Check containers status
   shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl wait pod --for condition=ready --field-selector=status.phase!=Succeeded -n cert-manager --all --timeout 10m"
