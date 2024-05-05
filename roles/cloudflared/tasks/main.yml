@@ -72,7 +72,7 @@
         name: cloudflared
 
 - name: Create cloudflared secret
-  shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl apply secret generic tunnel-credentials --from-file=credentials.json=/home/{{ ansible_user }}/.cloudflared/{{ tunnel_id }}.json -n cloudflared"
+  shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl create secret generic tunnel-credentials --from-file=credentials.json=/home/{{ ansible_user }}/.cloudflared/{{ tunnel_id }}.json -n cloudflared"
   when: tunnel_check_result.rc != 0
 
 - name: Get Traefik External IP
