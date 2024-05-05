@@ -40,13 +40,13 @@
     mode: '0600'
 
 - name: Check If Tunnel Exists
-  command: "cloudflared tunnel info {{ cloudflare_tunnel_name }}"
+  command: "cloudflared tunnel info {{ hostname }}"
   register: tunnel_check_result
   changed_when: false
   failed_when: "tunnel_check_result.rc != 0 and tunnel_check_result.stderr is not search('error parsing tunnel ID')"
 
 - name: Create Cloudflared Tunnel
-  command: "cloudflared tunnel create {{ cloudflare_tunnel_name }}"
+  command: "cloudflared tunnel create {{ hostname }}"
   register: tunnel_creation_result
   when: tunnel_check_result.rc != 0
 
@@ -97,5 +97,5 @@
   changed_when: false
 
 - name: Execute cloudflared tunnel route dns
-  command: "cloudflared tunnel route dns --overwrite-dns {{ cloudflare_tunnel_name }} {{ item }}.{{ domain }}"
+  command: "cloudflared tunnel route dns --overwrite-dns {{ hostname }} {{ item }}.{{ domain }}"
   loop: "{{ cloudflare_tunnel_dns_list }}"

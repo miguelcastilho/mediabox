@@ -33,10 +33,10 @@
         state: absent
 
     - name: Cleanup Cloudflared connections
-      command: "cloudflared tunnel cleanup {{ cloudflare_tunnel_name }}"
+      command: "cloudflared tunnel cleanup {{ hostname }}"
 
     - name: Delete Cloudflared tunnel
-      command: "cloudflared tunnel delete {{ cloudflare_tunnel_name }}"
+      command: "cloudflared tunnel delete {{ hostname }}"
 
     - name: Remove cloudflared
       become: true

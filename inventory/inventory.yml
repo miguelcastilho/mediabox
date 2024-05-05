@@ -59,7 +59,6 @@ kubernetes:
     # Cloudflare
     install_cloudflared: true
     cloudflare_api_token: cloudflare api token
-    cloudflare_tunnel_name: server
     cloudflare_tunnel_dns_list:
       - jellyseerr
       - homeassistant
