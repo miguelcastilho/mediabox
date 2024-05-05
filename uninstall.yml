@@ -60,6 +60,7 @@
       shell: curl -s -S -L https://raw.githubusercontent.com/AdguardTeam/AdGuardHome/master/scripts/install.sh | sh -s -- -u
 
     - name: Remove AdGuard Home directory
+      become: true
       file:
         path: /opt/AdGuardHome
         state: absent
