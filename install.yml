@@ -17,13 +17,13 @@
       include_role:
         name: k3s
 
-    - name: Install cert-manager
-      include_role:
-        name: cert-manager
-
     - name: Install Helm
       include_role:
         name: helm
+
+    - name: Install cert-manager
+      include_role:
+        name: cert-manager
 
     - name: Install arc-runners
       include_role:
@@ -34,10 +34,10 @@
         name: cloudflared
       when: install_cloudflared
 
-    # - name: Install adguard-home
-    #   include_role:
-    #     name: adguard-home
-    #   when: install_adguard_home
+    - name: Install adguard-home
+      include_role:
+        name: adguard-home
+      when: install_adguard_home
 
     - name: Install services
       include_role:
