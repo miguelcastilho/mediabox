@@ -133,12 +133,7 @@
       until: kubectl_get_pods.stdout | from_json | json_query('items[*].status.phase') | unique | difference(["Running","Succeeded"]) | length == 0
 
     - name: Get recyclarr pod name
-      kubernetes.core.k8s_info:
-        kind: Pod
-        api_version: v1
-        namespace: media
-        label_selectors:
-          - app = recyclarr
+      shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl get pods -n media -l app=recyclarr -o jsonpath='{.items[0].metadata.name}'"
       register: pod_info
 
     - name: Execute recyclarr sync command
