@@ -14,7 +14,7 @@
     chmod +x /tmp/cmctl
     sudo mv /tmp/cmctl /usr/local/bin
 
-- name: cmcyl dry-run
+- name: cmctl dry-run
   shell: "cmctl check api --wait=2m"
   changed_when: false
 
