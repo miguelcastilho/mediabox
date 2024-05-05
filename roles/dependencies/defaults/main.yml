@@ -1,11 +1,8 @@
 ---
 packages:
   - curl
-  # - python3-pip
+  - python3-pip
   - git
-  - python3-kubernetes
-  - python3-lxml
-  - python3-netaddr
 reboot_timeout: 600
 pip_dependencies:
   - python3-kubernetes
