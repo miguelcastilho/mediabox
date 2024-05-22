@@ -1,3 +1,8 @@
-inventory/*
-!inventory/inventory.yml
-roles/services/templates/homarr_default.json.j2
+.DS_Store
+.vscode
+ansible/tf_ansible_vars.yml
+terraform/.terraform
+terraform/.terraform.lock.hcl
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
+terraform/terraform.tfvars
