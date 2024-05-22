@@ -1,0 +1,38 @@
+---
+- name: Set hostname
+  become: true
+  ansible.builtin.hostname:
+    name: "{{ hostname }}"
+
+- name: Update APT package cache
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: "dist"
+
+- name: "Set {{ data_path }} owner and group"
+  become: true
+  ansible.builtin.file:
+    path: "{{ data_path }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    state: directory
+
+- name: Check if docker is installed
+  ansible.builtin.stat:
+    path: /usr/bin/docker
+  register: docker_installed
+
+- name: Install docker
+  shell: |
+    curl -fsSL https://get.docker.com | sudo sh
+  when: docker_installed.stat.exists == false
+
+- name: Add user to docker group
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: true
+
+- include_tasks: folder_structure.yml

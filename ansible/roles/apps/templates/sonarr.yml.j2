@@ -1,0 +1,65 @@
+name: linuxserver-sonarr
+services:
+  app:
+    cpu_shares: 90
+    command: []
+    container_name: sonarr
+    deploy:
+      resources:
+        limits:
+          memory: 7941M
+    environment:
+      - TZ="{{ timezone }}"
+    image: linuxserver/sonarr:4.0.4
+    labels:
+      icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/sonarr-icon.png
+    ports:
+      - target: 8989
+        published: "8989"
+        protocol: tcp
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: "{{ data_path }}/sonarr"
+        target: /config
+      - type: bind
+        source: "{{ media_path }}"
+        target: /data
+    user: "1000"
+    devices: []
+    cap_add: []
+    networks:
+      - app
+    privileged: false
+    hostname: sonarr
+networks:
+  app:
+    name: app
+x-casaos:
+  architectures:
+    - amd64
+    - arm64
+  author: WisdomSky
+  category: LinuxServer.io
+  description:
+    en_us: "Visit homepage: https://hub.docker.com/r/linuxserver/sonarr/"
+  developer: LinuxServer.io
+  hostname: ""
+  icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/sonarr-icon.png
+  index: /
+  is_uncontrolled: false
+  main: app
+  port_map: "8989"
+  project_url: https://sonarr.tv/
+  scheme: http
+  store_app_id: linuxserver-sonarr
+  tagline:
+    en_us: (formerly NZBdrone) is a PVR for usenet and bittorrent users. It can
+      monitor multiple RSS feeds for new episodes of your favorite shows and
+      will grab, sort and rename them. It can also be configured to
+      automatically upgrade the quality of files already downloaded when a
+      better quality format becomes available.
+  thumbnail: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/sonarr-banner.png
+  title:
+    custom: ""
+    en_us: Sonarr

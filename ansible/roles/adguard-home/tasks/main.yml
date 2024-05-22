@@ -1,0 +1,65 @@
+---
+- name: Update packages
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: "dist"
+
+- name: Install curl
+  ansible.builtin.apt:
+    name: curl
+    state: latest
+
+- name: Download and run AdGuard Home installation script
+  ansible.builtin.shell: |
+    curl -s -S -L https://raw.githubusercontent.com/AdguardTeam/AdGuardHome/master/scripts/install.sh | sh -s -- -v
+
+- name: Stop AdGuardHome service
+  shell: /opt/AdGuardHome/AdGuardHome -s stop
+
+- name: Create resolved.conf.d directory
+  ansible.builtin.file:
+    path: /etc/systemd/resolved.conf.d
+    state: directory
+
+- name: Create AdGuard Home DNS configuration file
+  ansible.builtin.copy:
+    content: |
+      [Resolve]
+      DNS=127.0.0.1
+      DNSStubListener=no
+    dest: /etc/systemd/resolved.conf.d/adguardhome.conf
+
+- name: Backup the existing resolv.conf
+  ansible.builtin.copy:
+    src: /etc/resolv.conf
+    dest: /etc/resolv.conf.backup
+    remote_src: true
+
+- name: Remove existing resolv.conf
+  ansible.builtin.file:
+    path: /etc/resolv.conf
+    state: absent
+
+- name: Create a symbolic link to systemd-resolve's resolv.conf
+  ansible.builtin.file:
+    src: /run/systemd/resolve/resolv.conf
+    dest: /etc/resolv.conf
+    state: link
+
+- name: Reload systemd-resolved service
+  ansible.builtin.systemd:
+    name: systemd-resolved
+    daemon_reload: true
+    state: restarted
+
+- name: Stop AdGuardHome service
+  shell: /opt/AdGuardHome/AdGuardHome -s stop
+
+- name: Copy AdGuardHome.yaml
+  ansible.builtin.template:
+    src: AdGuardHome.yaml.j2
+    dest: /opt/AdGuardHome/AdGuardHome.yaml
+    trim_blocks: false
+
+- name: Start AdGuardHome service
+  shell: /opt/AdGuardHome/AdGuardHome -s start

@@ -1,0 +1,44 @@
+name: flaresolverr
+services:
+  flaresolverr:
+    cpu_shares: 90
+    command: []
+    container_name: flaresolverr
+    deploy:
+      resources:
+        limits:
+          memory: 7941M
+    environment:
+      - CAPTCHA_SOLVER=none
+      - LOG_HTML=false
+      - LOG_LEVEL=info
+      - "TZ={{ timezone }}"
+    hostname: flaresolverr
+    image: ghcr.io/flaresolverr/flaresolverr:v3.3.17
+    ports:
+      - target: 8191
+        published: "8191"
+        protocol: tcp
+    restart: unless-stopped
+    volumes: []
+    user: "1000"
+    devices: []
+    cap_add: []
+    networks:
+      - app
+    privileged: false
+networks:
+  app:
+    name: app
+x-casaos:
+  author: self
+  category: self
+  hostname: ""
+  icon: https://avatars.githubusercontent.com/u/75936191?s=280&v=4
+  index: /
+  is_uncontrolled: false
+  port_map: "8191"
+  scheme: http
+  store_app_id: flaresolverr
+  title:
+    custom: FlareSolverr

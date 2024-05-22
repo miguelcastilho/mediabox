@@ -1,0 +1,46 @@
+name: node_red
+services:
+  main_app:
+    cpu_shares: 10
+    command: []
+    container_name: node-red
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    environment:
+      - "TZ={{ timezone }}"
+    hostname: node-red
+    image: nodered/node-red:3.1
+    labels:
+      icon: https://nodered.org/about/resources/media/node-red-hexagon.png
+    ports:
+      - target: 1880
+        published: "1880"
+        protocol: tcp
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /mnt/HDD/mediabox/node-red
+        target: /data
+    user: "1000"
+    devices: []
+    cap_add: []
+    networks:
+      - app
+    privileged: false
+networks:
+  app:
+    name: app
+x-casaos:
+  author: self
+  category: self
+  hostname: ""
+  icon: https://nodered.org/about/resources/media/node-red-hexagon.png
+  index: /
+  is_uncontrolled: false
+  port_map: "1880"
+  scheme: http
+  store_app_id: node_red
+  title:
+    custom: Node-Red

@@ -1,0 +1,56 @@
+name: linuxserver-prowlarr
+services:
+    app:
+        cpu_shares: 90
+        command: []
+        container_name: prowlarr
+        deploy:
+            resources:
+                limits:
+                    memory: "8326742016"
+        environment:
+            TZ: "{{ timezone }}"
+        image: linuxserver/prowlarr:1.17.2
+        labels:
+            icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/prowlarr-logo.png
+        networks:
+            app: null
+        ports:
+            - target: 9696
+              published: "9696"
+              protocol: tcp
+        restart: unless-stopped
+        volumes:
+            - type: bind
+              source: "{{ data_path }}/prowlarr"
+              target: /config
+        user: "1000"
+networks:
+    app:
+        name: app
+    default:
+        name: linuxserver-prowlarr_default
+x-casaos:
+    architectures:
+        - amd64
+        - arm64
+    author: WisdomSky
+    category: LinuxServer.io
+    description:
+        en_us: 'Visit homepage: https://github.com/orgs/linuxserver/packages/container/package/prowlarr'
+    developer: LinuxServer.io
+    hostname: ""
+    icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/prowlarr-logo.png
+    index: /
+    is_uncontrolled: false
+    main: app
+    port_map: "9696"
+    project_url: https://github.com/Prowlarr/Prowlarr
+    scheme: http
+    store_app_id: linuxserver-prowlarr
+    tagline:
+        en_us: A indexer manager/proxy built on the popular arr. Net/reactjs base stack to integrate with your various PVR apps. Prowlarr supports both Torrent Trackers and Usenet Indexers. It integrates seamlessly with Sonarr, Radarr, Lidarr, and Readarr offering complete management of your indexers with no per app Indexer setup required (we do it all).
+    thumbnail: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/prowlarr-banner.png
+    title:
+        custom: ""
+        en_us: Prowlarr

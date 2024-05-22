@@ -1,0 +1,59 @@
+name: linuxserver-radarr
+services:
+    app:
+        cpu_shares: 90
+        command: []
+        container_name: radarr
+        deploy:
+            resources:
+                limits:
+                    memory: "8326742016"
+        environment:
+            TZ: "{{ timezone }}"
+        image: linuxserver/radarr:5.6.0
+        labels:
+            icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/radarr.png
+        networks:
+            app: null
+        ports:
+            - target: 7878
+              published: "7878"
+              protocol: tcp
+        restart: unless-stopped
+        volumes:
+            - type: bind
+              source: "{{ data_path }}/radarr"
+              target: /config
+            - type: bind
+              source: "{{ media_path }}"
+              target: /data
+        user: "1000"
+networks:
+    app:
+        name: app
+    default:
+        name: linuxserver-radarr_default
+x-casaos:
+    architectures:
+        - amd64
+        - arm64
+    author: WisdomSky
+    category: LinuxServer.io
+    description:
+        en_us: 'Visit homepage: https://hub.docker.com/r/linuxserver/radarr/'
+    developer: LinuxServer.io
+    hostname: ""
+    icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/radarr.png
+    index: /
+    is_uncontrolled: false
+    main: app
+    port_map: "7878"
+    project_url: https://github.com/Radarr/Radarr
+    scheme: http
+    store_app_id: linuxserver-radarr
+    tagline:
+        en_us: A fork of Sonarr to work with movies à la Couchpotato.
+    thumbnail: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/radarr.png
+    title:
+        custom: ""
+        en_us: Radarr

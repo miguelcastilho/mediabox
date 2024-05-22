@@ -1,0 +1,60 @@
+---
+- name: Configure Uptime Kuma
+  hosts: uptime_kuma
+  gather_facts: no
+  any_errors_fatal: true
+  tasks:
+    - name: Wait for system to become reachable
+      wait_for_connection:
+
+    - name: Gather facts for the first time
+      setup:
+
+    - name: Update all packages
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: "dist"
+    
+    - name: Install packages
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: latest
+      loop:
+        - curl
+        - git
+
+    - name: Install nvm
+      ansible.builtin.shell: |
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+
+    - name: Install Node.js
+      ansible.builtin.shell: |
+        . ~/.bashrc
+        nvm install 20.4
+
+    - name: Clone repo
+      ansible.builtin.shell: | 
+        git clone https://github.com/louislam/uptime-kuma.git
+
+    - name: Run setup
+      ansible.builtin.shell: |
+        . ~/.bashrc
+        cd uptime-kuma
+        npm run setup
+
+    - name: Install pm2
+      ansible.builtin.shell: |
+        . ~/.bashrc
+        cd uptime-kuma
+        npm install pm2 -g && pm2 install pm2-logrotate
+
+    - name: Start server
+      ansible.builtin.shell: |
+        . ~/.bashrc
+        cd uptime-kuma
+        pm2 start server/server.js --name uptime-kuma
+
+    - name: Add server to startup
+      ansible.builtin.shell: |
+        . ~/.bashrc
+        pm2 save && pm2 startup

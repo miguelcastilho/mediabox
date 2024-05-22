@@ -1,0 +1,71 @@
+name: mosquitto
+services:
+  mosquitto:
+    cpu_shares: 90
+    container_name: mqtt
+    deploy:
+      resources:
+        limits:
+          memory: 32097M
+    hostname: mqtt
+    image: eclipse-mosquitto:2.0.18
+    labels:
+      icon: https://raw.githubusercontent.com/mr-manuel/CasaOS-HomeAutomation-AppStore/latest/Apps/Mosquitto/icon.png
+    ports:
+      - target: 1883
+        published: "1883"
+        protocol: tcp
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: "{{ data_path }}/mqtt"
+        target: /mosquitto/config
+    user: "1000"
+    devices: []
+    cap_add: []
+    environment: []
+    networks:
+      - app
+    privileged: false
+networks:
+  app:
+    name: app
+x-casaos:
+  architectures:
+    - amd64
+    - arm64
+    - arm
+  author: mr-manuel
+  category: Home Automation
+  description:
+    en_us: >
+      Visit [Eclipse Mosquitto](https://mosquitto.org) for more details. Check
+      the [documentation](https://mosquitto.org/documentation/) for further
+      settings.
+  developer: Eclipse Mosquitto
+  hostname: ""
+  icon: https://raw.githubusercontent.com/mr-manuel/CasaOS-HomeAutomation-AppStore/latest/Apps/Mosquitto/icon.png
+  index: /
+  is_uncontrolled: false
+  main: mosquitto
+  port_map: ""
+  project_url: https://github.com/mr-manuel/CasaOS-HomeAutomation-AppStore
+  scheme: http
+  store_app_id: mosquitto
+  tagline:
+    en_us: >
+      Eclipse Mosquitto is an open source (EPL/EDL licensed) message broker that
+      implements the MQTT protocol versions 5.0, 3.1.1 and 3.1. Mosquitto is
+      lightweight and is suitable for use on all devices from low power single
+      board computers to full servers.
+  thumbnail: https://raw.githubusercontent.com/mr-manuel/CasaOS-HomeAutomation-AppStore/latest/Apps/Mosquitto/icon.png
+  tips:
+    before_install:
+      en_us: >
+        The MQTT broker will be reachable at port `1883`.
+
+
+        [Website](https://mosquitto.org) &bull; [Documentation](https://mosquitto.org/documentation/)
+  title:
+    custom: Mosquitto
+    en_us: Mosquitto

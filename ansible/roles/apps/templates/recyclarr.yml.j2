@@ -1,0 +1,45 @@
+name: recyclarr
+services:
+  recyclarr:
+    cpu_shares: 10
+    command: []
+    container_name: recyclarr
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    environment:
+      - "TZ={{ timezone }}"
+      - CRON_SCHEDULE=@daily
+      - RECYCLARR_CREATE_CONFIG=true
+    hostname: recyclarr
+    image: ghcr.io/recyclarr/recyclarr:6.0.2
+    labels:
+      icon: https://recyclarr.dev/img/recyclarr.png
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: "{{ data_path }}/recyclarr"
+        target: /config
+    user: "1000"
+    ports: []
+    devices: []
+    cap_add: []
+    networks:
+      - app
+    privileged: false
+networks:
+  app:
+    name: app
+x-casaos:
+  author: self
+  category: self
+  hostname: ""
+  icon: https://recyclarr.dev/img/recyclarr.png
+  index: ""
+  is_uncontrolled: false
+  port_map: ""
+  scheme: http
+  store_app_id: recyclarr
+  title:
+    custom: Recyclarr
