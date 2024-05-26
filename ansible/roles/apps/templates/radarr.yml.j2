@@ -1,6 +1,6 @@
 name: linuxserver-radarr
 services:
-    app:
+    radarr:
         cpu_shares: 90
         command: []
         container_name: radarr
@@ -10,6 +10,8 @@ services:
                     memory: "8326742016"
         environment:
             TZ: "{{ timezone }}"
+            PUID: 1000
+            PGID: 1000
         image: linuxserver/radarr:5.6.0
         labels:
             icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/radarr.png
@@ -27,7 +29,6 @@ services:
             - type: bind
               source: "{{ media_path }}"
               target: /data
-        user: "1000"
 networks:
     app:
         name: app
@@ -46,7 +47,7 @@ x-casaos:
     icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/radarr.png
     index: /
     is_uncontrolled: false
-    main: app
+    main: radarr
     port_map: "7878"
     project_url: https://github.com/Radarr/Radarr
     scheme: http

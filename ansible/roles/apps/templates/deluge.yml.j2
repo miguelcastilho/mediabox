@@ -1,6 +1,6 @@
 name: linuxserver-deluge
 services:
-  app:
+  deluge:
     cpu_shares: 90
     command: []
     container_name: deluge
@@ -11,6 +11,8 @@ services:
     environment:
       - DELUGE_LOGLEVEL=error
       - "TZ={{ timezone }}"
+      - PUID=1000
+      - PGID=1000
     image: linuxserver/deluge:2.1.1
     labels:
       icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/deluge-icon.png
@@ -35,7 +37,6 @@ services:
       - type: bind
         source: "{{ media_path }}"
         target: /data
-    user: "1000"
     devices: []
     cap_add: []
     networks:
@@ -60,7 +61,7 @@ x-casaos:
   icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/deluge-icon.png
   index: /
   is_uncontrolled: false
-  main: app
+  main: deluge
   port_map: "8112"
   project_url: http://deluge-torrent.org/
   scheme: http

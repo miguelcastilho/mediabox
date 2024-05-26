@@ -1,6 +1,6 @@
 name: linuxserver-sonarr
 services:
-  app:
+  sonarr:
     cpu_shares: 90
     command: []
     container_name: sonarr
@@ -10,6 +10,8 @@ services:
           memory: 7941M
     environment:
       - TZ="{{ timezone }}"
+      - PUID=1000
+      - PGID=1000
     image: linuxserver/sonarr:4.0.4
     labels:
       icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/sonarr-icon.png
@@ -25,13 +27,40 @@ services:
       - type: bind
         source: "{{ media_path }}"
         target: /data
-    user: "1000"
     devices: []
     cap_add: []
     networks:
       - app
     privileged: false
     hostname: sonarr
+  recyclarr:
+    cpu_shares: 10
+    command: []
+    container_name: recyclarr
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    environment:
+      - "TZ={{ timezone }}"
+      - CRON_SCHEDULE=@daily
+      - RECYCLARR_CREATE_CONFIG=true
+    hostname: recyclarr
+    image: ghcr.io/recyclarr/recyclarr:6.0.2
+    labels:
+      icon: https://recyclarr.dev/img/recyclarr.png
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: "{{ data_path }}/recyclarr"
+        target: /config
+    user: "1000"
+    ports: []
+    devices: []
+    cap_add: []
+    networks:
+      - app
+    privileged: false
 networks:
   app:
     name: app
@@ -48,7 +77,7 @@ x-casaos:
   icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/sonarr-icon.png
   index: /
   is_uncontrolled: false
-  main: app
+  main: sonarr
   port_map: "8989"
   project_url: https://sonarr.tv/
   scheme: http

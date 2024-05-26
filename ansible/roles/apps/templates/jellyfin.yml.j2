@@ -1,6 +1,6 @@
 name: linuxserver-jellyfin
 services:
-    app:
+    jellyfin:
         cpu_shares: 90
         command: []
         container_name: jellyfin
@@ -11,6 +11,8 @@ services:
         environment:
             JELLYFIN_PublishedServerUrl: "{{ ansible_default_ipv4.address }}
             TZ: "{{ timezone }}"
+            PUID: 1000
+            PGID: 1000
         image: linuxserver/jellyfin:10.9.1
         labels:
             icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/jellyfin-logo.png
@@ -34,7 +36,6 @@ services:
             - type: bind
               source: "{{ media_path }}"
               target: /data
-        user: "1000"
 networks:
     app:
         name: app
@@ -53,7 +54,7 @@ x-casaos:
     icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/jellyfin-logo.png
     index: /
     is_uncontrolled: false
-    main: app
+    main: jellyfin
     port_map: "8096"
     project_url: https://github.com/jellyfin/jellyfin#jellyfin
     scheme: http

@@ -1,6 +1,6 @@
 name: linuxserver-sabnzbd
 services:
-  app:
+  sabnzbd:
     cpu_shares: 90
     command: []
     container_name: sabnzbd
@@ -10,6 +10,8 @@ services:
           memory: 7941M
     environment:
       - "TZ={{ timezone }}"
+      - PUID=1000
+      - PGID=1000
     image: linuxserver/sabnzbd:4.3.1
     labels:
       icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/sabnzbd-icon.png
@@ -25,7 +27,6 @@ services:
       - type: bind
         source: "{{ media_path }}"
         target: /data
-    user: "1000"
     devices: []
     cap_add: []
     networks:
@@ -48,7 +49,7 @@ x-casaos:
   icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/sabnzbd-icon.png
   index: /
   is_uncontrolled: false
-  main: app
+  main: sabnzbd
   port_map: "8080"
   project_url: http://sabnzbd.org/
   scheme: http

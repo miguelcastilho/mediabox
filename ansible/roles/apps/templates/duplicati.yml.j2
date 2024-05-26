@@ -1,6 +1,6 @@
 name: linuxserver-duplicati
 services:
-  app:
+  duplicati:
     cpu_shares: 90
     command: []
     container_name: duplicati
@@ -10,6 +10,8 @@ services:
           memory: 32097M
     environment:
       - "TZ={{ timezone }}"
+      - PUID=1000
+      - PGID=1000
     image: linuxserver/duplicati:2.0.8
     labels:
       icon: https://github.com/linuxserver/docker-templates/raw/master/linuxserver.io/img/duplicati-icon.png
@@ -25,7 +27,6 @@ services:
       - type: bind
         source: "{{ data_path }}"
         target: /source
-    user: "1000"
     devices: []
     cap_add: []
     networks:
@@ -48,7 +49,7 @@ x-casaos:
   icon: https://github.com/linuxserver/docker-templates/raw/master/linuxserver.io/img/duplicati-icon.png
   index: /
   is_uncontrolled: false
-  main: app
+  main: duplicati
   port_map: "8200"
   project_url: https://www.duplicati.com/
   scheme: http
