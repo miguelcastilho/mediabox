@@ -1,6 +1,6 @@
 name: teslamate
 services:
-  main_app:
+  teslamate:
     cpu_shares: 10
     command: []
     container_name: teslamate
@@ -34,6 +34,66 @@ services:
     networks:
       - app
     privileged: false
+  grafana:
+    cpu_shares: 10
+    command: []
+    container_name: teslamate-grafana
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    environment:
+      - DATABASE_HOST=teslamate-database
+      - "DATABASE_NAME={{ teslamate_database_name }}"
+      - "DATABASE_PASS={{ teslamate_database_password }}"
+      - "DATABASE_USER={{ teslamate_database_user }}"
+    image: teslamate/grafana:1.28.5
+    labels:
+      icon: https://icon.casaos.io/main/all/grafana.png
+    ports:
+      - target: 3000
+        published: "3000"
+        protocol: tcp
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: "{{ data_path }}/teslamate/grafana"
+        target: /var/lib/grafana
+    user: "1000"
+    devices: []
+    cap_add: []
+    networks:
+      - app
+    privileged: false
+    hostname: teslamate-grafana
+  postgres:
+    cpu_shares: 10
+    command: []
+    container_name: teslamate-database
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    environment:
+      - "POSTGRES_DB={{ teslamate_database_name }}"
+      - "POSTGRES_PASSWORD={{ teslamate_database_password }}"
+      - "POSTGRES_USER={{ teslamate_database_user }}"
+    image: postgres:15
+    labels:
+      icon: https://icon.casaos.io/main/all/postgres.png
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: "{{ data_path }}/teslamate/postgres"
+        target: /var/lib/postgresql/data
+    user: "1000"
+    ports: []
+    devices: []
+    cap_add: []
+    networks:
+      - app
+    privileged: false
+    hostname: teslamate-database
 networks:
   app:
     name: app

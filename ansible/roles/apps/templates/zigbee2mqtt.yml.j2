@@ -32,6 +32,33 @@ services:
     networks:
       - app
     privileged: false
+  mosquitto:
+    cpu_shares: 90
+    container_name: mqtt
+    deploy:
+      resources:
+        limits:
+          memory: 32097M
+    hostname: mqtt
+    image: eclipse-mosquitto:2.0.18
+    labels:
+      icon: https://raw.githubusercontent.com/mr-manuel/CasaOS-HomeAutomation-AppStore/latest/Apps/Mosquitto/icon.png
+    ports:
+      - target: 1883
+        published: "1883"
+        protocol: tcp
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: "{{ data_path }}/mqtt"
+        target: /mosquitto/config
+    user: "1000"
+    devices: []
+    cap_add: []
+    environment: []
+    networks:
+      - app
+    privileged: false
 networks:
   app:
     name: app

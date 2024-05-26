@@ -1,6 +1,6 @@
 name: linuxserver-prowlarr
 services:
-    app:
+    prowlarr:
         cpu_shares: 90
         command: []
         container_name: prowlarr
@@ -10,6 +10,8 @@ services:
                     memory: "8326742016"
         environment:
             TZ: "{{ timezone }}"
+            PUID: 1000
+            PGID: 1000
         image: linuxserver/prowlarr:1.17.2
         labels:
             icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/prowlarr-logo.png
@@ -24,7 +26,33 @@ services:
             - type: bind
               source: "{{ data_path }}/prowlarr"
               target: /config
+    flaresolverr:
+        cpu_shares: 90
+        command: []
+        container_name: flaresolverr
+        deploy:
+            resources:
+                limits:
+                    memory: 7941M
+        environment:
+            - CAPTCHA_SOLVER=none
+            - LOG_HTML=false
+            - LOG_LEVEL=info
+            - "TZ={{ timezone }}"
+        hostname: flaresolverr
+        image: ghcr.io/flaresolverr/flaresolverr:v3.3.17
+        ports:
+            - target: 8191
+              published: "8191"
+              protocol: tcp
+        restart: unless-stopped
+        volumes: []
         user: "1000"
+        devices: []
+        cap_add: []
+        networks:
+            app: null
+        privileged: false
 networks:
     app:
         name: app
@@ -43,7 +71,7 @@ x-casaos:
     icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/prowlarr-logo.png
     index: /
     is_uncontrolled: false
-    main: app
+    main: prowlarr
     port_map: "9696"
     project_url: https://github.com/Prowlarr/Prowlarr
     scheme: http
