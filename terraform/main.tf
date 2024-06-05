@@ -35,6 +35,14 @@ resource "cloudflare_record" "homeassistant" {
   proxied = true
 }
 
+resource "cloudflare_record" "casaos" {
+  zone_id = var.cloudflare_zone_id
+  name    = "casaos"
+  value   = "${cloudflare_tunnel.mediabox.cname}"
+  type    = "CNAME"
+  proxied = true
+}
+
 # Creates the configuration for the tunnel.
 resource "cloudflare_tunnel_config" "mediabox" {
   tunnel_id = cloudflare_tunnel.mediabox.id
