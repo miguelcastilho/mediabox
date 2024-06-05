@@ -12,7 +12,7 @@ services:
             TZ: "{{ timezone }}"
             PUID: 1000
             PGID: 1000
-        image: linuxserver/prowlarr:1.17.2
+        image: linuxserver/prowlarr:1.18.0
         labels:
             icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/prowlarr-logo.png
         networks:
@@ -40,7 +40,7 @@ services:
             - LOG_LEVEL=info
             - "TZ={{ timezone }}"
         hostname: flaresolverr
-        image: ghcr.io/flaresolverr/flaresolverr:v3.3.17
+        image: ghcr.io/flaresolverr/flaresolverr:v3.3.19
         ports:
             - target: 8191
               published: "8191"
