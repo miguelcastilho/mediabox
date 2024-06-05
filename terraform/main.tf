@@ -211,11 +211,3 @@ resource "cloudflare_record" "adguard" {
   type    = "A"
   proxied = false
 }
-
-resource "cloudflare_record" "casaos" {
-  zone_id = var.cloudflare_zone_id
-  name    = "casaos"
-  value   = "${proxmox_vm_qemu.mediabox.default_ipv4_address}"
-  type    = "A"
-  proxied = false
-}
