@@ -100,7 +100,7 @@ networks:
 x-casaos:
   author: self
   category: self
-  hostname: ""
+  hostname: "{{ ansible_default_ipv4.address }}"
   icon: https://upload.wikimedia.org/wikipedia/commons/e/e8/Tesla_logo.png
   index: /
   is_uncontrolled: false

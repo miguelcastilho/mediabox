@@ -35,7 +35,7 @@ networks:
 x-casaos:
   author: self
   category: self
-  hostname: ""
+  hostname: "{{ ansible_default_ipv4.address }}"
   icon: https://nodered.org/about/resources/media/node-red-hexagon.png
   index: /
   is_uncontrolled: false

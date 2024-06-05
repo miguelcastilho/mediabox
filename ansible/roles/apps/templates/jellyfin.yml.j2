@@ -50,7 +50,7 @@ x-casaos:
     description:
         en_us: 'Visit homepage: https://hub.docker.com/r/linuxserver/jellyfin/'
     developer: LinuxServer.io
-    hostname: ""
+    hostname: "{{ ansible_default_ipv4.address }}"
     icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/jellyfin-logo.png
     index: /
     is_uncontrolled: false

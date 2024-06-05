@@ -45,7 +45,7 @@ x-casaos:
   description:
     en_us: "Visit homepage: https://hub.docker.com/r/linuxserver/duplicati/"
   developer: LinuxServer.io
-  hostname: ""
+  hostname: "{{ ansible_default_ipv4.address }}"
   icon: https://github.com/linuxserver/docker-templates/raw/master/linuxserver.io/img/duplicati-icon.png
   index: /
   is_uncontrolled: false
