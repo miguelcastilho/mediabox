@@ -43,13 +43,13 @@ x-casaos:
     description:
         en_us: Jellyseerr is a free and open source software application for managing requests for your media library. It is a a fork of Overseerr built to bring support for Jellyfin & Emby media servers!
     developer: Fallenbagel
-    hostname: "{{ ansible_default_ipv4.address }}"
+    hostname: "jellyseerr.{{ domain }}"
     icon: https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/Jellyseerr/icon.png
     index: /
     is_uncontrolled: true
     main: jellyseerr
-    port_map: "5055"
-    scheme: http
+    port_map: ""
+    scheme: https
     screenshot_link:
         - https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/Jellyseerr/screenshot-1.jpg
         - https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/Jellyseerr/screenshot-2.jpg
