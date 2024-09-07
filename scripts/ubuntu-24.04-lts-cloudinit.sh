@@ -1,17 +1,18 @@
 #!/bin/bash
 
 # Variables
-SERVER_USERNAME="root"
 SERVER_IP="192.168.1.99"
-IMAGE_URL="https://dl-cdn.alpinelinux.org/alpine/v3.20/releases/x86_64/alpine-virt-3.20.0-x86_64.iso"
-IMAGE_NAME="alpine-virt-3.20.0"
-VM_ID=9001
+IMAGE_URL="https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
+FILE_NAME="noble-server-cloudimg-amd64.img"
+IMAGE_NAME="ubuntu-24.04-lts"
+STORAGE="vms"
+VM_ID=9000
 
-ssh $SERVER_USERNAME@$SERVER_IP << EOF
+ssh root@$SERVER_IP << EOF
     set -e  # Exit immediately if a command exits with a non-zero status
 
     # Cleanup old image and VM
-    rm -f $IMAGE_NAME
+    rm -f $FILE_NAME || true  # Ignore error if file doesn't exist
     qm destroy $VM_ID || true  # Ignore error if VM doesn't exist
 
     # Download new image
@@ -21,20 +22,20 @@ ssh $SERVER_USERNAME@$SERVER_IP << EOF
     apt update && apt install -y guestfs-tools
 
     # Customize the image
-    virt-customize -a $IMAGE_NAME --install qemu-guest-agent \
+    virt-customize -a $FILE_NAME --install qemu-guest-agent \
       --run-command 'systemctl start qemu-guest-agent.service && systemctl enable qemu-guest-agent.service'
-    virt-customize -a $IMAGE_NAME --truncate /etc/machine-id
+    virt-customize -a $FILE_NAME --truncate /etc/machine-id
 
     # Create and configure the VM
-    qm create $VM_ID --name ubuntu-noble-server-cloud --memory 2048 --core 1 --net0 virtio,bridge=vmbr0 --scsihw virtio-scsi-pci
-    qm importdisk $VM_ID $IMAGE_NAME local-lvm
-    qm set $VM_ID --scsihw virtio-scsi-pci --scsi0 local-lvm:vm-$VM_ID-disk-0
-    qm set $VM_ID --ide2 local-lvm:cloudinit
+    qm create $VM_ID --name $IMAGE_NAME --memory 2048 --core 1 --net0 virtio,bridge=vmbr0 --scsihw virtio-scsi-pci
+    qm importdisk $VM_ID $FILE_NAME $STORAGE
+    qm set $VM_ID --scsihw virtio-scsi-pci --scsi0 $STORAGE:vm-$VM_ID-disk-0
+    qm set $VM_ID --ide2 $STORAGE:cloudinit
     qm set $VM_ID --boot c --bootdisk scsi0
     qm set $VM_ID --serial0 socket --vga serial0
     qm set $VM_ID --agent enabled=1
     qm template $VM_ID
 
     # Cleanup
-    rm -f $IMAGE_NAME
+    rm -f $FILE_NAME
 EOF
