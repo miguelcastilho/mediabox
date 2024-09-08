@@ -1,64 +1,253 @@
-variable "cloudflare_zone_id" {
-  description = "Zone ID of your domain"
+# General Variables
+variable "gateway_ip_address" {
+  description = "Gateway IP address"
   type        = string
-  sensitive   = true
 }
 
-variable "cloudflare_account_id" {
-  description = "Account ID for your Cloudflare account"
+variable "lxc_base_image" {
+  description = "Template to clone"
   type        = string
-  sensitive   = true
+  default     = "local:vztmpl/ubuntu-22.04-standard_22.04-1_amd64.tar.zst"
 }
 
-variable "cloudflare_tunnel_name" {
-  description = "Name for cloudflare tunnel"
+variable "netmask" {
+  description = "Network mask"
   type        = string
-  default     = "Terraform mediabox tunnel"
+  default     = "/24"
 }
 
-variable "cloudflare_token" {
-  description = "Cloudflare API token created at https://dash.cloudflare.com/profile/api-tokens"
-  type        = string
-  sensitive   = true
-}
-
+# Proxmox Variables
 variable "proxmox_ip_address" {
-  description = "proxmox ip address"
+  description = "Proxmox IP address"
+  type        = string
+}
+
+variable "proxmox_name" {
+  description = "Proxmox node name"
   type        = string
 }
 
 variable "proxmox_api_url" {
-  description = "proxmox api url"
+  description = "Proxmox API URL"
   type        = string
 }
 
 variable "proxmox_api_token_id" {
-  description = "proxmox api token id"
+  description = "Proxmox API Token ID"
   type        = string
   sensitive   = true
 }
 
 variable "proxmox_api_token_secret" {
-  description = "proxmox api token secret"
+  description = "Proxmox API Token Secret"
   type        = string
   sensitive   = true
 }
 
+# Cloudflare Variables
+variable "cloudflare_zone_id" {
+  description = "Cloudflare Zone ID"
+  type        = string
+  sensitive   = true
+}
+
+variable "cloudflare_account_id" {
+  description = "Cloudflare Account ID"
+  type        = string
+  sensitive   = true
+}
+
+variable "cloudflare_tunnel_name" {
+  description = "Cloudflare Tunnel Name"
+  type        = string
+  default     = "Terraform mediabox tunnel"
+}
+
+variable "cloudflare_token" {
+  description = "Cloudflare API Token"
+  type        = string
+  sensitive   = true
+}
+
+# SSH Key
 variable "ssh_public_key" {
-  description = "SSH public key for VMs"
+  description = "SSH public key for VM access"
   type        = string
 }
 
-variable "lxc_base_image" {
-  description = "template to clone"
+# AdGuard VM Configuration
+variable "adguard_node" {
+  description = "Proxmox node for AdGuard"
   type        = string
-  default     = "local:vztmpl/ubuntu-22.04-standard_22.04-1_amd64.tar.zst"
 }
 
-variable "vm_base_image" {
-  description = "Base image for VM cloning"
+variable "adguard_vm_id" {
+  description = "VM ID for AdGuard"
+  type        = number
+}
+
+variable "adguard_hostname" {
+  description = "Hostname for AdGuard VM"
+  type        = string
+}
+
+variable "adguard_storage" {
+  description = "Storage for AdGuard VM"
+  type        = string
+}
+
+variable "adguard_storage_size" {
+  description = "Storage size for AdGuard VM"
+  type        = string
+}
+
+variable "adguard_cores" {
+  description = "Number of CPU cores for AdGuard VM"
+  type        = number
+}
+
+variable "adguard_memory" {
+  description = "Memory size for AdGuard VM"
+  type        = number
+}
+
+variable "adguard_ip_address" {
+  description = "IP address for AdGuard VM"
+  type        = string
+}
+
+# Tailscale VM Configuration
+variable "tailscale_node" {
+  description = "Proxmox node for Tailscale"
+  type        = string
+}
+
+variable "tailscale_vm_id" {
+  description = "VM ID for Tailscale"
+  type        = number
+}
+
+variable "tailscale_hostname" {
+  description = "Hostname for Tailscale VM"
+  type        = string
+}
+
+variable "tailscale_storage" {
+  description = "Storage for Tailscale VM"
+  type        = string
+}
+
+variable "tailscale_storage_size" {
+  description = "Storage size for Tailscale VM"
+  type        = string
+}
+
+variable "tailscale_cores" {
+  description = "Number of CPU cores for Tailscale VM"
+  type        = number
+}
+
+variable "tailscale_memory" {
+  description = "Memory size for Tailscale VM"
+  type        = number
+}
+
+variable "tailscale_ip_address" {
+  description = "IP address for Tailscale VM"
+  type        = string
+}
+
+# Uptime Kuma VM Configuration
+variable "uptimekuma_node" {
+  description = "Proxmox node for Uptime Kuma"
+  type        = string
+}
+
+variable "uptimekuma_vm_id" {
+  description = "VM ID for Uptime Kuma"
+  type        = number
+}
+
+variable "uptimekuma_hostname" {
+  description = "Hostname for Uptime Kuma VM"
+  type        = string
+}
+
+variable "uptimekuma_storage" {
+  description = "Storage for Uptime Kuma VM"
+  type        = string
+}
+
+variable "uptimekuma_storage_size" {
+  description = "Storage size for Uptime Kuma VM"
+  type        = string
+}
+
+variable "uptimekuma_cores" {
+  description = "Number of CPU cores for Uptime Kuma VM"
+  type        = number
+}
+
+variable "uptimekuma_memory" {
+  description = "Memory size for Uptime Kuma VM"
+  type        = number
+}
+
+variable "uptimekuma_ip_address" {
+  description = "IP address for Uptime Kuma VM"
+  type        = string
+}
+
+# Mediabox VM Configuration
+variable "mediabox_node" {
+  description = "Proxmox node for Mediabox"
+  type        = string
+}
+
+variable "mediabox_vm_id" {
+  description = "VM ID for Mediabox"
+  type        = number
+}
+
+variable "mediabox_hostname" {
+  description = "Hostname for Mediabox VM"
+  type        = string
+}
+
+variable "mediabox_vm_base_image" {
+  description = "Base image for Mediabox VM"
   type        = string
   default     = "ubuntu-noble-server-cloud"
+}
+
+variable "mediabox_storage" {
+  description = "Storage for Mediabox VM"
+  type        = string
+}
+
+variable "mediabox_storage_size" {
+  description = "Storage size for Mediabox VM"
+  type        = number
+}
+
+variable "mediabox_cores" {
+  description = "Number of CPU cores for Mediabox VM"
+  type        = number
+}
+
+variable "mediabox_sockets" {
+  description = "Number of sockets for Mediabox VM"
+  type        = number
+}
+
+variable "mediabox_memory" {
+  description = "Memory size for Mediabox VM"
+  type        = number
+}
+
+variable "mediabox_ip_address" {
+  description = "IP address for Mediabox VM"
+  type        = string
 }
 
 variable "ansible_inventory" {
@@ -82,4 +271,15 @@ variable "ansible_playbooks" {
     tailscale = "../ansible/tailscale.yml"
     uptime_kuma = "../ansible/uptime_kuma.yml"
   }
+}
+
+# CasaOS
+variable "casaos_dns_name" {
+  description = "Name of the DNS record for CasaOS"
+  type        = string
+}
+
+variable "casaos_ip_address" {
+  description = "IP address for CasaOS"
+  type        = string
 }
