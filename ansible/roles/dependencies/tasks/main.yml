@@ -9,6 +9,10 @@
   ansible.builtin.apt:
     update_cache: true
     upgrade: "dist"
+  register: apt_update_result
+  until: apt_update_result is not failed
+  retries: 5
+  delay: 20
 
 - name: "Set {{ data_path }} owner and group"
   become: true
