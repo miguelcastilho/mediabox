@@ -1,3 +1,4 @@
+######### Cloudflared
 # Generates a 64-character secret for the cloudflared tunnel.
 resource "random_id" "tunnel_secret" {
   byte_length = 64
@@ -42,15 +43,15 @@ resource "cloudflare_tunnel_config" "mediabox" {
   config {
    ingress_rule {
      hostname = "${cloudflare_record.jellyseerr.hostname}"
-     service  = "http://jellyseerr:5055"
+     service  = "http://${var.mediabox_ip_address}:5055"
    }
    ingress_rule {
      hostname = "${cloudflare_record.jellyfin.hostname}"
-     service  = "http://jellyfin:8096"
+     service  = "http://${var.mediabox_ip_address}:8096"
    }
    ingress_rule {
      hostname = "${cloudflare_record.homeassistant.hostname}"
-     service  = "http://homeassistant:8123"
+     service  = "http://${var.mediabox_ip_address}:8123"
    }
    ingress_rule {
      service  = "http_status:404"
@@ -58,7 +59,11 @@ resource "cloudflare_tunnel_config" "mediabox" {
   }
 }
 
-# Create LXC containers
+
+
+
+
+######### AdGuard
 resource "proxmox_lxc" "adguard" {
   target_node   = var.adguard_node
   vmid          = var.adguard_vm_id
@@ -86,6 +91,19 @@ resource "proxmox_lxc" "adguard" {
   }
 }
 
+# Create the DNS record
+resource "cloudflare_record" "adguard" {
+  zone_id = var.cloudflare_zone_id
+  name    = var.adguard_hostname
+  value   = var.adguard_ip_address
+  type    = "A"
+  proxied = false
+}
+
+
+
+
+###### Tailscale
 resource "tailscale_tailnet_key" "tailscale_key" {
   reusable      = true
   ephemeral     = true
@@ -121,6 +139,13 @@ resource "proxmox_lxc" "tailscale" {
   }
 }
 
+
+
+
+
+
+##### Uptime Kuma
+
 resource "proxmox_lxc" "uptime_kuma" {
   target_node   = var.uptimekuma_node
   vmid          = var.uptimekuma_vm_id
@@ -148,7 +173,20 @@ resource "proxmox_lxc" "uptime_kuma" {
   }
 }
 
-# Create VMs
+# Create the DNS record
+resource "cloudflare_record" "uptime_kuma" {
+  zone_id = var.cloudflare_zone_id
+  name    = var.uptimekuma_hostname
+  value   = var.uptimekuma_ip_address
+  type    = "A"
+  proxied = false
+}
+
+
+
+
+
+##### Mediabox
 resource "proxmox_vm_qemu" "mediabox" {
   target_node              = var.mediabox_node
   vmid                     = var.mediabox_vm_id
@@ -195,6 +233,15 @@ resource "proxmox_vm_qemu" "mediabox" {
   }
 }
 
+# Create the DNS record
+resource "cloudflare_record" "casaos" {
+  zone_id = var.cloudflare_zone_id
+  name    = var.casaos_dns_name
+  value   = var.casaos_ip_address
+  type    = "A"
+  proxied = false
+}
+
 # Creates DNS records
 resource "cloudflare_record" "pve" {
   zone_id = var.cloudflare_zone_id
@@ -204,18 +251,5 @@ resource "cloudflare_record" "pve" {
   proxied = false
 }
 
-resource "cloudflare_record" "adguard" {
-  zone_id = var.cloudflare_zone_id
-  name    = var.adguard_hostname
-  value   = var.adguard_ip_address
-  type    = "A"
-  proxied = false
-}
 
-resource "cloudflare_record" "casaos" {
-  zone_id = var.cloudflare_zone_id
-  name    = var.casaos_dns_name
-  value   = var.casaos_ip_address
-  type    = "A"
-  proxied = false
-}
+
