@@ -35,14 +35,6 @@ resource "cloudflare_record" "homeassistant" {
   proxied = true
 }
 
-resource "cloudflare_record" "casaos" {
-  zone_id = var.cloudflare_zone_id
-  name    = "casaos"
-  value   = "${cloudflare_tunnel.mediabox.cname}"
-  type    = "CNAME"
-  proxied = true
-}
-
 # Creates the configuration for the tunnel.
 resource "cloudflare_tunnel_config" "mediabox" {
   tunnel_id = cloudflare_tunnel.mediabox.id
@@ -68,22 +60,22 @@ resource "cloudflare_tunnel_config" "mediabox" {
 
 # Create LXC containers
 resource "proxmox_lxc" "adguard" {
-  target_node   = "desktop"
-  vmid          = 100
-  hostname      = "adguard"
+  target_node   = var.adguard_node
+  vmid          = var.adguard_vm_id
+  hostname      = var.adguard_hostname
   ostemplate    = var.lxc_base_image
   unprivileged  = true
   rootfs {
-    storage = "local-lvm"
-    size    = "2G"
+    storage = var.adguard_storage
+    size    = var.adguard_storage_size
   }
-  cores         = 1
-  memory        = 256
+  cores         = var.adguard_cores
+  memory        = var.adguard_memory
   network {
     name    = "eth0"
     bridge  = "vmbr0"
-    gw      = "192.168.1.1"
-    ip      = "192.168.1.100/24"
+    gw      = var.gateway_ip_address
+    ip      = "${var.adguard_ip_address}${var.netmask}"
   }
   ssh_public_keys = var.ssh_public_key
   onboot          = true
@@ -94,23 +86,31 @@ resource "proxmox_lxc" "adguard" {
   }
 }
 
+resource "tailscale_tailnet_key" "tailscale_key" {
+  reusable      = true
+  ephemeral     = true
+  preauthorized = true
+  description   = "terraform"
+  recreate_if_invalid = "always"
+}
+
 resource "proxmox_lxc" "tailscale" {
-  target_node   = "desktop"
-  vmid          = 102
-  hostname      = "tailscale"
+  target_node   = var.tailscale_node
+  vmid          = var.tailscale_vm_id
+  hostname      = var.tailscale_hostname
   ostemplate    = var.lxc_base_image
   unprivileged  = true
   rootfs {
-    storage = "local-lvm"
-    size    = "2G"
+    storage = var.tailscale_storage
+    size    = var.tailscale_storage_size
   }
-  cores         = 1
-  memory        = 128
+  cores         = var.tailscale_cores
+  memory        = var.tailscale_memory
   network {
     name    = "eth0"
     bridge  = "vmbr0"
-    gw      = "192.168.1.1"
-    ip      = "192.168.1.102/24"
+    gw      = var.gateway_ip_address
+    ip      = "${var.tailscale_ip_address}${var.netmask}"
   }
   ssh_public_keys = var.ssh_public_key
   onboot          = true
@@ -122,22 +122,22 @@ resource "proxmox_lxc" "tailscale" {
 }
 
 resource "proxmox_lxc" "uptime_kuma" {
-  target_node   = "desktop"
-  vmid          = 103
-  hostname      = "uptime-kuma"
+  target_node   = var.uptimekuma_node
+  vmid          = var.uptimekuma_vm_id
+  hostname      = var.uptimekuma_hostname
   ostemplate    = var.lxc_base_image
   unprivileged  = true
   rootfs {
-    storage = "local-lvm"
-    size    = "3G"
+    storage = var.uptimekuma_storage
+    size    = var.uptimekuma_storage_size
   }
-  cores         = 1
-  memory        = 512
+  cores         = var.uptimekuma_cores
+  memory        = var.uptimekuma_memory
   network {
     name    = "eth0"
     bridge  = "vmbr0"
-    gw      = "192.168.1.1"
-    ip      = "192.168.1.103/24"
+    gw      = var.gateway_ip_address
+    ip      = "${var.uptimekuma_ip_address}${var.netmask}"
   }
   ssh_public_keys = var.ssh_public_key
   onboot          = true
@@ -150,19 +150,19 @@ resource "proxmox_lxc" "uptime_kuma" {
 
 # Create VMs
 resource "proxmox_vm_qemu" "mediabox" {
-  target_node              = "desktop"
-  vmid                     = 101
-  name                     = "mediabox"
-  clone                    = var.vm_base_image
+  target_node              = var.mediabox_node
+  vmid                     = var.mediabox_vm_id
+  name                     = var.mediabox_hostname
+  clone                    = var.mediabox_vm_base_image
   agent                    = 1
   os_type                  = "cloud-init"
-  cloudinit_cdrom_storage  = "local-lvm"
-  cores                    = 1
-  sockets                  = 4
+  cloudinit_cdrom_storage  = var.mediabox_storage
+  cores                    = var.mediabox_cores
+  sockets                  = var.mediabox_sockets
   cpu                      = "host"
   numa                     = false
-  memory                   = 32768
-  balloon                  = 32768
+  memory                   = var.mediabox_memory
+  balloon                  = var.mediabox_memory
   scsihw                   = "virtio-scsi-pci"
   bootdisk                 = "scsi0"
   onboot                   = true
@@ -171,8 +171,8 @@ resource "proxmox_vm_qemu" "mediabox" {
     scsi {
       scsi0 {
         disk {
-          size    = 50
-          storage = "local-lvm"
+          size    = var.mediabox_storage_size
+          storage = var.mediabox_storage
           backup  = true
           discard = true
         }
@@ -183,7 +183,7 @@ resource "proxmox_vm_qemu" "mediabox" {
     model  = "virtio"
     bridge = "vmbr0"
   }
-  ipconfig0 = "ip=192.168.1.101/24,gw=192.168.1.1"
+  ipconfig0 = "ip=${var.mediabox_ip_address}${var.netmask},gw=${var.gateway_ip_address}"
   sshkeys   = var.ssh_public_key
 
   provisioner "local-exec" {
@@ -198,16 +198,24 @@ resource "proxmox_vm_qemu" "mediabox" {
 # Creates DNS records
 resource "cloudflare_record" "pve" {
   zone_id = var.cloudflare_zone_id
-  name    = "pve"
-  value   = "${var.proxmox_ip_address}"
+  name    = var.proxmox_name
+  value   = var.proxmox_ip_address
   type    = "A"
   proxied = false
 }
 
 resource "cloudflare_record" "adguard" {
   zone_id = var.cloudflare_zone_id
-  name    = "adguard"
-  value   = "192.168.1.100" # Can't retrieve the value directly from the lxc. The lxc does not export values
+  name    = var.adguard_hostname
+  value   = var.adguard_ip_address
+  type    = "A"
+  proxied = false
+}
+
+resource "cloudflare_record" "casaos" {
+  zone_id = var.cloudflare_zone_id
+  name    = var.casaos_dns_name
+  value   = var.casaos_ip_address
   type    = "A"
   proxied = false
 }

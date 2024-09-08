@@ -26,6 +26,8 @@
   hosts: tailscale
   gather_facts: no
   any_errors_fatal: true
+  vars_files:
+    - ./tf_ansible_vars.yml
   tasks:
     - name: Wait for system to become reachable
       wait_for_connection:
@@ -81,7 +83,7 @@
 
     - name: Run tailscale
       ansible.builtin.shell: |
-        tailscale up --authkey={{ tailscale_auth_key }} --advertise-routes={{ tailscale_advertise_routes }} --hostname={{ tailscale_hostname }}
+        tailscale up --authkey={{ tf_tailscale_authkey }} --advertise-routes={{ tailscale_advertise_routes }} --hostname={{ tailscale_hostname }}
 
   handlers:
     - name: Reload sysctl

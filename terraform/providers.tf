@@ -14,6 +14,10 @@ terraform {
     ansible ={
       source = "nbering/ansible"
     }
+    tailscale = {
+      source = "tailscale/tailscale"
+      version = "0.16.2"
+    }
   }
 }
 
@@ -25,4 +29,9 @@ provider "proxmox" {
 
 provider "cloudflare" {
     api_token = var.cloudflare_token
+}
+
+provider "tailscale" {
+  api_key = "tskey-api-k5t268bpQ421CNTRL-PCDgoMHYWKj75khFsg1uSjS7qWPUDzrWQ"
+  tailnet = "tail689fb.ts.net"
 }
