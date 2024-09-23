@@ -176,7 +176,7 @@ resource "proxmox_lxc" "uptime_kuma" {
 # Create the DNS record
 resource "cloudflare_record" "uptime_kuma" {
   zone_id = var.cloudflare_zone_id
-  name    = var.uptimekuma_hostname
+  name    = var.uptimekuma_dns
   value   = var.uptimekuma_ip_address
   type    = "A"
   proxied = false

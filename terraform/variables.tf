@@ -173,6 +173,11 @@ variable "uptimekuma_hostname" {
   type        = string
 }
 
+variable "uptimekuma_dns" {
+  description = "DNS for Uptime Kuma VM"
+  type        = string
+}
+
 variable "uptimekuma_storage" {
   description = "Storage for Uptime Kuma VM"
   type        = string
