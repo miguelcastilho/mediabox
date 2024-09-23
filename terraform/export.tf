@@ -9,4 +9,8 @@ resource "local_file" "tf_ansible_vars" {
   })
 
   filename = "../ansible/tf_ansible_vars.yml"
+
+  depends_on = [
+    tailscale_tailnet_key.tailscale_key
+  ]
 }
