@@ -137,6 +137,12 @@ resource "proxmox_lxc" "tailscale" {
   provisioner "local-exec" {
     command = "ansible-playbook -i ${var.ansible_inventory} ${var.ansible_playbooks.tailscale} --vault-password-file .vault_pass.txt"
   }
+
+  lifecycle {
+    ignore_changes = [
+      description,
+    ]
+  }
 }
 
 
@@ -230,6 +236,13 @@ resource "proxmox_vm_qemu" "mediabox" {
 
   provisioner "local-exec" {
     command = "ansible-playbook -i ${var.ansible_inventory} ${var.ansible_playbooks.mediabox} --vault-password-file .vault_pass.txt"
+  }
+
+  lifecycle {
+    ignore_changes = [
+      qemu_os,
+      disks,
+    ]
   }
 }
 
