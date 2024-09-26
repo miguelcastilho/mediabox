@@ -25,9 +25,8 @@
   shell: |
     certbot certonly --dns-cloudflare --dns-cloudflare-credentials /etc/letsencrypt/cloudflare.ini \
     --dns-cloudflare-propagation-seconds 30 \
-    -d {{ item.name }} \
+    -d "*.{{ domain }}" \
     --email {{ certbot_email }} --agree-tos --non-interactive
-  loop: "{{ domains }}"
   register: certbot_output
 
 - name: Display Certbot output
@@ -37,14 +36,19 @@
 - name: Template Nginx configuration
   template:
     src: nginx.j2
-    dest: /etc/nginx/sites-available/capzulu.xyz
+    dest: "/etc/nginx/sites-available/{{ domain }}"
     mode: '0644'
 
-- name: Enable Nginx site and reload
+- name: Enable Nginx site
   file:
-    src: /etc/nginx/sites-available/capzulu.xyz
-    dest: /etc/nginx/sites-enabled/capzulu.xyz
+    src: "/etc/nginx/sites-available/{{ domain }}"
+    dest: "/etc/nginx/sites-enabled/{{ domain }}"
     state: link
+
+- name: Remove the default Nginx site
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
 
 - name: Test and restart Nginx
   shell: nginx -t && systemctl reload nginx

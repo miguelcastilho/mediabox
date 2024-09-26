@@ -57,36 +57,3 @@ resource "cloudflare_tunnel_config" "mediabox" {
    }
   }
 }
-
-# Create the DNS records
-resource "cloudflare_record" "adguard" {
-  zone_id = var.cloudflare_zone_id
-  name    = var.adguard_hostname
-  value   = var.adguard_ip_address
-  type    = "A"
-  proxied = false
-}
-
-resource "cloudflare_record" "uptime_kuma" {
-  zone_id = var.cloudflare_zone_id
-  name    = var.uptimekuma_dns
-  value   = var.uptimekuma_ip_address
-  type    = "A"
-  proxied = false
-}
-
-resource "cloudflare_record" "casaos" {
-  zone_id = var.cloudflare_zone_id
-  name    = var.casaos_dns_name
-  value   = var.casaos_ip_address
-  type    = "A"
-  proxied = false
-}
-
-resource "cloudflare_record" "pve" {
-  zone_id = var.cloudflare_zone_id
-  name    = var.proxmox_name
-  value   = var.proxmox_ip_address
-  type    = "A"
-  proxied = false
-}
