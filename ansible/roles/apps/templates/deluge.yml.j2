@@ -57,12 +57,12 @@ x-casaos:
   description:
     en_us: "Visit homepage: https://hub.docker.com/r/linuxserver/deluge/"
   developer: LinuxServer.io
-  hostname: "{{ ansible_default_ipv4.address }}"
+  hostname: "deluge.{{ domain }}"
   icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/deluge-icon.png
   index: /
   is_uncontrolled: false
   main: deluge
-  port_map: "8112"
+  port_map: ""
   project_url: http://deluge-torrent.org/
   scheme: http
   store_app_id: linuxserver-deluge

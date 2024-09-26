@@ -100,11 +100,11 @@ networks:
 x-casaos:
   author: self
   category: self
-  hostname: "{{ ansible_default_ipv4.address }}"
+  hostname: "teslamate.{{ domain }}"
   icon: https://upload.wikimedia.org/wikipedia/commons/e/e8/Tesla_logo.png
   index: /
   is_uncontrolled: false
-  port_map: "4000"
+  port_map: ""
   scheme: http
   store_app_id: teslamate
   title:

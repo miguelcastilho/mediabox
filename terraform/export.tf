@@ -4,6 +4,7 @@ resource "local_file" "tf_ansible_vars" {
     cf_account_id    = var.cloudflare_account_id
     cf_tunnel_name = cloudflare_tunnel.mediabox.name
     cf_tunnel_secret     = random_id.tunnel_secret.b64_std
+    cf_token    = var.cloudflare_token
     tailscale_authkey = tailscale_tailnet_key.tailscale_key.key
     mediabox_ip_address = var.mediabox_ip_address
   })

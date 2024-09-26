@@ -45,12 +45,12 @@ x-casaos:
   description:
     en_us: "Visit homepage: https://hub.docker.com/r/linuxserver/sabnzbd/"
   developer: LinuxServer.io
-  hostname: "{{ ansible_default_ipv4.address }}"
+  hostname: "sabnzbd.{{ domain }}"
   icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/sabnzbd-icon.png
   index: /
   is_uncontrolled: false
   main: sabnzbd
-  port_map: "8080"
+  port_map: ""
   project_url: http://sabnzbd.org/
   scheme: http
   store_app_id: linuxserver-sabnzbd

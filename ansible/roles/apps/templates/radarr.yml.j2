@@ -43,12 +43,12 @@ x-casaos:
     description:
         en_us: 'Visit homepage: https://hub.docker.com/r/linuxserver/radarr/'
     developer: LinuxServer.io
-    hostname: "{{ ansible_default_ipv4.address }}"
+    hostname: "radarr.{{ domain }}"
     icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/radarr.png
     index: /
     is_uncontrolled: false
     main: radarr
-    port_map: "7878"
+    port_map: ""
     project_url: https://github.com/Radarr/Radarr
     scheme: http
     store_app_id: linuxserver-radarr

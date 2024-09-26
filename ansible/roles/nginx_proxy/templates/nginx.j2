@@ -1,0 +1,28 @@
+# Wildcard server block to redirect all HTTP traffic to HTTPS
+server {
+    listen 80;
+    server_name _;  # Catch-all for all domains
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+{% for domain in domains %}
+# Handle HTTPS traffic with SSL for {{ domain.name }}
+server {
+    listen 443 ssl;
+    server_name {{ domain.name }};
+
+    ssl_certificate /etc/letsencrypt/live/{{ domain.name }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ domain.name }}/privkey.pem;
+
+    location / {
+        proxy_pass http://{{ domain.proxy_pass }};
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+{% endfor %}

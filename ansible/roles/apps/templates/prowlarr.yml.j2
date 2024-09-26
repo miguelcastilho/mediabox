@@ -67,12 +67,12 @@ x-casaos:
     description:
         en_us: 'Visit homepage: https://github.com/orgs/linuxserver/packages/container/package/prowlarr'
     developer: LinuxServer.io
-    hostname: "{{ ansible_default_ipv4.address }}"
+    hostname: "prowlarr.{{ domain }}"
     icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/prowlarr-logo.png
     index: /
     is_uncontrolled: false
     main: prowlarr
-    port_map: "9696"
+    port_map: ""
     project_url: https://github.com/Prowlarr/Prowlarr
     scheme: http
     store_app_id: linuxserver-prowlarr

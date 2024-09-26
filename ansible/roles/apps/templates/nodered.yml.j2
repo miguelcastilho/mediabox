@@ -35,11 +35,11 @@ networks:
 x-casaos:
   author: self
   category: self
-  hostname: "{{ ansible_default_ipv4.address }}"
+  hostname: "nodered.{{ domain }}"
   icon: https://nodered.org/about/resources/media/node-red-hexagon.png
   index: /
   is_uncontrolled: false
-  port_map: "1880"
+  port_map: ""
   scheme: http
   store_app_id: node_red
   title:

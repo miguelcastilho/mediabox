@@ -1,0 +1,50 @@
+---
+- name: Update all packages
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: "dist"
+
+- name: Install packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - nginx
+    - certbot
+    - python3-certbot-nginx
+    - python3-certbot-dns-cloudflare
+
+- name: Create Cloudflare credentials file for Certbot
+  copy:
+    dest: /etc/letsencrypt/cloudflare.ini
+    content: |
+      dns_cloudflare_api_token = {{ cloudflare_api_token }}
+    mode: '0600'
+
+- name: Obtain SSL certificates with Certbot DNS-01
+  shell: |
+    certbot certonly --dns-cloudflare --dns-cloudflare-credentials /etc/letsencrypt/cloudflare.ini \
+    --dns-cloudflare-propagation-seconds 30 \
+    -d {{ item.name }} \
+    --email {{ certbot_email }} --agree-tos --non-interactive
+  loop: "{{ domains }}"
+  register: certbot_output
+
+- name: Display Certbot output
+  debug:
+    var: certbot_output
+
+- name: Template Nginx configuration
+  template:
+    src: nginx.j2
+    dest: /etc/nginx/sites-available/capzulu.xyz
+    mode: '0644'
+
+- name: Enable Nginx site and reload
+  file:
+    src: /etc/nginx/sites-available/capzulu.xyz
+    dest: /etc/nginx/sites-enabled/capzulu.xyz
+    state: link
+
+- name: Test and restart Nginx
+  shell: nginx -t && systemctl reload nginx

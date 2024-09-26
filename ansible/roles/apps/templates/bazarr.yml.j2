@@ -43,12 +43,12 @@ x-casaos:
     description:
         en_us: 'Visit homepage: https://hub.docker.com/r/linuxserver/bazarr/'
     developer: LinuxServer.io
-    hostname: "{{ ansible_default_ipv4.address }}"
+    hostname: "sonarr.{{ domain }}"
     icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/bazarr.png
     index: /
     is_uncontrolled: false
     main: bazarr
-    port_map: "6767"
+    port_map: ""
     project_url: https://www.bazarr.media/
     scheme: http
     store_app_id: linuxserver-bazarr

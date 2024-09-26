@@ -45,12 +45,12 @@ x-casaos:
   description:
     en_us: "Visit homepage: https://hub.docker.com/r/linuxserver/duplicati/"
   developer: LinuxServer.io
-  hostname: "{{ ansible_default_ipv4.address }}"
+  hostname: "duplicati.{{ domain }}"
   icon: https://github.com/linuxserver/docker-templates/raw/master/linuxserver.io/img/duplicati-icon.png
   index: /
   is_uncontrolled: false
   main: duplicati
-  port_map: "8200"
+  port_map: ""
   project_url: https://www.duplicati.com/
   scheme: http
   store_app_id: linuxserver-duplicati

@@ -270,12 +270,6 @@ variable "ansible_requirements" {
 variable "ansible_playbooks" {
   description = "Mapping of VM names to their respective Ansible playbooks"
   type        = map(string)
-  default     = {
-    adguard  = "../ansible/adguard.yml"
-    mediabox = "../ansible/mediabox.yml"
-    tailscale = "../ansible/tailscale.yml"
-    uptime_kuma = "../ansible/uptime_kuma.yml"
-  }
 }
 
 # CasaOS
@@ -286,5 +280,51 @@ variable "casaos_dns_name" {
 
 variable "casaos_ip_address" {
   description = "IP address for CasaOS"
+  type        = string
+}
+
+# Nginx LXC Configuration
+variable "nginx_node" {
+  description = "Proxmox node for Uptime Kuma"
+  type        = string
+}
+
+variable "nginx_vm_id" {
+  description = "VM ID for Uptime Kuma"
+  type        = number
+}
+
+variable "nginx_hostname" {
+  description = "Hostname for Uptime Kuma VM"
+  type        = string
+}
+
+variable "nginx_dns" {
+  description = "DNS for Uptime Kuma VM"
+  type        = string
+}
+
+variable "nginx_storage" {
+  description = "Storage for Uptime Kuma VM"
+  type        = string
+}
+
+variable "nginx_storage_size" {
+  description = "Storage size for Uptime Kuma VM"
+  type        = string
+}
+
+variable "nginx_cores" {
+  description = "Number of CPU cores for Uptime Kuma VM"
+  type        = number
+}
+
+variable "nginx_memory" {
+  description = "Memory size for Uptime Kuma VM"
+  type        = number
+}
+
+variable "nginx_ip_address" {
+  description = "IP address for Uptime Kuma VM"
   type        = string
 }

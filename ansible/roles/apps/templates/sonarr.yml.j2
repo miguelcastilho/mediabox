@@ -73,12 +73,12 @@ x-casaos:
   description:
     en_us: "Visit homepage: https://hub.docker.com/r/linuxserver/sonarr/"
   developer: LinuxServer.io
-  hostname: "{{ ansible_default_ipv4.address }}"
+  hostname: "sonarr.{{ domain }}"
   icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/sonarr-icon.png
   index: /
   is_uncontrolled: false
   main: sonarr
-  port_map: "8989"
+  port_map: ""
   project_url: https://sonarr.tv/
   scheme: http
   store_app_id: linuxserver-sonarr
