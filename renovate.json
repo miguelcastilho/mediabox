@@ -11,5 +11,6 @@
       "datasourceTemplate": "docker",
       "versioningTemplate": "docker"
     }
-  ]
+  ],
+  "baseBranches": ["feature/integration"]
 }

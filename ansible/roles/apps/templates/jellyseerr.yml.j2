@@ -7,7 +7,7 @@ services:
         deploy:
             resources:
                 limits:
-                    memory: "268435456"
+                    memory: 512M
         environment:
             LOG_LEVEL: debug
             TZ: "{{ timezone }}"
