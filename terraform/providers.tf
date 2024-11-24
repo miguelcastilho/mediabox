@@ -2,11 +2,11 @@ terraform {
   required_providers {
     proxmox = {
       source  = "telmate/proxmox"
-      version = "3.0.1-rc4"
+      version = "3.0.1-rc5"
     }
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "4.45.0"
+      version = "4.46.0"
     }
     random = {
       source = "hashicorp/random"
