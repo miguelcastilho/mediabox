@@ -12,7 +12,9 @@ services:
       - "TZ={{ timezone }}"
       - PUID=1000
       - PGID=1000
-    image: linuxserver/duplicati:2.0.8
+      - DUPLICATI__WEBSERVICE_PASSWORD="{{ duplicati_webservice_password }}"
+      - SETTINGS_ENCRYPTION_KEY="{{ duplicati_database_encryption_key }}"
+    image: linuxserver/duplicati:2.1.0
     labels:
       icon: https://github.com/linuxserver/docker-templates/raw/master/linuxserver.io/img/duplicati-icon.png
     ports:
