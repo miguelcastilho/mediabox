@@ -8,8 +8,14 @@ services:
             resources:
                 limits:
                     memory: "8326742016"
+                reservations:
+                    devices:
+                        - driver: nvidia
+                          count: 1
+                          capabilities: [gpu]
         environment:
             JELLYFIN_PublishedServerUrl: "{{ ansible_default_ipv4.address }}"
+            NVIDIA_VISIBLE_DEVICES: all
             TZ: "{{ timezone }}"
             PUID: 1000
             PGID: 1000
@@ -26,9 +32,11 @@ services:
               published: "7359"
               protocol: udp
             - target: 1900
-              published: "1900"
+              published: "1901"
               protocol: udp
         restart: unless-stopped
+        runtime: nvidia
+        privileged: true
         volumes:
             - type: bind
               source: "{{ data_path }}/jellyfin"
