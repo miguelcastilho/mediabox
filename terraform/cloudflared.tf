@@ -4,7 +4,7 @@ resource "random_id" "tunnel_secret" {
 }
 
 # Creates a new locally-managed cloudflared tunnel
-resource "cloudflare_tunnel" "mediabox" {
+resource "cloudflare_zero_trust_tunnel_cloudflared" "mediabox" {
   account_id = var.cloudflare_account_id
   name       = var.cloudflare_tunnel_name
   secret     = random_id.tunnel_secret.b64_std
@@ -14,7 +14,7 @@ resource "cloudflare_tunnel" "mediabox" {
 resource "cloudflare_record" "jellyseerr" {
   zone_id = var.cloudflare_zone_id
   name    = "jellyseerr"
-  value   = "${cloudflare_tunnel.mediabox.cname}"
+  value   = "${cloudflare_zero_trust_tunnel_cloudflared.mediabox.cname}"
   type    = "CNAME"
   proxied = true
 }
@@ -22,7 +22,7 @@ resource "cloudflare_record" "jellyseerr" {
 resource "cloudflare_record" "jellyfin" {
   zone_id = var.cloudflare_zone_id
   name    = "jellyfin"
-  value   = "${cloudflare_tunnel.mediabox.cname}"
+  value   = "${cloudflare_zero_trust_tunnel_cloudflared.mediabox.cname}"
   type    = "CNAME"
   proxied = true
 }
@@ -30,14 +30,14 @@ resource "cloudflare_record" "jellyfin" {
 resource "cloudflare_record" "homeassistant" {
   zone_id = var.cloudflare_zone_id
   name    = "homeassistant"
-  value   = "${cloudflare_tunnel.mediabox.cname}"
+  value   = "${cloudflare_zero_trust_tunnel_cloudflared.mediabox.cname}"
   type    = "CNAME"
   proxied = true
 }
 
 # Creates the configuration for the tunnel.
-resource "cloudflare_tunnel_config" "mediabox" {
-  tunnel_id = cloudflare_tunnel.mediabox.id
+resource "cloudflare_zero_trust_tunnel_cloudflared_config" "mediabox" {
+  tunnel_id = cloudflare_zero_trust_tunnel_cloudflared.mediabox.id
   account_id = var.cloudflare_account_id
   config {
    ingress_rule {

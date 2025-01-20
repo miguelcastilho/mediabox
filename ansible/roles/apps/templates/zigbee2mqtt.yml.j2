@@ -21,7 +21,7 @@ services:
     restart: unless-stopped
     volumes:
       - type: bind
-        source: "{{ data_path }}/zigbee2mqtt"
+        source: "{{ mediabox_data_path }}/zigbee2mqtt"
         target: /app/data
       - type: bind
         source: /run/udev
@@ -50,7 +50,7 @@ services:
     restart: unless-stopped
     volumes:
       - type: bind
-        source: "{{ data_path }}/mqtt"
+        source: "{{ mediabox_data_path }}/mqtt"
         target: /mosquitto/config
     user: "1000"
     devices: []

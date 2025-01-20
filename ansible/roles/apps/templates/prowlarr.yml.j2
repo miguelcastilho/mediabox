@@ -24,7 +24,7 @@ services:
         restart: unless-stopped
         volumes:
             - type: bind
-              source: "{{ data_path }}/prowlarr"
+              source: "{{ mediabox_data_path }}/prowlarr"
               target: /config
     flaresolverr:
         cpu_shares: 90

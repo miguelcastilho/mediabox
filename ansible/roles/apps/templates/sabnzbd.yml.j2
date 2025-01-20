@@ -22,10 +22,10 @@ services:
     restart: unless-stopped
     volumes:
       - type: bind
-        source: "{{ data_path }}/sabnzbd"
+        source: "{{ mediabox_data_path }}/sabnzbd"
         target: /config
       - type: bind
-        source: "{{ media_path }}"
+        source: "{{ mediabox_media_path }}"
         target: /data
     devices: []
     cap_add: []

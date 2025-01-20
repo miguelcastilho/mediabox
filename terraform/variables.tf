@@ -16,7 +16,12 @@ variable "netmask" {
   default     = "/24"
 }
 
-# Proxmox Variables
+variable "ssh_public_key" {
+  description = "SSH public key for VM access"
+  type        = string
+}
+
+# Proxmox
 variable "proxmox_ip_address" {
   description = "Proxmox IP address"
   type        = string
@@ -44,7 +49,7 @@ variable "proxmox_api_token_secret" {
   sensitive   = true
 }
 
-# Cloudflare Variables
+# Cloudflare
 variable "cloudflare_zone_id" {
   description = "Cloudflare Zone ID"
   type        = string
@@ -69,13 +74,7 @@ variable "cloudflare_token" {
   sensitive   = true
 }
 
-# SSH Key
-variable "ssh_public_key" {
-  description = "SSH public key for VM access"
-  type        = string
-}
-
-# AdGuard VM Configuration
+# AdGuard
 variable "adguard_node" {
   description = "Proxmox node for AdGuard"
   type        = string
@@ -116,7 +115,7 @@ variable "adguard_ip_address" {
   type        = string
 }
 
-# Tailscale VM Configuration
+# Tailscale
 variable "tailscale_node" {
   description = "Proxmox node for Tailscale"
   type        = string
@@ -157,53 +156,17 @@ variable "tailscale_ip_address" {
   type        = string
 }
 
-# Uptime Kuma VM Configuration
-variable "uptimekuma_node" {
-  description = "Proxmox node for Uptime Kuma"
+variable "tailscale_api_key" {
+  description = "API key for terraform provider"
   type        = string
 }
 
-variable "uptimekuma_vm_id" {
-  description = "VM ID for Uptime Kuma"
-  type        = number
-}
-
-variable "uptimekuma_hostname" {
-  description = "Hostname for Uptime Kuma VM"
+variable "tailscale_tailnet" {
+  description = "Tailnet"
   type        = string
 }
 
-variable "uptimekuma_dns" {
-  description = "DNS for Uptime Kuma VM"
-  type        = string
-}
-
-variable "uptimekuma_storage" {
-  description = "Storage for Uptime Kuma VM"
-  type        = string
-}
-
-variable "uptimekuma_storage_size" {
-  description = "Storage size for Uptime Kuma VM"
-  type        = string
-}
-
-variable "uptimekuma_cores" {
-  description = "Number of CPU cores for Uptime Kuma VM"
-  type        = number
-}
-
-variable "uptimekuma_memory" {
-  description = "Memory size for Uptime Kuma VM"
-  type        = number
-}
-
-variable "uptimekuma_ip_address" {
-  description = "IP address for Uptime Kuma VM"
-  type        = string
-}
-
-# Mediabox VM Configuration
+# Mediabox
 variable "mediabox_node" {
   description = "Proxmox node for Mediabox"
   type        = string
@@ -272,6 +235,16 @@ variable "ansible_playbooks" {
   type        = map(string)
 }
 
+variable "mediabox_bios" {
+  description = "Bios type"
+  type        = string
+}
+
+variable "mediabox_machine_type" {
+  description = "Machine type"
+  type        = string
+}
+
 # CasaOS
 variable "casaos_dns_name" {
   description = "Name of the DNS record for CasaOS"
@@ -283,48 +256,48 @@ variable "casaos_ip_address" {
   type        = string
 }
 
-# Nginx LXC Configuration
+# Nginx Proxy Manager
 variable "nginx_node" {
-  description = "Proxmox node for Uptime Kuma"
+  description = "Proxmox node for NPM"
   type        = string
 }
 
 variable "nginx_vm_id" {
-  description = "VM ID for Uptime Kuma"
+  description = "VM ID for NPM"
   type        = number
 }
 
 variable "nginx_hostname" {
-  description = "Hostname for Uptime Kuma VM"
+  description = "Hostname for NPM"
   type        = string
 }
 
 variable "nginx_dns" {
-  description = "DNS for Uptime Kuma VM"
+  description = "DNS for NPM"
   type        = string
 }
 
 variable "nginx_storage" {
-  description = "Storage for Uptime Kuma VM"
+  description = "Storage for NPM"
   type        = string
 }
 
 variable "nginx_storage_size" {
-  description = "Storage size for Uptime Kuma VM"
+  description = "Storage size for NPM"
   type        = string
 }
 
 variable "nginx_cores" {
-  description = "Number of CPU cores for Uptime Kuma VM"
+  description = "Number of CPU cores for NPM"
   type        = number
 }
 
 variable "nginx_memory" {
-  description = "Memory size for Uptime Kuma VM"
+  description = "Memory size for NPM"
   type        = number
 }
 
 variable "nginx_ip_address" {
-  description = "IP address for Uptime Kuma VM"
+  description = "IP address for NPM"
   type        = string
 }

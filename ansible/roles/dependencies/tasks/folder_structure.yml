@@ -2,110 +2,110 @@
 - name: Create 'torrents' directory
   become: true
   ansible.builtin.file:
-    path: "{{ media_path }}/torrents"
+    path: "{{ mediabox_media_path }}/torrents"
     state: directory
 
 - name: Create 'movies' directory inside 'torrents'
   become: true
   ansible.builtin.file:
-    path: "{{ media_path }}/torrents/movies"
+    path: "{{ mediabox_media_path }}/torrents/movies"
     state: directory
 
 - name: Create 'tv' directory inside 'torrents'
   become: true
   ansible.builtin.file:
-    path: "{{ media_path }}/torrents/tv"
+    path: "{{ mediabox_media_path }}/torrents/tv"
     state: directory
 
 - name: Create 'usenet' directory
   become: true
   ansible.builtin.file:
-    path: "{{ media_path }}/usenet"
+    path: "{{ mediabox_media_path }}/usenet"
     state: directory
 
 - name: Create 'incomplete' directory inside 'usenet'
   become: true
   ansible.builtin.file:
-    path: "{{ media_path }}/usenet/incomplete"
+    path: "{{ mediabox_media_path }}/usenet/incomplete"
     state: directory
 
 - name: Create 'complete' directory inside 'usenet'
   become: true
   ansible.builtin.file:
-    path: "{{ media_path }}/usenet/complete"
+    path: "{{ mediabox_media_path }}/usenet/complete"
     state: directory
 
 - name: Create 'movies' directory inside 'usenet/complete'
   become: true
   ansible.builtin.file:
-    path: "{{ media_path }}/usenet/complete/movies"
+    path: "{{ mediabox_media_path }}/usenet/complete/movies"
     state: directory
 
 - name: Create 'tv' directory inside 'usenet/complete'
   become: true
   ansible.builtin.file:
-    path: "{{ media_path }}/usenet/complete/tv"
+    path: "{{ mediabox_media_path }}/usenet/complete/tv"
     state: directory
 
 - name: Create 'media' directory
   become: true
   ansible.builtin.file:
-    path: "{{ media_path }}"
+    path: "{{ mediabox_media_path }}"
     state: directory
 
 - name: Create 'movies' directory inside 'media'
   become: true
   ansible.builtin.file:
-    path: "{{ media_path }}/media/movies"
+    path: "{{ mediabox_media_path }}/media/movies"
     state: directory
 
 - name: Create 'tv' directory inside 'media'
   become: true
   ansible.builtin.file:
-    path: "{{ media_path }}/media/tv"
+    path: "{{ mediabox_media_path }}/media/tv"
     state: directory
 
 - name: Create 'teslamate' directory
   become: true
   ansible.builtin.file:
-    path: "{{ data_path }}/teslamate"
+    path: "{{ mediabox_data_path }}/teslamate"
     state: directory
 
 - name: Create 'grafana' directory inside 'teslamate'
   become: true
   ansible.builtin.file:
-    path: "{{ data_path }}/teslamate/grafana"
+    path: "{{ mediabox_data_path }}/teslamate/grafana"
     state: directory
 
 - name: Create 'nodered' directory
   become: true
   ansible.builtin.file:
-    path: "{{ data_path }}/nodered"
+    path: "{{ mediabox_data_path }}/nodered"
     state: directory
 
 - name: Create 'mqtt' directory
   become: true
   ansible.builtin.file:
-    path: "{{ data_path }}/mqtt"
+    path: "{{ mediabox_data_path }}/mqtt"
     state: directory
 
 - name: Set current ansible user
   set_fact:
     user: "{{ ansible_user }}"
 
-- name: "Ensure correct permisions in {{ media_path }}"
+- name: "Ensure correct permisions in {{ mediabox_media_path }}"
   become: true
   ansible.builtin.file:
-    path: "{{ media_path }}"
+    path: "{{ mediabox_media_path }}"
     owner: "{{ user }}"
     group: "{{ user }}"
     mode: u=rwX,g=rX,o=rX
     recurse: true
 
-- name: "Ensure correct permisions in {{ data_path }}"
+- name: "Ensure correct permisions in {{ mediabox_data_path }}"
   become: true
   ansible.builtin.file:
-    path: "{{ data_path }}"
+    path: "{{ mediabox_data_path }}"
     owner: "{{ user }}"
     group: "{{ user }}"
     mode: u=rwX,g=rX,o=rX
