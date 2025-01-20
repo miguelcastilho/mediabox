@@ -3,6 +3,7 @@
   ansible.builtin.copy:
     src: mosquitto.conf
     dest: "{{ mediabox_data_path }}/mqtt/mosquitto.conf"
+    mode: '644'
 
 - name: Get all *.yml.j2 files
   delegate_to: localhost
@@ -13,6 +14,7 @@
   changed_when: false
 
 - name: Process template files
+  when: template_files.matched > 0
   block:
     - name: Copy template files
       ansible.builtin.template:
@@ -36,4 +38,3 @@
       loop: "{{ template_files.files }}"
       loop_control:
         label: "{{ item.path }}"
-  when: template_files.matched > 0

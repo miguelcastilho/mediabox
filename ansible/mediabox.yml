@@ -29,7 +29,7 @@
       become: true
       block:
         - name: Create mount directory
-          file:
+          ansible.builtin.file:
             path: /mnt/HDD
             state: directory
 
