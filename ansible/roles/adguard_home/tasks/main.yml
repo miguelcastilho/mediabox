@@ -21,7 +21,7 @@
   ansible.builtin.file:
     path: /etc/systemd/resolved.conf.d
     state: directory
-    mode: '644'
+    mode: '0644'
 
 - name: Create AdGuard Home DNS configuration file
   ansible.builtin.copy:
@@ -30,14 +30,14 @@
       DNS=127.0.0.1
       DNSStubListener=no
     dest: /etc/systemd/resolved.conf.d/adguardhome.conf
-    mode: '644'
+    mode: '0644'
 
 - name: Backup the existing resolv.conf
   ansible.builtin.copy:
     src: /etc/resolv.conf
     dest: /etc/resolv.conf.backup
     remote_src: true
-    mode: '644'
+    mode: '0644'
 
 - name: Remove existing resolv.conf
   ansible.builtin.file:
@@ -64,7 +64,7 @@
     src: AdGuardHome.yaml.j2
     dest: /opt/AdGuardHome/AdGuardHome.yaml
     trim_blocks: false
-    mode: '644'
+    mode: '0644'
 
 - name: Start AdGuardHome service
   ansible.builtin.shell: /opt/AdGuardHome/AdGuardHome -s start

@@ -55,6 +55,7 @@
 
     - name: Optimize for subenet routers and exit nodes
       ansible.builtin.shell: |
+        set -o pipefail
         NETDEV=$(ip route show 0/0 | cut -f5 -d' ')
         ethtool -K $NETDEV rx-udp-gro-forwarding on rx-gro-list off
         printf '#!/bin/sh\n\nethtool -K %s rx-udp-gro-forwarding on rx-gro-list off \n' "$(ip route show 0/0 | cut -f5 -d" ")" | tee /etc/networkd-dispatcher/routable.d/50-tailscale
@@ -66,6 +67,7 @@
         line: "{{ item }}"
         create: true
         state: present
+        mode: '0644'
       loop:
         - 'net.ipv4.ip_forward = 1'
         - 'net.ipv6.conf.all.forwarding = 1'
@@ -73,6 +75,7 @@
 
     - name: Install tailscale
       ansible.builtin.shell: |
+        set -o pipefail
         curl -fsSL https://tailscale.com/install.sh | sh
 
     - ansible.builtin.set_fact:

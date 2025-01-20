@@ -14,13 +14,14 @@
   retries: 5
   delay: 20
 
-- name: "Set {{ mediabox_data_path }} owner and group"
+- name: "Set owner and group to {{ mediabox_data_path }}"
   become: true
   ansible.builtin.file:
     path: "{{ mediabox_data_path }}"
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
     state: directory
+    mode: '0644'
 
 - name: Check if docker is installed
   ansible.builtin.stat:
@@ -29,8 +30,9 @@
 
 - name: Install docker
   ansible.builtin.shell: |
+    set -o pipefail
     curl -fsSL https://get.docker.com | sudo sh
-  when: docker_installed.stat.exists == false
+  when: not docker_installed.stat.exists
 
 - name: Add user to docker group
   become: true
@@ -39,4 +41,4 @@
     groups: docker
     append: true
 
-- include_tasks: folder_structure.yml
+- ansible.builtin.include_tasks: folder_structure.yml
