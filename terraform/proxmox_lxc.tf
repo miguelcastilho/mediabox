@@ -79,8 +79,8 @@ resource "proxmox_lxc" "nginx" {
     storage = var.nginx_storage
     size    = var.nginx_storage_size
   }
-  cores        = var.nginx_cores
-  memory       = var.nginx_memory
+  cores  = var.nginx_cores
+  memory = var.nginx_memory
   network {
     name   = "eth0"
     bridge = "vmbr0"

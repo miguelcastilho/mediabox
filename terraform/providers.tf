@@ -1,7 +1,9 @@
 terraform {
+  required_version = ">= 1.10.4"
+
   required_providers {
     local = {
-      source = "hashicorp/local"
+      source  = "hashicorp/local"
       version = "2.5.2"
     }
     proxmox = {
@@ -13,11 +15,11 @@ terraform {
       version = "4.50.0"
     }
     random = {
-      source = "hashicorp/random"
+      source  = "hashicorp/random"
       version = "3.6.3"
     }
     ansible = {
-      source = "nbering/ansible"
+      source  = "nbering/ansible"
       version = "1.0.4"
     }
     tailscale = {

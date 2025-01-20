@@ -40,20 +40,20 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "mediabox" {
   tunnel_id  = cloudflare_zero_trust_tunnel_cloudflared.mediabox.id
   account_id = var.cloudflare_account_id
   config {
-   ingress_rule {
-     hostname = cloudflare_record.jellyseerr.hostname
-     service  = "http://${var.mediabox_ip_address}:5055"
-   }
-   ingress_rule {
-     hostname = cloudflare_record.jellyfin.hostname
-     service  = "http://${var.mediabox_ip_address}:8096"
-   }
-   ingress_rule {
-     hostname = cloudflare_record.homeassistant.hostname
-     service  = "http://${var.mediabox_ip_address}:8123"
-   }
-   ingress_rule {
-     service = "http_status:404"
-   }
+    ingress_rule {
+      hostname = cloudflare_record.jellyseerr.hostname
+      service  = "http://${var.mediabox_ip_address}:5055"
+    }
+    ingress_rule {
+      hostname = cloudflare_record.jellyfin.hostname
+      service  = "http://${var.mediabox_ip_address}:8096"
+    }
+    ingress_rule {
+      hostname = cloudflare_record.homeassistant.hostname
+      service  = "http://${var.mediabox_ip_address}:8123"
+    }
+    ingress_rule {
+      service = "http_status:404"
+    }
   }
 }
