@@ -14,7 +14,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared" "mediabox" {
 resource "cloudflare_record" "jellyseerr" {
   zone_id = var.cloudflare_zone_id
   name    = "jellyseerr"
-  content   = "${cloudflare_zero_trust_tunnel_cloudflared.mediabox.cname}"
+  content   = cloudflare_zero_trust_tunnel_cloudflared.mediabox.cname
   type    = "CNAME"
   proxied = true
 }
@@ -22,7 +22,7 @@ resource "cloudflare_record" "jellyseerr" {
 resource "cloudflare_record" "jellyfin" {
   zone_id = var.cloudflare_zone_id
   name    = "jellyfin"
-  content   = "${cloudflare_zero_trust_tunnel_cloudflared.mediabox.cname}"
+  content   = cloudflare_zero_trust_tunnel_cloudflared.mediabox.cname
   type    = "CNAME"
   proxied = true
 }
@@ -30,7 +30,7 @@ resource "cloudflare_record" "jellyfin" {
 resource "cloudflare_record" "homeassistant" {
   zone_id = var.cloudflare_zone_id
   name    = "homeassistant"
-  content   = "${cloudflare_zero_trust_tunnel_cloudflared.mediabox.cname}"
+  content   = cloudflare_zero_trust_tunnel_cloudflared.mediabox.cname
   type    = "CNAME"
   proxied = true
 }
@@ -41,15 +41,15 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "mediabox" {
   account_id = var.cloudflare_account_id
   config {
    ingress_rule {
-     hostname = "${cloudflare_record.jellyseerr.hostname}"
+     hostname = cloudflare_record.jellyseerr.hostname
      service  = "http://${var.mediabox_ip_address}:5055"
    }
    ingress_rule {
-     hostname = "${cloudflare_record.jellyfin.hostname}"
+     hostname = cloudflare_record.jellyfin.hostname
      service  = "http://${var.mediabox_ip_address}:8096"
    }
    ingress_rule {
-     hostname = "${cloudflare_record.homeassistant.hostname}"
+     hostname = cloudflare_record.homeassistant.hostname
      service  = "http://${var.mediabox_ip_address}:8123"
    }
    ingress_rule {

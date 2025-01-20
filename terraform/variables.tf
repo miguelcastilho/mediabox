@@ -22,16 +22,6 @@ variable "ssh_public_key" {
 }
 
 # Proxmox
-variable "proxmox_ip_address" {
-  description = "Proxmox IP address"
-  type        = string
-}
-
-variable "proxmox_name" {
-  description = "Proxmox node name"
-  type        = string
-}
-
 variable "proxmox_api_url" {
   description = "Proxmox API URL"
   type        = string
@@ -245,17 +235,6 @@ variable "mediabox_machine_type" {
   type        = string
 }
 
-# CasaOS
-variable "casaos_dns_name" {
-  description = "Name of the DNS record for CasaOS"
-  type        = string
-}
-
-variable "casaos_ip_address" {
-  description = "IP address for CasaOS"
-  type        = string
-}
-
 # Nginx Proxy Manager
 variable "nginx_node" {
   description = "Proxmox node for NPM"
@@ -269,11 +248,6 @@ variable "nginx_vm_id" {
 
 variable "nginx_hostname" {
   description = "Hostname for NPM"
-  type        = string
-}
-
-variable "nginx_dns" {
-  description = "DNS for NPM"
   type        = string
 }
 

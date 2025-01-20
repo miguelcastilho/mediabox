@@ -8,7 +8,7 @@ IMAGE_NAME="ubuntu-24.04-lts"
 STORAGE="vms"
 VM_ID=9000
 
-ssh root@$SERVER_IP << EOF
+ssh root@$SERVER_IP << "EOF"
     set -e  # Exit immediately if a command exits with a non-zero status
 
     # Cleanup old image and VM

@@ -26,23 +26,23 @@ Before you begin, ensure you have the following installed:
 
 1. **Clone the Repository:**
 
-    ```bash
-    git clone https://github.com/yourusername/HomeServeMate.git
-    cd HomeServeMate
-    ```
+   ```bash
+   git clone https://github.com/yourusername/HomeServeMate.git
+   cd HomeServeMate
+   ```
 
 2. **Set Up Environment Variables:**
 
-    Ensure you have the necessary environment variables set up for Proxmox and other services. This typically includes API tokens, usernames, and passwords.
+   Ensure you have the necessary environment variables set up for Proxmox and other services. This typically includes API tokens, usernames, and passwords.
 
 3. **Terraform Initialization:**
 
-    Navigate to the `terraform` directory and initialize Terraform.
+   Navigate to the `terraform` directory and initialize Terraform.
 
-    ```bash
-    cd terraform
-    terraform init
-    ```
+   ```bash
+   cd terraform
+   terraform init
+   ```
 
 ## Usage
 
@@ -50,38 +50,38 @@ Before you begin, ensure you have the following installed:
 
 1. **Customize Variables:**
 
-    Edit the `terraform.tfvars` file to configure the variables specific to your environment.
+   Edit the `terraform.tfvars` file to configure the variables specific to your environment.
 
-    ```hcl
-    proxmox_endpoint = "https://proxmox.example.com:8006"
-    proxmox_user     = "root@pam"
-    proxmox_password = "yourpassword"
-    ```
+   ```hcl
+   proxmox_endpoint = "https://proxmox.example.com:8006"
+   proxmox_user     = "root@pam"
+   proxmox_password = "yourpassword"
+   ```
 
 2. **Deploy Infrastructure:**
 
-    Run the following commands to plan and apply the Terraform configuration.
+   Run the following commands to plan and apply the Terraform configuration.
 
-    ```bash
-    terraform plan
-    terraform apply
-    ```
+   ```bash
+   terraform plan
+   terraform apply
+   ```
 
 ### Ansible Configuration
 
 1. **Inventory Setup:**
 
-    Edit the inventory files located in `ansible/inventory` to match your infrastructure setup.
+   Edit the inventory files located in `ansible/inventory` to match your infrastructure setup.
 
 2. **Run Ansible Playbooks:**
 
-    Execute the Ansible playbooks to configure your VMs and LXCs.
+   Execute the Ansible playbooks to configure your VMs and LXCs.
 
-    ```bash
-    ansible-playbook -i ansible/inventory/hosts.yml ansible/playbook.yml
-    ```
+   ```bash
+   ansible-playbook -i ansible/inventory/hosts.yml ansible/playbook.yml
+   ```
 
-## Terraform Configuration
+## Terraform structure
 
 The `terraform` directory contains all the necessary files for provisioning the infrastructure:
 
@@ -91,7 +91,7 @@ The `terraform` directory contains all the necessary files for provisioning the 
 - `providers.tf`: Provider configurations.
 - `export.tf`: Resource export configurations.
 
-## Ansible Configuration
+## Ansible structure
 
 The `ansible` directory contains playbooks and roles for configuring the VMs and LXCs:
 
