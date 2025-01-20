@@ -28,7 +28,7 @@
   register: docker_installed
 
 - name: Install docker
-  shell: |
+  ansible.builtin.shell: |
     curl -fsSL https://get.docker.com | sudo sh
   when: docker_installed.stat.exists == false
 

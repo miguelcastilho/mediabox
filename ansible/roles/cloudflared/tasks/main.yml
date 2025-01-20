@@ -14,14 +14,14 @@
       ansible.builtin.file:
         path: /usr/share/keyrings
         state: directory
-        mode: '0755'
+        mode: 0755
 
     - name: Add Cloudflare's package signing key
       become: true
       ansible.builtin.get_url:
         url: https://pkg.cloudflare.com/cloudflare-main.gpg
         dest: /usr/share/keyrings/cloudflare-main.gpg
-        mode: '0644'
+        mode: 0644
 
     - name: Add Cloudflare's apt repository
       become: true
@@ -37,7 +37,7 @@
       file:
         path: /etc/cloudflared
         state: directory
-        mode: '0755'
+        mode: 0755
 
     - name: Create the config file for cloudflared and define the ingress rules for the tunnel
       become: true

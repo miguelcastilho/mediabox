@@ -23,7 +23,7 @@
         label: "{{ item.path }}"
 
     - name: Deploy apps
-      shell: |
+      ansible.builtin.shell: |
         casaos-cli app-management install -f /tmp/{{ item.path | basename | replace('.j2', '') }}
       loop: "{{ template_files.files }}"
       loop_control:
