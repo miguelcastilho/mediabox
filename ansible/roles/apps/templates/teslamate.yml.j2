@@ -26,7 +26,7 @@ services:
     restart: unless-stopped
     volumes:
       - type: bind
-        source: "{{ data_path }}/teslamate/teslamate"
+        source: "{{ mediabox_data_path }}/teslamate/teslamate"
         target: /opt/app/import
     user: "1000"
     devices: []
@@ -57,7 +57,7 @@ services:
     restart: unless-stopped
     volumes:
       - type: bind
-        source: "{{ data_path }}/teslamate/grafana"
+        source: "{{ mediabox_data_path }}/teslamate/grafana"
         target: /var/lib/grafana
     user: "1000"
     devices: []
@@ -84,7 +84,7 @@ services:
     restart: unless-stopped
     volumes:
       - type: bind
-        source: "{{ data_path }}/teslamate/postgres"
+        source: "{{ mediabox_data_path }}/teslamate/postgres"
         target: /var/lib/postgresql/data
     user: "1000"
     ports: []

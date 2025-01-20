@@ -2,29 +2,29 @@
 
 - name: Create manifests folder
   ansible.builtin.file:
-    path: "{{ data_path }}/manifests"
+    path: "{{ mediabox_data_path }}/manifests"
     state: directory
 
 - name: Copy manifest files
   ansible.builtin.template:
     src: "manifests/{{ item }}.yml.j2"
-    dest: "{{ data_path }}/manifests/{{ item }}.yml"
+    dest: "{{ mediabox_data_path }}/manifests/{{ item }}.yml"
   loop: "{{ enable_services }}"
 
 - name: Deploy manifests
-  shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl apply -f {{ data_path }}/manifests/{{ item }}.yml"
+  shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl apply -f {{ mediabox_data_path }}/manifests/{{ item }}.yml"
   loop: "{{ enable_services }}"
   when: item != 'recyclarr'
 
 - block:
     - name: Check if zigbee2mqtt configuration file already exists
       stat:
-        path: "{{ data_path }}/zigbee2mqtt/configuration.yaml"
+        path: "{{ mediabox_data_path }}/zigbee2mqtt/configuration.yaml"
       register: zigbee2mqtt_configuration_existing
 
     - name: "Create zigbee2mqtt directory"
       ansible.builtin.file:
-        path: "{{ data_path }}/zigbee2mqtt"
+        path: "{{ mediabox_data_path }}/zigbee2mqtt"
         state: directory
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
@@ -33,14 +33,14 @@
     - name: Copy zigbee2mqtt configuration file
       ansible.builtin.template:
         src: templates/zigbee2mqtt_config.yml.j2
-        dest: "{{ data_path }}/zigbee2mqtt/configuration.yaml"
+        dest: "{{ mediabox_data_path }}/zigbee2mqtt/configuration.yaml"
       when: not zigbee2mqtt_configuration_existing.stat.exists
   when: "'zigbee2mqtt' in enable_services"
 
 - block:
     - name: Read the content of Sonarr config.xml
       community.general.xml:
-        path: "{{ data_path }}/sonarr/config.xml"
+        path: "{{ mediabox_data_path }}/sonarr/config.xml"
         xpath: "/Config/ApiKey"
         content: text
       register: sonarr_config
@@ -50,7 +50,7 @@
 
     - name: Read the content of Radarr config.xml
       community.general.xml:
-        path: "{{ data_path }}/radarr/config.xml"
+        path: "{{ mediabox_data_path }}/radarr/config.xml"
         xpath: "/Config/ApiKey"
         content: text
       register: radarr_config
@@ -60,7 +60,7 @@
 
     - name: Create recyclarr folder
       file:
-        path: "{{ data_path }}/recyclarr"
+        path: "{{ mediabox_data_path }}/recyclarr"
         state: directory
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
@@ -69,10 +69,10 @@
     - name: Template the file
       template:
         src: recyclarr_config.yml.j2
-        dest: "{{ data_path }}/recyclarr/recyclarr.yml"
+        dest: "{{ mediabox_data_path }}/recyclarr/recyclarr.yml"
 
     - name: Deploy recyclarr
-      shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl apply -f {{ data_path }}/manifests/recyclarr.yml"
+      shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl apply -f {{ mediabox_data_path }}/manifests/recyclarr.yml"
 
     - name: Check containers status
       shell: "KUBECONFIG=/home/{{ ansible_user }}/.kube/config kubectl get pods -A -o json"

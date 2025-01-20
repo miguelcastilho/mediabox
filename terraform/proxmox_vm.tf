@@ -6,6 +6,8 @@ resource "proxmox_vm_qemu" "mediabox" {
   clone                    = var.mediabox_vm_base_image
   agent                    = 1
   os_type                  = "cloud-init"
+  bios                     = var.mediabox_bios
+  machine                  = var.mediabox_machine_type
   cloudinit_cdrom_storage  = var.mediabox_storage
   cores                    = var.mediabox_cores
   sockets                  = var.mediabox_sockets

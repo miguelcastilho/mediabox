@@ -157,52 +157,6 @@ variable "tailscale_ip_address" {
   type        = string
 }
 
-# Uptime Kuma VM Configuration
-variable "uptimekuma_node" {
-  description = "Proxmox node for Uptime Kuma"
-  type        = string
-}
-
-variable "uptimekuma_vm_id" {
-  description = "VM ID for Uptime Kuma"
-  type        = number
-}
-
-variable "uptimekuma_hostname" {
-  description = "Hostname for Uptime Kuma VM"
-  type        = string
-}
-
-variable "uptimekuma_dns" {
-  description = "DNS for Uptime Kuma VM"
-  type        = string
-}
-
-variable "uptimekuma_storage" {
-  description = "Storage for Uptime Kuma VM"
-  type        = string
-}
-
-variable "uptimekuma_storage_size" {
-  description = "Storage size for Uptime Kuma VM"
-  type        = string
-}
-
-variable "uptimekuma_cores" {
-  description = "Number of CPU cores for Uptime Kuma VM"
-  type        = number
-}
-
-variable "uptimekuma_memory" {
-  description = "Memory size for Uptime Kuma VM"
-  type        = number
-}
-
-variable "uptimekuma_ip_address" {
-  description = "IP address for Uptime Kuma VM"
-  type        = string
-}
-
 # Mediabox VM Configuration
 variable "mediabox_node" {
   description = "Proxmox node for Mediabox"
@@ -272,6 +226,16 @@ variable "ansible_playbooks" {
   type        = map(string)
 }
 
+variable "mediabox_bios" {
+  description = "Bios type"
+  type        = string
+}
+
+variable "mediabox_machine_type" {
+  description = "Machine type"
+  type        = string
+}
+
 # CasaOS
 variable "casaos_dns_name" {
   description = "Name of the DNS record for CasaOS"
@@ -285,46 +249,46 @@ variable "casaos_ip_address" {
 
 # Nginx LXC Configuration
 variable "nginx_node" {
-  description = "Proxmox node for Uptime Kuma"
+  description = "Proxmox node for NPM"
   type        = string
 }
 
 variable "nginx_vm_id" {
-  description = "VM ID for Uptime Kuma"
+  description = "VM ID for NPM"
   type        = number
 }
 
 variable "nginx_hostname" {
-  description = "Hostname for Uptime Kuma VM"
+  description = "Hostname for NPM"
   type        = string
 }
 
 variable "nginx_dns" {
-  description = "DNS for Uptime Kuma VM"
+  description = "DNS for NPM"
   type        = string
 }
 
 variable "nginx_storage" {
-  description = "Storage for Uptime Kuma VM"
+  description = "Storage for NPM"
   type        = string
 }
 
 variable "nginx_storage_size" {
-  description = "Storage size for Uptime Kuma VM"
+  description = "Storage size for NPM"
   type        = string
 }
 
 variable "nginx_cores" {
-  description = "Number of CPU cores for Uptime Kuma VM"
+  description = "Number of CPU cores for NPM"
   type        = number
 }
 
 variable "nginx_memory" {
-  description = "Memory size for Uptime Kuma VM"
+  description = "Memory size for NPM"
   type        = number
 }
 
 variable "nginx_ip_address" {
-  description = "IP address for Uptime Kuma VM"
+  description = "IP address for NPM"
   type        = string
 }

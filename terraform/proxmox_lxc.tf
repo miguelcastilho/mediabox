@@ -68,34 +68,6 @@ resource "proxmox_lxc" "tailscale" {
   }
 }
 
-##### Uptime Kuma
-resource "proxmox_lxc" "uptime_kuma" {
-  target_node   = var.uptimekuma_node
-  vmid          = var.uptimekuma_vm_id
-  hostname      = var.uptimekuma_hostname
-  ostemplate    = var.lxc_base_image
-  unprivileged  = true
-  rootfs {
-    storage = var.uptimekuma_storage
-    size    = var.uptimekuma_storage_size
-  }
-  cores         = var.uptimekuma_cores
-  memory        = var.uptimekuma_memory
-  network {
-    name    = "eth0"
-    bridge  = "vmbr0"
-    gw      = var.gateway_ip_address
-    ip      = "${var.uptimekuma_ip_address}${var.netmask}"
-  }
-  ssh_public_keys = var.ssh_public_key
-  onboot          = true
-  start           = true
-
-  provisioner "local-exec" {
-    command = "ansible-playbook -i ${var.ansible_inventory} ${var.ansible_playbooks.uptime_kuma} --vault-password-file .vault_pass.txt"
-  }
-}
-
 ##### Nginx
 resource "proxmox_lxc" "nginx" {
   target_node   = var.nginx_node

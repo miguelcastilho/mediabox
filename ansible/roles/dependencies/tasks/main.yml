@@ -14,10 +14,10 @@
   retries: 5
   delay: 20
 
-- name: "Set {{ data_path }} owner and group"
+- name: "Set {{ mediabox_data_path }} owner and group"
   become: true
   ansible.builtin.file:
-    path: "{{ data_path }}"
+    path: "{{ mediabox_data_path }}"
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
     state: directory

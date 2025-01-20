@@ -24,7 +24,7 @@ services:
         restart: unless-stopped
         volumes:
             - type: bind
-              source: "{{ data_path }}/jellyseerr"
+              source: "{{ mediabox_data_path }}/jellyseerr"
               target: /app/config
               bind:
                 create_host_path: true

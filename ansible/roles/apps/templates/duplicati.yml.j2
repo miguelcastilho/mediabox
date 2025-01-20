@@ -24,10 +24,10 @@ services:
     restart: unless-stopped
     volumes:
       - type: bind
-        source: "{{ data_path }}/duplicati"
+        source: "{{ mediabox_data_path }}/duplicati"
         target: /config
       - type: bind
-        source: "{{ data_path }}"
+        source: "{{ mediabox_data_path }}"
         target: /source
     devices: []
     cap_add: []

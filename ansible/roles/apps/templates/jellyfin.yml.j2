@@ -39,10 +39,10 @@ services:
         privileged: true
         volumes:
             - type: bind
-              source: "{{ data_path }}/jellyfin"
+              source: "{{ mediabox_data_path }}/jellyfin"
               target: /config
             - type: bind
-              source: "{{ media_path }}"
+              source: "{{ mediabox_media_path }}"
               target: /data
 networks:
     app:
