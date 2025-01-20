@@ -16,7 +16,12 @@ variable "netmask" {
   default     = "/24"
 }
 
-# Proxmox Variables
+variable "ssh_public_key" {
+  description = "SSH public key for VM access"
+  type        = string
+}
+
+# Proxmox
 variable "proxmox_ip_address" {
   description = "Proxmox IP address"
   type        = string
@@ -44,7 +49,7 @@ variable "proxmox_api_token_secret" {
   sensitive   = true
 }
 
-# Cloudflare Variables
+# Cloudflare
 variable "cloudflare_zone_id" {
   description = "Cloudflare Zone ID"
   type        = string
@@ -69,13 +74,7 @@ variable "cloudflare_token" {
   sensitive   = true
 }
 
-# SSH Key
-variable "ssh_public_key" {
-  description = "SSH public key for VM access"
-  type        = string
-}
-
-# AdGuard VM Configuration
+# AdGuard
 variable "adguard_node" {
   description = "Proxmox node for AdGuard"
   type        = string
@@ -116,7 +115,7 @@ variable "adguard_ip_address" {
   type        = string
 }
 
-# Tailscale VM Configuration
+# Tailscale
 variable "tailscale_node" {
   description = "Proxmox node for Tailscale"
   type        = string
@@ -157,7 +156,17 @@ variable "tailscale_ip_address" {
   type        = string
 }
 
-# Mediabox VM Configuration
+variable "tailscale_api_key" {
+  description = "API key for terraform provider"
+  type        = string
+}
+
+variable "tailscale_tailnet" {
+  description = "Tailnet"
+  type        = string
+}
+
+# Mediabox
 variable "mediabox_node" {
   description = "Proxmox node for Mediabox"
   type        = string
@@ -247,7 +256,7 @@ variable "casaos_ip_address" {
   type        = string
 }
 
-# Nginx LXC Configuration
+# Nginx Proxy Manager
 variable "nginx_node" {
   description = "Proxmox node for NPM"
   type        = string

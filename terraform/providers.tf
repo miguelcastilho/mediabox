@@ -32,6 +32,6 @@ provider "cloudflare" {
 }
 
 provider "tailscale" {
-  api_key = "tskey-api-k5t268bpQ421CNTRL-PCDgoMHYWKj75khFsg1uSjS7qWPUDzrWQ"
-  tailnet = "tail689fb.ts.net"
+  api_key = var.tailscale_api_key
+  tailnet = var.tailscale_tailnet
 }
