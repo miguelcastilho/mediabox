@@ -9,10 +9,10 @@
     cloudflare_api_token: "{{ lookup('vars', 'tf_cf_token') }}"
   tasks:
     - name: Wait for system to become reachable
-      wait_for_connection:
+      ansible.builtin.wait_for_connection:
 
     - name: Gather facts for the first time
-      setup:
+      ansible.builtin.setup:
 
-    - include_role:
+    - ansible.builtin.include_role:
         name: nginx_proxy

@@ -2,7 +2,7 @@
 - name: Copy mosquitto.conf to folder
   ansible.builtin.copy:
     src: mosquitto.conf
-    dest: "{{ mediabox_data_path}}/mqtt/mosquitto.conf"
+    dest: "{{ mediabox_data_path }}/mqtt/mosquitto.conf"
 
 - name: Get all *.yml.j2 files
   delegate_to: localhost

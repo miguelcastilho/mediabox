@@ -30,10 +30,10 @@
     - ./tf_ansible_vars.yml
   tasks:
     - name: Wait for system to become reachable
-      wait_for_connection:
+      ansible.builtin.wait_for_connection:
 
     - name: Gather facts for the first time
-      setup:
+      ansible.builtin.setup:
 
     - name: Update all packages
       ansible.builtin.apt:

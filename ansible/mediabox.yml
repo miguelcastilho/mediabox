@@ -16,13 +16,13 @@
     - ./tf_ansible_vars.yml
   tasks:
     - name: Wait for system to become reachable
-      wait_for_connection:
+      ansible.builtin.wait_for_connection:
 
     - name: Gather facts for the first time
-      setup:
+      ansible.builtin.setup:
 
     - name: Install dependencies
-      include_role:
+      ansible.builtin.include_role:
         name: dependencies
 
     - name: Set up and mount disk
@@ -34,20 +34,20 @@
             state: directory
 
         - name: Mount disk
-          mount:
+          ansible.posix.mount:
             path: /mnt/HDD
             src: /dev/sdb1
             fstype: ext4
             state: mounted
 
     - name: Cloudflared
-      include_role:
+      ansible.builtin.include_role:
         name: cloudflared
 
     - name: CasaOS
-      include_role:
+      ansible.builtin.include_role:
         name: casaos
 
     - name: Apps
-      include_role:
+      ansible.builtin.include_role:
         name: apps
