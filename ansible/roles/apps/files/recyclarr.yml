@@ -115,7 +115,7 @@ sonarr:
           - 1656adc6d7bb2c8cca6acfb6592db421  # PCOK
           - ae58039e1319178e6be73caab5c42166  # SHO
           - 1efe8da11bfd74fbbcd4d8117ddb9213  # STAN
-          - 1efe8da11bfd74fbbcd4d8117ddb9213  # UHD Streaming Boost
+          - 43b3cf48cb385cd3eac608ee6bca7f09  # UHD Streaming Boost
           - d2d299244a92b8a52d4921ce3897a256  # UHD Streaming Cut
           # HQ Source Groups
           - e6258996055b9fbab7e9cb2f75819294  # WEB Tier 01
