@@ -90,7 +90,7 @@
     state: directory
 
 - name: Set current ansible user
-  set_fact:
+  ansible.builtin.set_fact:
     user: "{{ ansible_user }}"
 
 - name: "Ensure correct permisions in {{ mediabox_media_path }}"

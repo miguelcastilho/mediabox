@@ -45,8 +45,8 @@ resource "proxmox_lxc" "tailscale" {
     storage = var.tailscale_storage
     size    = var.tailscale_storage_size
   }
-  cores        = var.tailscale_cores
-  memory       = var.tailscale_memory
+  cores  = var.tailscale_cores
+  memory = var.tailscale_memory
   network {
     name   = "eth0"
     bridge = "vmbr0"

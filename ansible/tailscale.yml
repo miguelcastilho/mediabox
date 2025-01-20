@@ -75,10 +75,10 @@
       ansible.builtin.shell: |
         curl -fsSL https://tailscale.com/install.sh | sh
 
-    - set_fact:
+    - ansible.builtin.set_fact:
         ip_network: "{{ ansible_default_ipv4.address }}/{{ ansible_default_ipv4.netmask }}"
 
-    - set_fact:
+    - ansible.builtin.set_fact:
         tailscale_advertise_routes: "{{ ip_network | ansible.utils.ipaddr('network/prefix') }}"
 
     - name: Run tailscale
