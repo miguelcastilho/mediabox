@@ -39,3 +39,7 @@
       loop: "{{ template_files.files }}"
       loop_control:
         label: "{{ item.path }}"
+  rescue:
+    - name: Log error in processing template files block
+      ansible.builtin.debug:
+        msg: "An error occurred in the process template files block"

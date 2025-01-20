@@ -32,7 +32,7 @@
           ansible.builtin.file:
             path: /mnt/HDD
             state: directory
-            mode: '0644'
+            mode: '0755'
 
         - name: Mount disk
           ansible.posix.mount:
@@ -40,6 +40,11 @@
             src: /dev/sdb1
             fstype: ext4
             state: mounted
+      rescue:
+        - name: Cleanup mount directory on failure
+          ansible.builtin.file:
+            path: /mnt/HDD
+            state: absent
 
     - name: Cloudflared
       ansible.builtin.include_role:

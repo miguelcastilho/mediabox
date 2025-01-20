@@ -21,7 +21,7 @@
   ansible.builtin.file:
     path: /etc/systemd/resolved.conf.d
     state: directory
-    mode: '0644'
+    mode: '0755'
 
 - name: Create AdGuard Home DNS configuration file
   ansible.builtin.copy:

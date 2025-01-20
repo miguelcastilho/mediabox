@@ -73,3 +73,7 @@
         name: cloudflared
         state: started
         enabled: true
+  rescue:
+    - name: Handle failure
+      ansible.builtin.debug:
+        msg: "Failed to install cloudflared"
