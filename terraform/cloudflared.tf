@@ -14,7 +14,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared" "mediabox" {
 resource "cloudflare_record" "jellyseerr" {
   zone_id = var.cloudflare_zone_id
   name    = "jellyseerr"
-  value   = "${cloudflare_zero_trust_tunnel_cloudflared.mediabox.cname}"
+  content   = "${cloudflare_zero_trust_tunnel_cloudflared.mediabox.cname}"
   type    = "CNAME"
   proxied = true
 }
@@ -22,7 +22,7 @@ resource "cloudflare_record" "jellyseerr" {
 resource "cloudflare_record" "jellyfin" {
   zone_id = var.cloudflare_zone_id
   name    = "jellyfin"
-  value   = "${cloudflare_zero_trust_tunnel_cloudflared.mediabox.cname}"
+  content   = "${cloudflare_zero_trust_tunnel_cloudflared.mediabox.cname}"
   type    = "CNAME"
   proxied = true
 }
@@ -30,7 +30,7 @@ resource "cloudflare_record" "jellyfin" {
 resource "cloudflare_record" "homeassistant" {
   zone_id = var.cloudflare_zone_id
   name    = "homeassistant"
-  value   = "${cloudflare_zero_trust_tunnel_cloudflared.mediabox.cname}"
+  content   = "${cloudflare_zero_trust_tunnel_cloudflared.mediabox.cname}"
   type    = "CNAME"
   proxied = true
 }
