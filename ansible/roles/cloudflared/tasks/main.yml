@@ -8,7 +8,8 @@
     - cloudflared_version.rc != 0
     - "'cloudflared: not found' not in cloudflared_version.stderr"
 
-- block:
+- when: cloudflared_version.rc != 0
+  block:
     - name: Ensure the directory for the keyring exists
       become: true
       ansible.builtin.file:
@@ -44,6 +45,7 @@
       ansible.builtin.template:
         src: config.yml.j2
         dest: /etc/cloudflared/config.yml
+        mode: '644'
 
     - name: Create the tunnel credentials file for cloudflared
       become: true
@@ -70,4 +72,3 @@
         name: cloudflared
         state: started
         enabled: true
-  when: cloudflared_version.rc != 0
